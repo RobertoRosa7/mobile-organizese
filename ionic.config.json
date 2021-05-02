@@ -1,5 +1,7 @@
 {
   "name": "mobile-organizese",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
