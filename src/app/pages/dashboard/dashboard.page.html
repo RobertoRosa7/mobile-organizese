@@ -1,0 +1,25 @@
+<ion-menu side="start" type="overlay" contentId="main">
+  <ion-menu-button></ion-menu-button>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <a routerLink="/home">Home</a>
+      </ion-item>
+      <ion-item>
+        <a routerLink="/dashboard/registers">Registros</a>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-router-outlet id="main"></ion-router-outlet>
+
+<ion-header>
+  <ion-toolbar>
+    <div class="custom-btn">
+      <ion-menu-button></ion-menu-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-router-outlet></ion-router-outlet>
+</ion-content>
