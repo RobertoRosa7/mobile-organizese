@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { StorageService } from 'src/app/services/storage.service';
 import * as actionsApp from '../../actions/app.actions';
 
 @Component({
@@ -8,7 +9,7 @@ import * as actionsApp from '../../actions/app.actions';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  constructor(private store?: Store) {}
+  constructor(private store?: Store, private storageService?: StorageService) {}
 
   ngOnInit() {
     console.log('its working!');
