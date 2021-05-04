@@ -1,27 +1,55 @@
-#container {
-  text-align: center;
+@import "../../../theme/mixins.scss";
 
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.home,
+.toolbar,
+.content {
+  background: transparent;
+  --background: transparent;
 }
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.toolbar,
+.content {
+  --padding-end: 16px;
+  --padding-start: 16px;
 }
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.home {
+  height: 100%;
+  position: relative;
+  .background {
+    background: url("../../../assets/backgroun-home-5.svg");
+    position: absolute;
+    top: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+  }
+  .content .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .btn {
+    @include btn;
+  }
+  .outline {
+    outline: 1px solid rgba(0, 0, 0, 0.09);
+  }
+  .logo {
+    @include logo;
+  }
+  .display-1 {
+    @include display-1;
+  }
+  .display-2 {
+    @include display-2;
+  }
+  .description {
+    @include description;
+  }
+  .dash {
+    --background: var(--teal);
+    --color: var(--color-white);
+  }
 }

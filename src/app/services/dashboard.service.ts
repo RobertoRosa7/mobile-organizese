@@ -71,37 +71,34 @@ export class DashboardService {
 
   public fetchRegisters(params?: any): Observable<Register[]> {
     return this.http.get<Register[]>(
-      `${this.constants.get('fetch_registers')}${this.convertJsonToUrl(params)}`
+      `${this.constants.get('fetchRegisters')}${this.convertJsonToUrl(params)}`
     );
   }
 
   public fetchSearch(params?: any): Observable<Register[]> {
     return this.http.get<Register[]>(
-      `${this.constants.get('fetch_search')}${this.convertJsonToUrl(params)}`
+      `${this.constants.get('fetchSearch')}${this.convertJsonToUrl(params)}`
     );
   }
 
   public newRegister(payload: Register): Observable<Register> {
-    return this.http.post<Register>(
-      this.constants.get('new_register'),
-      payload
-    );
+    return this.http.post<Register>(this.constants.get('newRegister'), payload);
   }
 
   public fetchConsolidado(): Observable<Consolidado> {
-    return this.http.get<Consolidado>(this.constants.get('fetch_consolidado'));
+    return this.http.get<Consolidado>(this.constants.get('fetchConsolidado'));
   }
 
   public deleteRegister(payload: Register): Observable<Register> {
     return this.http.post<Register>(
-      this.constants.get('delete_register'),
+      this.constants.get('deleteRegister'),
       payload
     );
   }
 
   public updateRegister(payload: Register): Observable<Register> {
     return this.http.post<Register>(
-      this.constants.get('update_register'),
+      this.constants.get('updateRegister'),
       payload
     );
   }
@@ -110,35 +107,35 @@ export class DashboardService {
   //   return this.http.get<StatusCode[]>(this.constants.get('get_status_code'));
   // }
 
-  public fetchEvocucao(dates?: any): Observable<any> {
-    const params = dates ? this.convertDates(dates) : '';
-    return this.http.get<any>(
-      `${this.constants.get('fetch_evolucao')}${this.convertJsonToUrl(params)}`
-    );
-  }
+  // public fetchEvocucao(dates?: any): Observable<any> {
+  //   const params = dates ? this.convertDates(dates) : '';
+  //   return this.http.get<any>(
+  //     `${this.constants.get('fetchEvolucao')}${this.convertJsonToUrl(params)}`
+  //   );
+  // }
 
-  public fetchEvocucaoDespesas(dates?: any): Observable<any> {
-    const params = dates ? this.convertDates(dates) : '';
-    return this.http.get<any>(
-      `${this.constants.get('fetch_evolucao_despesas')}${this.convertJsonToUrl(
-        params
-      )}`
-    );
-  }
+  // public fetchEvocucaoDespesas(dates?: any): Observable<any> {
+  //   const params = dates ? this.convertDates(dates) : '';
+  //   return this.http.get<any>(
+  //     `${this.constants.get('fetch_evolucao_despesas')}${this.convertJsonToUrl(
+  //       params
+  //     )}`
+  //   );
+  // }
 
-  public fetchEvocucaoDetail(payload: any): Observable<any> {
-    return this.http.post<any>(
-      this.constants.get('fetch_evolucao_detail'),
-      payload
-    );
-  }
+  // public fetchEvocucaoDetail(payload: any): Observable<any> {
+  //   return this.http.post<any>(
+  //     this.constants.get('fetch_evolucao_detail'),
+  //     payload
+  //   );
+  // }
 
-  public setDevMode(mode: any): Observable<any> {
-    return this.http.post<any>(this.constants.get('set_dev_mode'), mode);
-  }
+  // public setDevMode(mode: any): Observable<any> {
+  //   return this.http.post<any>(this.constants.get('set_dev_mode'), mode);
+  // }
 
   public fetchAutocomplete(): Observable<any> {
-    return this.http.get<any>(this.constants.get('get_list_autocomplete'));
+    return this.http.get<any>(this.constants.get('getListAutocomplete'));
   }
 
   // public userUpdatePassword(payload: any): Observable<any> {
@@ -166,34 +163,34 @@ export class DashboardService {
   //     .pipe(download((blob) => this.save(blob, 'organizese')));
   // }
 
-  public fetchGraphCategory(dates?: any): Observable<any> {
-    const params = dates ? this.convertDates(dates) : '';
-    return this.http.get<any>(
-      `${this.constants.get('fetch_graph_category')}${this.convertJsonToUrl(
-        params
-      )}`
-    );
-  }
+  // public fetchGraphCategory(dates?: any): Observable<any> {
+  //   const params = dates ? this.convertDates(dates) : '';
+  //   return this.http.get<any>(
+  //     `${this.constants.get('fetch_graph_category')}${this.convertJsonToUrl(
+  //       params
+  //     )}`
+  //   );
+  // }
 
   public fetchDashboard(dates?: any): Observable<any> {
     const params = dates ? this.convertDates(dates) : '';
     return this.http.get<any>(
       `${this.constants.get(
-        'fetch_registers_to_dashboard'
+        'fetchRegistersToDashboard'
       )}${this.convertJsonToUrl(params)}`
     );
   }
 
   public fetchLastDate(): Observable<any> {
-    return this.http.get<any>(this.constants.get('fetch_lastdate'));
+    return this.http.get<any>(this.constants.get('fetchLastdate'));
   }
 
   public fetchGraphOutcomeIncome(dates?: any): Observable<any> {
     const params = dates ? this.convertDates(dates) : '';
     return this.http.get<any>(
-      `${this.constants.get(
-        'fetch_graph_outcome_income'
-      )}${this.convertJsonToUrl(params)}`
+      `${this.constants.get('fetchGaphOutcomeIncome')}${this.convertJsonToUrl(
+        params
+      )}`
     );
   }
 

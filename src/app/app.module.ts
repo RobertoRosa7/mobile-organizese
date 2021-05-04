@@ -9,6 +9,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppEffect } from './effects/app.effect';
+import { DashboardEffect } from './effects/dashboard.effect';
 import { SharedModule } from './shared.module';
 import { organizeseStore } from './store/organizese.store';
 
@@ -23,7 +24,7 @@ import { organizeseStore } from './store/organizese.store';
     IonicStorageModule.forRoot(),
     StoreModule.forRoot(organizeseStore),
     StoreDevtoolsModule.instrument({ maxAge: 45 }),
-    EffectsModule.forRoot([AppEffect]),
+    EffectsModule.forRoot([AppEffect, DashboardEffect]),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

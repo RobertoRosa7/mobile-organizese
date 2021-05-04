@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { DashboardPage } from '../dashboard.page';
+import * as actionsDashboard from '../../../actions/dashboard.actions';
 
 @Component({
   selector: 'app-main',
@@ -7,9 +9,24 @@ import { DashboardPage } from '../dashboard.page';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent extends DashboardPage implements OnInit {
-  constructor() {
+  constructor(protected store: Store) {
     super();
   }
 
-  ngOnInit() {}
+  public async ngOnInit() {
+    // await this.initializingMain();
+  }
+
+  private initializingMain(): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      await this.initMain();
+      setTimeout(() => resolve(true), 100);
+    });
+  }
+
+  private initMain(): Promise<any> {
+    return new Promise((resolve) =>
+      resolve(this.store.dispatch(actionsDashboard.INIT_DASHBOARD()))
+    );
+  }
 }

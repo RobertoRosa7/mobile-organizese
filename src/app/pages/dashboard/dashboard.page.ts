@@ -9,10 +9,13 @@ import * as actionsApp from '../../actions/app.actions';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  constructor(private store?: Store, private storageService?: StorageService) {}
+  constructor(
+    protected store?: Store,
+    protected storageService?: StorageService
+  ) {}
 
   ngOnInit() {
     console.log('its working!');
-    this.store?.dispatch(actionsApp.onLine());
+    // this.store?.dispatch(actionsApp.onLine());
   }
 }

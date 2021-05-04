@@ -1,17 +1,29 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Organizese </ion-title>
+<section class="home">
+  <div class="background"></div>
+  <ion-toolbar class="toolbar">
+    <ion-img class="logo" [src]="logo"></ion-img>
+    <ion-buttons slot="end">
+      <ion-button class="btn outline" size="small" href="#"
+        >Cadastro</ion-button
+      >
+      <ion-button class="btn outline" size="small" href="#">Login</ion-button>
+    </ion-buttons>
   </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Organizese</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <ion-button href="/dashboard">Dashboard</ion-button>
-  </div>
-</ion-content>
+  <ion-content [fullscreen]="false" class="content">
+    <div class="container">
+      <div class="title">
+        <h1 class="display-1">Organize-se!</h1>
+        <h2 class="display-2">Mantenha seus gastos sob controle</h2>
+        <p class="description">
+          Controle suas despesas com facilidade e saiba para onde esta indo seu
+          dinheiro.
+        </p>
+      </div>
+      <ion-buttons style="margin-left: auto; margin-right: auto">
+        <ion-button class="btn dash" href="/dashboard">Dashboard</ion-button>
+        <ion-button class="btn outline" href="#">Login</ion-button>
+      </ion-buttons>
+    </div>
+  </ion-content>
+</section>

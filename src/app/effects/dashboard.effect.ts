@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import * as actions from '../actions/dashboard.actions';
 import { DashboardService } from '../services/dashboard.service';
@@ -18,8 +18,11 @@ export class DashboardEffect {
       mergeMap(() => this.storageService.getStore('consolidado_id')),
       mergeMap((store) => {
         if (store) {
+          console.log(store);
           return of(store);
         } else {
+          console.log(store);
+
           return this.dashboardService.fetchConsolidado().pipe(
             map((payload) => {
               this.storageService.setStore('consolidado_id', payload);
