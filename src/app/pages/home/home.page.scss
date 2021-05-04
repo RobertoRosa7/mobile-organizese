@@ -33,14 +33,15 @@
   .btn {
     @include btn;
   }
-  .outline {
-    outline: 1px solid rgba(0, 0, 0, 0.09);
-  }
+  // .outline {
+  //   outline: 1px solid rgba(0, 0, 0, 0.09);
+  // }
   .logo {
     @include logo;
   }
   .display-1 {
     @include display-1;
+    font-weight: 600;
   }
   .display-2 {
     @include display-2;

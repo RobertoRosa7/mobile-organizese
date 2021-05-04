@@ -3,10 +3,15 @@
   <ion-toolbar class="toolbar">
     <ion-img class="logo" [src]="logo"></ion-img>
     <ion-buttons slot="end">
-      <ion-button class="btn outline" size="small" href="#"
+      <ion-button
+        (click)="openDialog('registers')"
+        class="btn outline"
+        size="small"
         >Cadastro</ion-button
       >
-      <ion-button class="btn outline" size="small" href="#">Login</ion-button>
+      <ion-button (click)="openDialog('login')" class="btn outline" size="small"
+        >Login</ion-button
+      >
     </ion-buttons>
   </ion-toolbar>
 
@@ -21,8 +26,15 @@
         </p>
       </div>
       <ion-buttons style="margin-left: auto; margin-right: auto">
-        <ion-button class="btn dash" href="/dashboard">Dashboard</ion-button>
-        <ion-button class="btn outline" href="#">Login</ion-button>
+        <ion-button
+          class="btn dash"
+          routerDirection="forward"
+          routerLink="/dashboard"
+          >Dashboard</ion-button
+        >
+        <ion-button (click)="openDialog('login')" class="btn outline"
+          >Login</ion-button
+        >
       </ion-buttons>
     </div>
   </ion-content>
