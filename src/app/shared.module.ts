@@ -16,7 +16,6 @@ import { Constants } from './services/constants';
     WindowsHackerComponent,
     ModalComponent,
     LoginComponent,
-    SigninComponent,
   ],
   imports: [
     CommonModule,
@@ -35,7 +34,6 @@ import { Constants } from './services/constants';
     WindowsHackerComponent,
     ModalComponent,
     LoginComponent,
-    SigninComponent,
   ],
   providers: [
     {

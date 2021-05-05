@@ -1,71 +1,68 @@
-<form [formGroup]="login" (ngSubmit)="onSubmit($event)" class="login">
-  <ion-buttons>
-    <ion-button routerLink="/home">
-      <ion-icon name="arrow-back"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-  <h2 class="title">Login</h2>
-  <div class="container">
-    <div class="form-group">
-      <ion-input
-        required
-        ngDefaultControl
-        formControlName="email"
-        inputmode="email"
-        placeholder="E-mail"
-        type="email"
-      ></ion-input>
-      <ion-icon slot="end" name="mail"></ion-icon>
+<section class="signin">
+  <form [formGroup]="login" (ngSubmit)="onSubmit($event)" class="form">
+    <h2 class="title">Login</h2>
+    <div class="container">
+      <div class="form-group">
+        <ion-input
+          required
+          ngDefaultControl
+          formControlName="email"
+          inputmode="email"
+          placeholder="E-mail"
+          type="email"
+        ></ion-input>
+        <ion-icon slot="end" name="mail"></ion-icon>
+      </div>
+      <div class="form-group">
+        <ion-input
+          required
+          ngDefaultControl
+          formControlName="password"
+          placeholder="Senha"
+          inputmode="text"
+          [type]="changeTexts ? 'password' : 'text'"
+        ></ion-input>
+        <ion-icon
+          [name]="changeTexts ? 'eye-off' : 'eye'"
+          slot="end"
+          (click)="changeTexts = !changeTexts"
+        ></ion-icon>
+      </div>
+
+      <ion-buttons class="container-forget">
+        <ion-button
+          size="small"
+          (click)="close()"
+          routerLink="/login/reset"
+          class="no-account"
+        >
+          <small>Esqueci a senha</small>
+        </ion-button>
+
+        <ion-button
+          size="small"
+          (click)="close()"
+          routerLink="/login/signup"
+          class="no-account"
+        >
+          <small>Não tenho conta</small>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-item class="container-checkbox">
+        <ion-checkbox color="success"></ion-checkbox>
+        &nbsp;&nbsp;
+        <ion-label>Manter conectado.</ion-label>
+      </ion-item>
+
+      <ion-buttons class="container-buttons">
+        <ion-button class="btn close" routerLink="/home" type="button"
+          >Voltar</ion-button
+        >
+        <ion-button [disabled]="!login.valid" class="btn income" type="submit"
+          >Entrar</ion-button
+        >
+      </ion-buttons>
     </div>
-    <div class="form-group">
-      <ion-input
-        required
-        ngDefaultControl
-        formControlName="password"
-        placeholder="Senha"
-        inputmode="text"
-        [type]="changeTexts ? 'password' : 'text'"
-      ></ion-input>
-      <ion-icon
-        [name]="changeTexts ? 'eye-off' : 'eye'"
-        slot="end"
-        (click)="changeTexts = !changeTexts"
-      ></ion-icon>
-    </div>
-
-    <ion-buttons class="container-forget">
-      <ion-button
-        size="small"
-        (click)="close()"
-        routerLink="/login/reset"
-        class="no-account"
-      >
-        <small>Esqueci a senha</small>
-      </ion-button>
-
-      <ion-button
-        size="small"
-        (click)="close()"
-        routerLink="/login/signup"
-        class="no-account"
-      >
-        <small>Não tenho conta</small>
-      </ion-button>
-    </ion-buttons>
-
-    <ion-item class="container-checkbox">
-      <ion-checkbox color="success"></ion-checkbox>
-      &nbsp;&nbsp;
-      <ion-label>Manter conectado.</ion-label>
-    </ion-item>
-
-    <ion-buttons class="container-buttons">
-      <ion-button class="btn close" (click)="close()" type="button"
-        >Fechar</ion-button
-      >
-      <ion-button [disabled]="!login.valid" class="btn income" type="submit"
-        >Entrar</ion-button
-      >
-    </ion-buttons>
-  </div>
-</form>
+  </form>
+</section>

@@ -17,7 +17,7 @@ export class StorageService {
     return this.store().pipe(mergeMap((store) => store.get(name)));
   }
 
-  public removeStore(name: string): Observable<Storage> {
+  public removeItem(name: string): Observable<Storage> {
     return this.store().pipe(mergeMap((store) => store.remove(name)));
   }
 

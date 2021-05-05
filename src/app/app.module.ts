@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppEffect } from './effects/app.effect';
 import { DashboardEffect } from './effects/dashboard.effect';
+import { LoginEffect } from './effects/login.effect';
 import { SharedModule } from './shared.module';
 import { organizeseStore } from './store/organizese.store';
 
@@ -18,13 +19,13 @@ import { organizeseStore } from './store/organizese.store';
   entryComponents: [],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ animated: false }),
     AppRoutingModule,
     SharedModule,
     IonicStorageModule.forRoot(),
     StoreModule.forRoot(organizeseStore),
     StoreDevtoolsModule.instrument({ maxAge: 45 }),
-    EffectsModule.forRoot([AppEffect, DashboardEffect]),
+    EffectsModule.forRoot([AppEffect, DashboardEffect, LoginEffect]),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

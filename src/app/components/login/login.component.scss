@@ -26,11 +26,10 @@
   }
   .form-group {
     border: 1px solid var(--text-light);
-    border-radius: 32px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     padding: 4px 16px;
-    margin: 8px 0;
   }
   .container-checkbox {
     --border-style: none;
@@ -42,5 +41,12 @@
   .container-forget {
     display: flex;
     justify-content: space-between;
+  }
+  .hint-error {
+    font-size: 0.75em;
+    padding: 0 16px;
+  }
+  .form-field {
+    margin: 8px 0;
   }
 }
