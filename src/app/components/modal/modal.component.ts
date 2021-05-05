@@ -16,4 +16,8 @@ export class ModalComponent implements OnInit {
   public close(): void {
     this.modalController.dismiss({ teste: this.type });
   }
+
+  public onClose(event): void {
+    this.modalController.dismiss(event);
+  }
 }

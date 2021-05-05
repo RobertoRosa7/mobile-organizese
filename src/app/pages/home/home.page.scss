@@ -8,8 +8,7 @@
 }
 .toolbar,
 .content {
-  --padding-end: 16px;
-  --padding-start: 16px;
+  @include page-padding;
 }
 .home {
   height: 100%;
@@ -30,12 +29,12 @@
     flex-direction: column;
     justify-content: space-around;
   }
+  .container-buttons {
+    @include container-buttons;
+  }
   .btn {
     @include btn;
   }
-  // .outline {
-  //   outline: 1px solid rgba(0, 0, 0, 0.09);
-  // }
   .logo {
     @include logo;
   }
@@ -49,7 +48,8 @@
   .description {
     @include description;
   }
-  .dash {
+  .dash,
+  .login {
     --background: var(--teal);
     --color: var(--color-white);
   }

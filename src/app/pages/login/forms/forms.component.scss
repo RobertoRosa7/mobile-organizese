@@ -1,0 +1,44 @@
+@import "../../../theme/mixins.scss";
+
+.forms {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    .container-buttons {
+      @include container-buttons;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      .btn {
+        @include btn;
+      }
+      .btn.close {
+        --background: var(--ion-color-danger);
+        color: white;
+      }
+      .btn.income {
+        --background: var(--teal);
+        color: white;
+      }
+    }
+    .form-group {
+      border: 1px solid var(--text-light);
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      padding: 4px 16px;
+      margin: 8px 0;
+    }
+    .container-checkbox {
+      --border-style: none;
+      --padding-end: 0;
+      --padding-start: 0;
+      --ripple-color: transparent;
+    }
+
+    .container-forget {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<form [formGroup]="forms" (ngSubmit)="onSubmit($event)" class="forms">
+  <div class="container">
+    <div class="form-group">
+      <ion-input
+        formControlName="email"
+        inputmode="text"
+        placeholder="E-mail"
+        type="email"
+      ></ion-input>
+      <ion-icon slot="end" name="mail"></ion-icon>
+    </div>
+    <div class="form-group">
+      <ion-input
+        formControlName="password"
+        placeholder="Senha"
+        inputmode="text"
+        [type]="changeTexts ? 'password' : 'text'"
+      ></ion-input>
+      <ion-icon
+        [name]="changeTexts ? 'eye-off' : 'eye'"
+        slot="end"
+        (click)="changeTexts = !changeTexts"
+      ></ion-icon>
+    </div>
+
+    <ng-content></ng-content>
+
+    <ion-buttons class="container-buttons">
+      <ion-button class="btn close" (click)="close()" type="button"
+        >Fechar</ion-button
+      >
+      <ion-button class="btn income" type="button">Entrar</ion-button>
+    </ion-buttons>
+  </div>
+</form>

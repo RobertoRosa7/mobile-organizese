@@ -9,7 +9,7 @@
   "description": "Organize seus gastos e tenha o controle do seu dinheiro.",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 8080",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

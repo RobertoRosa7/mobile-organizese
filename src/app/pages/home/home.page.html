@@ -3,13 +3,11 @@
   <ion-toolbar class="toolbar">
     <ion-img class="logo" [src]="logo"></ion-img>
     <ion-buttons slot="end">
-      <ion-button
-        (click)="openDialog('registers')"
-        class="btn outline"
-        size="small"
+      <ion-button routerLink="/login/signup" class="btn outline" size="small"
         >Cadastro</ion-button
       >
-      <ion-button (click)="openDialog('login')" class="btn outline" size="small"
+
+      <ion-button routerLink="/login" class="btn login" size="small"
         >Login</ion-button
       >
     </ion-buttons>
@@ -25,7 +23,7 @@
           dinheiro.
         </p>
       </div>
-      <ion-buttons style="margin-left: auto; margin-right: auto">
+      <ion-buttons class="container-buttons">
         <ion-button
           class="btn dash"
           routerDirection="forward"

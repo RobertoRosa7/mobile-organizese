@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StorageService } from 'src/app/services/storage.service';
-import * as actionsApp from '../../actions/app.actions';
 
 @Component({
   selector: 'app-dashboard',

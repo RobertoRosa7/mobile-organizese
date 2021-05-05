@@ -5,3 +5,8 @@
     </ion-button>
   </ion-buttons>
 </ion-toolbar>
+
+<ion-content [ngSwitch]="type" class="content">
+  <app-login *ngSwitchCase="'login'" (sendClose)="onClose($event)"></app-login>
+  <ion-title *ngSwitchCase="'registers'">Cadastro</ion-title>
+</ion-content>
