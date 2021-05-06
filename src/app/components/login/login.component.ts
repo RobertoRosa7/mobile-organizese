@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
+import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { SIGNIN } from '../../actions/login.actions';
+import { filter } from 'rxjs/operators';
+import { actionsTypes, SIGNIN } from '../../actions/login.actions';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,7 +14,6 @@ export class LoginComponent implements OnInit {
   @Output() sendClose = new EventEmitter();
   public changeTexts = true;
   public errors$: Observable<any>;
-  public sucess$: Observable<any>;
 
   public login: FormGroup = this.formBuild.group({
     email: ['', [Validators.required, Validators.email]],
@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuild: FormBuilder,
     private store: Store,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private as: ActionsSubject
   ) {}
 
   ngOnInit() {
@@ -36,19 +37,15 @@ export class LoginComponent implements OnInit {
     }));
   }
 
-  public onSubmit(event: Event): void {
+  public async onSubmit(event: Event): Promise<any> {
     event.preventDefault();
     this.store.dispatch(SIGNIN({ payload: this.login.value }));
-    this.store
-      .select(({ errors }: any) => ({ success: errors.success }))
-      .subscribe(async (states) => {
-        if (states.success === 'login') {
-          console.log('bing');
-          const toast = await this.createToast('Login realizado com sucesso.');
-          await toast.present();
-          this.sendClose.emit(true);
-        }
-      });
+    const token = await this.onToken();
+    if (token) {
+      const toast = await this.createToast('Login realizado com sucesso.');
+      await toast.present();
+      this.sendClose.emit(true);
+    }
   }
 
   public close(): void {
@@ -64,6 +61,14 @@ export class LoginComponent implements OnInit {
       message,
       duration: 2000,
       position: 'bottom',
+    });
+  }
+
+  private onToken(): Promise<string> {
+    return new Promise((resolve) => {
+      this.as
+        ?.pipe(filter((a) => a.type === actionsTypes.SET_TOKEN))
+        .subscribe(({ payload }: any) => resolve(payload));
     });
   }
 }

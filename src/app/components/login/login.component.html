@@ -1,12 +1,6 @@
 <form [formGroup]="login" (ngSubmit)="onSubmit($event)" class="login">
   <h2 class="title">Login</h2>
   <div class="container">
-    <ion-text
-      class="hint-error"
-      color="danger"
-      *ngIf="errors$ | async as states"
-      >{{ states.errors?.message }}</ion-text
-    >
     <div class="form-field">
       <div class="form-group">
         <ion-input
@@ -79,6 +73,15 @@
         Máximo de 24 caracteres
       </ion-text>
     </div>
+
+    <span>
+      <ion-text
+        class="hint-error"
+        color="danger"
+        *ngIf="errors$ | async as states"
+        >{{ states.errors?.message }}</ion-text
+      >
+    </span>
 
     <ion-buttons class="container-forget">
       <ion-button

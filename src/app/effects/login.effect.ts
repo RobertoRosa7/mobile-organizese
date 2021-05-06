@@ -38,7 +38,6 @@ export class LoginEffect {
           const source = { ...payload, source: 'signin' };
           return SET_ERRORS({ payload: source });
         } else {
-          this.store.dispatch(SET_SUCCESS({ payload: 'login' }));
           return actionsLogin.SET_TOKEN({ payload });
         }
       }),

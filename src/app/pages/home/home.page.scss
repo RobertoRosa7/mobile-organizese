@@ -11,6 +11,8 @@
   @include page-padding;
 }
 .home {
+  @include container;
+
   height: 100%;
   position: relative;
   .background {
@@ -50,7 +52,7 @@
   }
   .dash,
   .login {
-    --background: var(--teal);
+    --background: var(--green-microsoft);
     --color: var(--color-white);
   }
 }

@@ -46,11 +46,7 @@ export class LoginService {
             }
           }
         }),
-        map((token: any) => {
-          this.loggedIn$.next(true);
-          this.user$.next(token);
-          return token;
-        })
+        map((token: any) => token)
       );
   }
 
@@ -62,12 +58,9 @@ export class LoginService {
     }
   }
 
-  // public isAuthenticated(): Observable<boolean> {
-  //   if (this.fetchToken()) {
-  //     this.loggedIn$.next(true);
-  //   }
-  //   return this.loggedIn$.asObservable();
-  // }
+  public isAuthenticated(): Observable<boolean> {
+    return this.loggedIn$.asObservable();
+  }
 
   // private getUser(): void {
   //   if (localStorage.getItem('user')) {
