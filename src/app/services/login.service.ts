@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { BehaviorSubject, forkJoin, from, Observable, of } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { User } from '../interfaces/general';
 import { Constants } from './constants';
 import { StorageService } from './storage.service';
@@ -26,7 +26,7 @@ export class LoginService {
 
   public signin(payload: any): Observable<any> {
     const authorization = {
-      ['Authorization']: `${btoa(payload.email)}:${btoa(payload.password)}`,
+      Authorization: `${btoa(payload.email)}:${btoa(payload.password)}`,
     };
     return this.http
       .get(this.constants.get('signin'), { headers: authorization })
@@ -62,48 +62,48 @@ export class LoginService {
     return this.loggedIn$.asObservable();
   }
 
-  // private getUser(): void {
-  //   if (localStorage.getItem('user')) {
-  //     this.user$.next(JSON.parse(localStorage.getItem('user') || '{}'));
-  //   } else if (sessionStorage.getItem('user')) {
-  //     this.user$.next(JSON.parse(sessionStorage.getItem('user') || '{}'));
-  //   } else {
-  //     this.user$.next(null);
-  //   }
-  // }
+  public fetchUser(): Observable<any> {
+    this.getUser();
+    return this.user$.asObservable();
+  }
 
-  // public fetchUser(): Observable<any> {
-  //   this.getUser();
-  //   return this.user$.asObservable();
-  // }
+  public logout(): Observable<any> {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
 
-  // public logout(): Observable<any> {
-  //   localStorage.removeItem('user');
-  //   localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
 
-  //   sessionStorage.removeItem('token');
-  //   sessionStorage.removeItem('user');
+    this.user$.next(null);
+    this.loggedIn$.next(false);
 
-  //   this.user$.next(null);
-  //   this.loggedIn$.next(false);
+    return this.loggedIn$.asObservable();
+  }
 
-  //   return this.loggedIn$.asObservable();
-  // }
+  public loginVerified(payload: any): Observable<any> {
+    return this.http.post<any>(this.constants.get('login_verified'), payload);
+  }
 
-  // public loginVerified(payload: any): Observable<any> {
-  //   return this.http.post<any>(this.constants.get('login_verified'), payload);
-  // }
+  public resetPassword(payload: any): Observable<any> {
+    const authorization = {
+      Authorization: `${btoa(payload.password)}:access:${payload.token}`,
+    };
+    return this.http.get<any>(this.constants.get('reset_password'), {
+      headers: authorization,
+    });
+  }
 
-  // public resetPassword(payload: any): Observable<any> {
-  //   const authorization = {
-  //     Authorization: `${btoa(payload.password)}:access:${payload.token}`,
-  //   };
-  //   return this.http.get<any>(this.constants.get('reset_password'), {
-  //     headers: authorization,
-  //   });
-  // }
+  public mailToReset(payload: any): Observable<any> {
+    return this.http.post<any>(this.constants.get('email_to_reset'), payload);
+  }
 
-  // public mailToReset(payload: any): Observable<any> {
-  //   return this.http.post<any>(this.constants.get('email_to_reset'), payload);
-  // }
+  private getUser(): void {
+    if (localStorage.getItem('user')) {
+      this.user$.next(JSON.parse(localStorage.getItem('user') || '{}'));
+    } else if (sessionStorage.getItem('user')) {
+      this.user$.next(JSON.parse(sessionStorage.getItem('user') || '{}'));
+    } else {
+      this.user$.next(null);
+    }
+  }
 }

@@ -24,6 +24,9 @@
     .container {
       flex-direction: column;
       justify-content: center;
+      .hint-error {
+        font-size: 0.8em;
+      }
       .container-buttons {
         @include container-buttons;
         margin-top: 8px;

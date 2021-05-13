@@ -1,0 +1,69 @@
+@import "../../../../theme/mixins.scss";
+
+.signup,
+.container,
+.container .form-group,
+.container .container-forget {
+  display: flex;
+}
+.signup,
+.signup .container-signup {
+  width: 100%;
+}
+.signup {
+  @include page-padding;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  .container-signup {
+    max-width: 384px;
+    margin-left: auto;
+    margin-right: auto;
+    .title {
+      @include display-2;
+      text-align: center;
+    }
+    .container {
+      flex-direction: column;
+      justify-content: center;
+      .hint-error {
+        font-size: 0.8em;
+      }
+      .container-buttons {
+        @include container-buttons;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        .btn {
+          @include btn;
+        }
+        .btn.close {
+          --background: var(--ion-color-danger);
+          color: white;
+        }
+        .btn.income {
+          --background: var(--teal);
+          color: white;
+        }
+      }
+      .form-group {
+        border: 1px solid var(--text-light);
+        border-radius: 8px;
+        align-items: center;
+        padding: 4px 16px;
+        margin: 8px 0;
+      }
+      .container-checkbox {
+        --border-style: none;
+        --padding-end: 0;
+        --padding-start: 0;
+        --ripple-color: transparent;
+      }
+      .container-forget {
+        justify-content: space-between;
+      }
+    }
+    .form {
+      width: 100%;
+    }
+  }
+}
