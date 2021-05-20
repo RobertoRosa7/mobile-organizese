@@ -10,6 +10,10 @@ export enum actionsTypes {
   RESET_ERRORS = '[RESET_ERRORS]',
 }
 
+export enum SourceErrors {
+  INIT_DASHBOARD = '[INIT_DASHBOARD]',
+}
+
 export const SET_ERRORS = createAction(
   actionsTypes.SET_ERRORS,
   props<{ payload: any }>()

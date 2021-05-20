@@ -1,3 +1,4 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -11,6 +12,7 @@ import { AppComponent } from './app.component';
 import { AppEffect } from './effects/app.effect';
 import { DashboardEffect } from './effects/dashboard.effect';
 import { LoginEffect } from './effects/login.effect';
+import { DashboardInterceptor } from './interceptors/dashboard.interceptor';
 import { SharedModule } from './shared.module';
 import { organizeseStore } from './store/organizese.store';
 
@@ -27,7 +29,10 @@ import { organizeseStore } from './store/organizese.store';
     StoreDevtoolsModule.instrument({ maxAge: 45 }),
     EffectsModule.forRoot([AppEffect, DashboardEffect, LoginEffect]),
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: DashboardInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

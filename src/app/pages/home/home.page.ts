@@ -21,7 +21,7 @@ export class HomePage {
   }
 
   private async modal(type: string, data?: any): Promise<HTMLIonModalElement> {
-    return await this.modalController.create({
+    return this.modalController.create({
       component: ModalComponent,
       swipeToClose: true,
       componentProps: {

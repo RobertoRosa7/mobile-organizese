@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Consolidado, Register } from '../interfaces/general';
+import { map } from 'rxjs/operators';
+import { Register } from '../interfaces/general';
 // import { Consolidado, Download, Register } from '../models/models';
 import { Constants } from './constants';
 // import { SAVER, Saver } from '../providers/save.provider';
@@ -85,8 +86,8 @@ export class DashboardService {
     return this.http.post<Register>(this.constants.get('newRegister'), payload);
   }
 
-  public fetchConsolidado(): Observable<Consolidado> {
-    return this.http.get<Consolidado>(this.constants.get('fetchConsolidado'));
+  public fetchConsolidado(): Observable<any> {
+    return this.http.get(this.constants.get('fetchConsolidado'));
   }
 
   public deleteRegister(payload: Register): Observable<Register> {

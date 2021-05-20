@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.errors$ = this.store.select(({ errors }: any) => ({
-      errors: errors.error.error,
+      errors: errors.error.source === 'signin' ? errors.error.error : undefined,
     }));
   }
 
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
   }
 
   private async createToast(message: string): Promise<HTMLIonToastElement> {
-    return await this.toastController.create({
+    return this.toastController.create({
       message,
       duration: 2000,
       position: 'bottom',

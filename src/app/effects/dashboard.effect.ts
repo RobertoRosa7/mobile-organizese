@@ -2,40 +2,40 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { from, of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import * as actions from '../actions/dashboard.actions';
+import { SET_ERRORS, SourceErrors } from '../actions/errors.actions';
 import { DashboardService } from '../services/dashboard.service';
 import { StorageService } from '../services/storage.service';
-// import { SET_ERRORS } from '../actions/errors.actions';
 // import { DashboardService } from '../services/dashboard.service';
 
 @Injectable()
 export class DashboardEffect {
-  private init$ = createEffect(() =>
+  public init$ = createEffect(() =>
     this.action.pipe(
       ofType(actions.actionsTypes.INIT_DASHBOARD),
-      mergeMap(() => this.storageService.getStore('consolidado_id')),
+      switchMap(() => this.storageService.getStore('consolidado_id')),
       mergeMap((store) => {
         if (store) {
-          console.log(store);
           return of(store);
         } else {
-          console.log(store);
-
           return this.dashboardService.fetchConsolidado().pipe(
-            map((payload) => {
-              this.storageService.setStore('consolidado_id', payload);
-              return payload;
-            }),
+            mergeMap((payload) =>
+              forkJoin([
+                this.storageService.setStore('consolidado_id', payload),
+                of(payload),
+              ])
+            ),
+            map(([_, payload]) => payload),
             catchError((e) => of(e))
           );
         }
       }),
       map((payload) => {
         if (payload instanceof HttpErrorResponse) {
-          const source = { ...payload, source: 'calc_consolidado' };
-          // return SET_ERRORS({ payload: source });
+          const source = { ...payload, source: SourceErrors.INIT_DASHBOARD };
+          return SET_ERRORS({ payload: source });
         } else {
           return actions.GET_TOTALS({ payload });
         }

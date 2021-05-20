@@ -1,1 +1,13 @@
-<h1>DASHBOARD</h1>
+<ion-content class="main">
+  <ng-container *ngIf="dashboard$ | async as states" class="cards-main">
+    <owl-carousel
+      [options]="{ items: 1 }"
+      [carouselClasses]="['owl-theme', 'row', 'sliding']"
+    >
+      <app-cards
+        *ngFor="let card of states.consolidado"
+        [card]="card"
+      ></app-cards>
+    </owl-carousel>
+  </ng-container>
+</ion-content>

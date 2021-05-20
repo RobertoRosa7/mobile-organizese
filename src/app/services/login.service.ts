@@ -59,7 +59,10 @@ export class LoginService {
   }
 
   public isAuthenticated(): Observable<boolean> {
-    return this.loggedIn$.asObservable();
+    return this.loggedIn$.asObservable().pipe(
+      mergeMap(() => this.fetchToken()),
+      map((res) => (res ? true : false))
+    );
   }
 
   public fetchUser(): Observable<any> {

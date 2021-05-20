@@ -9,6 +9,8 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { DashboardPage } from './dashboard.page';
 import { SharedModule } from 'src/app/shared.module';
 import { MainComponent } from './main/main.component';
+import { CardsComponent } from 'src/app/components/cards/cards.component';
+import { OwlModule } from 'ngx-owl-carousel';
 
 @NgModule({
   imports: [
@@ -17,7 +19,8 @@ import { MainComponent } from './main/main.component';
     IonicModule,
     DashboardPageRoutingModule,
     SharedModule,
+    OwlModule,
   ],
-  declarations: [DashboardPage, MainComponent],
+  declarations: [DashboardPage, MainComponent, CardsComponent],
 })
 export class DashboardPageModule {}

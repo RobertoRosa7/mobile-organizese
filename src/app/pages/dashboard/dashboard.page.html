@@ -3,7 +3,12 @@
   <ion-content>
     <ion-list>
       <ion-item>
-        <a routerDirection="back" routerLink="/home">Home</a>
+        <a disabled="true" routerDirection="back" routerLink="/home">HOME</a>
+      </ion-item>
+      <ion-item>
+        <a disabled="true" routerDirection="back" routerLink="/home"
+          >DASHBOARD</a
+        >
       </ion-item>
     </ion-list>
   </ion-content>
@@ -11,10 +16,24 @@
 <ion-router-outlet id="main"></ion-router-outlet>
 
 <ion-header>
-  <ion-toolbar>
-    <div class="custom-btn">
+  <ion-toolbar class="ion-toolbar">
+    <ion-buttons>
       <ion-menu-button></ion-menu-button>
-    </div>
+      <div class="container-buttons">
+        <ion-button (click)="sync($event)" shape="round" slot="end">
+          <ion-icon shape="round" name="sync-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="notify($event)" shape="round" slot="end">
+          <ion-icon name="notifications-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="add($event)" shape="round" slot="end">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="profile($event)" shape="round" slot="end">
+          <ion-icon name="person-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
