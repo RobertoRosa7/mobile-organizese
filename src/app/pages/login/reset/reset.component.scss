@@ -1,0 +1,42 @@
+@import "../../../../theme/mixins.scss";
+
+.content {
+  @include page-padding;
+  .form,
+  .form .form-group {
+    display: flex;
+  }
+  .form {
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    .display-2 {
+      @include display-2;
+      text-align: center;
+    }
+    .form-field {
+      margin-bottom: 16px;
+    }
+    .form-group {
+      border: 1px solid var(--text-light);
+      border-radius: 8px;
+      align-items: center;
+      padding: 4px 16px;
+      margin: 8px 0;
+    }
+    .container-buttons {
+      @include container-buttons;
+      .btn {
+        @include btn;
+      }
+      .btn.close {
+        --background: var(--ion-color-danger);
+        color: white;
+      }
+      .btn.income {
+        --background: var(--green-microsoft);
+        color: white;
+      }
+    }
+  }
+}

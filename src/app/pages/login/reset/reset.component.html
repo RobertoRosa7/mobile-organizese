@@ -1,8 +1,45 @@
-<ion-buttons>
-  <ion-button routerLink="/home">
-    <ion-icon name="arrow-back"></ion-icon>
-  </ion-button>
-</ion-buttons>
-<ion-content>
-  <h1>Reset password</h1>
+<ion-content class="content">
+  <form [formGroup]="emailForm" class="form" (ngSubmit)="onSubmit($event)">
+    <h1 class="display-2">E-mail para recuperação.</h1>
+    <div class="form-field">
+      <div class="form-group">
+        <ion-input
+          required
+          ngDefaultControl
+          formControlName="email"
+          inputmode="email"
+          placeholder="E-mail"
+          type="email"
+        ></ion-input>
+        <ion-icon slot="end" name="mail"></ion-icon>
+      </div>
+      <!-- <ion-text
+        *ngIf="
+          login.get('email')?.hasError('required') && login.get('email').dirty
+        "
+        class="hint-error"
+        color="danger"
+      >
+        Campo e-mail é obrigatório.
+      </ion-text>
+      <ion-text
+        *ngIf="login.get('email')?.hasError('email')"
+        class="hint-error"
+        color="danger"
+      >
+        Não é um e-mail válido.
+      </ion-text> -->
+    </div>
+    <ion-buttons class="container-buttons">
+      <ion-button routerLink="/" class="btn close">voltar</ion-button>
+      <ion-button
+        [disabled]="!emailForm.valid || isLoading"
+        type="submit"
+        class="btn income"
+      >
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading">Enviar</span>
+      </ion-button>
+    </ion-buttons>
+  </form>
 </ion-content>

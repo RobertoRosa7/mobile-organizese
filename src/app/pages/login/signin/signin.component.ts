@@ -83,9 +83,9 @@ export class SigninComponent implements OnInit {
 
   private onToken(): Promise<string> {
     return new Promise((resolve) => {
-      this.as
-        ?.pipe(filter((a) => a.type === actionsTypes.SET_TOKEN))
-        .subscribe(({ payload }: any) => resolve(payload));
+      this.onActionsTypes(actionsTypes.SET_TOKEN).subscribe(
+        ({ payload }: any) => resolve(payload)
+      );
     });
   }
 
@@ -95,5 +95,9 @@ export class SigninComponent implements OnInit {
       duration: 3000,
       position: 'bottom',
     });
+  }
+
+  private onActionsTypes(type: string): Observable<any> {
+    return this.as.pipe(filter((a) => a.type === type));
   }
 }

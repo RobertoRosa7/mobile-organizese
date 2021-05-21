@@ -58,9 +58,10 @@ export class LoginComponent implements OnInit {
       }
     });
 
-    this.login.valueChanges.subscribe(() =>
-      this.store.dispatch(RESET_ERRORS())
-    );
+    this.login.valueChanges.subscribe(() => {
+      this.errorText = '';
+      this.store.dispatch(RESET_ERRORS());
+    });
 
     const token = await this.onToken();
     if (token) {

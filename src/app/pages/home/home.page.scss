@@ -12,11 +12,11 @@
 }
 .home {
   @include container;
-
   height: 100%;
   position: relative;
   .background {
-    background: url("../../../assets/backgroun-home-5.svg");
+    background: url("../../../assets/backgroun-home-5.svg"),
+      rgba(33, 33, 33, 0.05);
     position: absolute;
     top: 0;
     background-repeat: no-repeat;
@@ -24,6 +24,9 @@
     height: 100%;
     width: 100%;
     z-index: -1;
+  }
+  .toolbar {
+    padding: 0;
   }
   .content .container {
     height: 100%;
@@ -43,6 +46,7 @@
   .display-1 {
     @include display-1;
     font-weight: 600;
+    font-size: 3.5em;
   }
   .display-2 {
     @include display-2;

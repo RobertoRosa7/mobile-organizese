@@ -3,8 +3,9 @@
   --color: var(--color-dark);
   --border-radius: 8px;
   min-width: 90px;
-  font-weight: 200;
+  font-weight: 400;
   font-size: 0.8em;
+  min-height: 38px;
 }
 @mixin logo {
   width: 100%;
@@ -16,17 +17,17 @@
 }
 @mixin display-1 {
   font-size: 2.5em;
-  font-weight: 200;
+  font-weight: 400;
   color: var(--color-dark);
 }
 @mixin display-2 {
   font-size: 1.8em;
-  font-weight: 200;
+  font-weight: 400;
   color: var(--color-dark);
 }
 @mixin description {
   font-size: 1em;
-  font-weight: 200;
+  font-weight: 400;
   color: var(--color-dark);
   display: inline-block;
   margin: 8px 0;

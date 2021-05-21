@@ -84,20 +84,20 @@ export class LoginService {
   }
 
   public loginVerified(payload: any): Observable<any> {
-    return this.http.post<any>(this.constants.get('login_verified'), payload);
+    return this.http.post<any>(this.constants.get('loginVerified'), payload);
   }
 
   public resetPassword(payload: any): Observable<any> {
     const authorization = {
       Authorization: `${btoa(payload.password)}:access:${payload.token}`,
     };
-    return this.http.get<any>(this.constants.get('reset_password'), {
+    return this.http.get<any>(this.constants.get('resetPassword'), {
       headers: authorization,
     });
   }
 
   public mailToReset(payload: any): Observable<any> {
-    return this.http.post<any>(this.constants.get('email_to_reset'), payload);
+    return this.http.post<any>(this.constants.get('emailToReset'), payload);
   }
 
   private getUser(): void {
