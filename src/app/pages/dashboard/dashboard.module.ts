@@ -11,16 +11,22 @@ import { SharedModule } from 'src/app/shared.module';
 import { MainComponent } from './main/main.component';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
 import { OwlModule } from 'ngx-owl-carousel';
+import { PopoverComponent } from 'src/app/components/popover/popover.component';
+import { ModalComponent } from 'src/app/components/modal/modal.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     DashboardPageRoutingModule,
     SharedModule,
     OwlModule,
   ],
-  declarations: [DashboardPage, MainComponent, CardsComponent],
+  declarations: [
+    DashboardPage,
+    MainComponent,
+    CardsComponent,
+    PopoverComponent,
+  ],
 })
 export class DashboardPageModule {}

@@ -10,14 +10,16 @@ export class CardsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.card);
-  }
+  ngOnInit() {}
 
   public formatterValue(value: number): string {
     return new Intl.NumberFormat('pt-BR', {
       currency: 'BRL',
       minimumFractionDigits: 2,
     }).format(parseFloat(value.toFixed(2)));
+  }
+
+  public formatterPercent(value: number): string {
+    return value.toFixed(2);
   }
 }

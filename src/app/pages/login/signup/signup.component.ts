@@ -111,6 +111,10 @@ export class SignupComponent implements OnInit {
     };
   }
 
+  public checkboxChange(event: any): void {
+    this.signup.get('keepConnect').patchValue(event.detail.checked);
+  }
+
   private onUser(): Promise<string> {
     return new Promise((resolve) =>
       this.onActionsTypes(actionsTypes.CREATED_USER).subscribe(

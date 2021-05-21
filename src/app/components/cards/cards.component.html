@@ -1,8 +1,15 @@
 <ion-card class="card">
   <ion-card-header>
-    <ion-card-title>{{ card.title }}</ion-card-title>
+    <ion-card-title>
+      <span>{{ card.title }}</span>
+      <small style="margin-left: 5px; font-size: 0.6em; font-weight: 400"
+        >{{ formatterPercent(card.percent) }}%</small
+      >
+    </ion-card-title>
   </ion-card-header>
   <ion-card-content>
-    <ion-label>{{ formatterValue(card.value) }}</ion-label>
+    <ion-label style="margin-left: 5px; font-size: 2em; font-weight: 400">{{
+      formatterValue(card.value)
+    }}</ion-label>
   </ion-card-content>
 </ion-card>

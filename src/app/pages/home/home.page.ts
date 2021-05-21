@@ -10,10 +10,7 @@ import { ModalComponent } from 'src/app/components/modal/modal.component';
 export class HomePage {
   public logo = 'assets/icon-default-white-512x512.svg';
 
-  constructor(
-    private modalController: ModalController,
-    private router: NavController
-  ) {}
+  constructor(private modalController: ModalController) {}
 
   public async openDialog(type: string): Promise<any> {
     const modal = await this.modal(type);

@@ -1,0 +1,22 @@
+@import "../../../theme/mixins.scss";
+
+.title {
+  @include display-2;
+  text-align: center;
+}
+.form-field,
+.form-group {
+  width: 100%;
+}
+.form-group {
+  border: 1px solid var(--text-light);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 4px 16px;
+}
+.form-field {
+  margin: 8px 0;
+  display: flex;
+  gap: 10px;
+}

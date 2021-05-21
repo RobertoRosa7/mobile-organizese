@@ -21,9 +21,9 @@ export class DashboardPage implements OnInit {
     // this.store?.dispatch(actionsApp.onLine());
   }
 
-  public sync(): void {}
+  public sync(ev): void {}
 
-  public notify(): void {}
+  public notify(ev): void {}
 
   public add(ev): void {
     this.presentPopover(ev, 'add-registers');

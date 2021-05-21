@@ -15,6 +15,7 @@ import { LoginEffect } from './effects/login.effect';
 import { DashboardInterceptor } from './interceptors/dashboard.interceptor';
 import { SharedModule } from './shared.module';
 import { organizeseStore } from './store/organizese.store';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +33,7 @@ import { organizeseStore } from './store/organizese.store';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: DashboardInterceptor, multi: true },
+    { provide: DatePicker },
   ],
   bootstrap: [AppComponent],
 })

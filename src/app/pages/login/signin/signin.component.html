@@ -77,13 +77,8 @@
           </ion-text>
         </div>
 
-        <span>
-          <ion-text
-            class="hint-error"
-            color="danger"
-            *ngIf="errors$ | async as states"
-            >{{ states.error?.message }}</ion-text
-          >
+        <span *ngIf="isError">
+          <ion-text class="hint-error" color="danger">{{ errorText }}</ion-text>
         </span>
 
         <ion-buttons class="container-forget">
@@ -115,9 +110,14 @@
           <ion-button class="btn close" routerLink="/home" type="button"
             >Voltar</ion-button
           >
-          <ion-button [disabled]="!login.valid" class="btn income" type="submit"
-            >Entrar</ion-button
+          <ion-button
+            [disabled]="!login.valid"
+            class="btn income"
+            type="submit"
           >
+            <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!isLoading">Entrar</span>
+          </ion-button>
         </ion-buttons>
       </div>
     </form>

@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { delay, filter, map } from 'rxjs/operators';
+import { RESET_ERRORS } from 'src/app/actions/errors.actions';
 import { actionsTypes, SIGNIN } from '../../actions/login.actions';
 @Component({
   selector: 'app-login',
@@ -13,7 +14,9 @@ import { actionsTypes, SIGNIN } from '../../actions/login.actions';
 export class LoginComponent implements OnInit {
   @Output() sendClose = new EventEmitter();
   public changeTexts = true;
-  public errors$: Observable<any>;
+  public isLoading = false;
+  public errorText: string;
+  public isError: boolean;
 
   public login: FormGroup = this.formBuild.group({
     email: ['', [Validators.required, Validators.email]],
@@ -31,19 +34,39 @@ export class LoginComponent implements OnInit {
     private as: ActionsSubject
   ) {}
 
-  ngOnInit() {
-    this.errors$ = this.store.select(({ errors }: any) => ({
-      errors: errors.error.source === 'signin' ? errors.error.error : undefined,
-    }));
-  }
+  ngOnInit() {}
 
   public async onSubmit(event: Event): Promise<any> {
     event.preventDefault();
+    this.isLoading = true;
     this.store.dispatch(SIGNIN({ payload: this.login.value }));
+    const error$ = this.store
+      .select(({ errors }: any) => ({
+        error:
+          errors.error.source === 'signin' ? errors.error.error : undefined,
+      }))
+      .pipe(
+        map((state) => state.error),
+        delay(2000)
+      );
+
+    error$.subscribe((err) => {
+      if (err) {
+        this.isError = true;
+        this.errorText = err.message ? err.message : 'Sistema indisponível';
+        this.isLoading = false;
+      }
+    });
+
+    this.login.valueChanges.subscribe(() =>
+      this.store.dispatch(RESET_ERRORS())
+    );
+
     const token = await this.onToken();
     if (token) {
       const toast = await this.createToast('Login realizado com sucesso.');
       await toast.present();
+      this.isLoading = false;
       this.sendClose.emit(true);
     }
   }
@@ -52,7 +75,7 @@ export class LoginComponent implements OnInit {
     this.sendClose.emit();
   }
 
-  public checkboxChange(event: CustomEvent): void {
+  public checkboxChange(event: any): void {
     this.login.get('keepConnect').patchValue(event.detail.checked);
   }
 
@@ -66,9 +89,13 @@ export class LoginComponent implements OnInit {
 
   private onToken(): Promise<string> {
     return new Promise((resolve) => {
-      this.as
-        ?.pipe(filter((a) => a.type === actionsTypes.SET_TOKEN))
-        .subscribe(({ payload }: any) => resolve(payload));
+      this.onActionsTypes(actionsTypes.SET_TOKEN).subscribe(
+        ({ payload }: any) => resolve(payload)
+      );
     });
+  }
+
+  private onActionsTypes(type: string): Observable<any> {
+    return this.as.pipe(filter((a) => a.type === type));
   }
 }

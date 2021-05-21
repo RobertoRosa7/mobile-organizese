@@ -37,10 +37,12 @@ export class Constants {
   private readonly host: string;
   constructor() {
     if (environment.production) {
+      console.log('prod server');
       this.host = 'https://api-organizese.herokuapp.com/';
       // this.host = 'http://127.0.0.1:5000/'
     } else {
-      this.host = 'http://127.0.0.1:5000/';
+      console.log('local server');
+      this.host = 'http://192.168.0.123:5000/';
       // this.host = 'https://api-organizese.herokuapp.com/'
     }
   }

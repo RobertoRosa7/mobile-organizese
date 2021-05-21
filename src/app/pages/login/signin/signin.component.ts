@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ToastController } from '@ionic/angular';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { delay, filter, map } from 'rxjs/operators';
 import { RESET_ERRORS } from 'src/app/actions/errors.actions';
 import { actionsTypes, SIGNIN } from '../../../actions/login.actions';
 @Component({
@@ -16,6 +16,8 @@ export class SigninComponent implements OnInit {
   public changeTexts = true;
   public isLoading = false;
   public errors$: Observable<any>;
+  public errorText: string;
+  public isError: boolean;
 
   public login: FormGroup = this.formBuild.group({
     email: ['', [Validators.required, Validators.email]],
@@ -42,26 +44,29 @@ export class SigninComponent implements OnInit {
   public async onSubmit(event: Event): Promise<any> {
     event.preventDefault();
     this.isLoading = true;
-
     this.store.dispatch(SIGNIN({ payload: this.login.value }));
-
-    this.errors$ = this.store
+    const error$ = this.store
       .select(({ errors }: any) => ({
         error:
           errors.error.source === 'signin' ? errors.error.error : undefined,
       }))
       .pipe(
-        map((states) => {
-          if (states.error?.message) {
-            this.isLoading = false;
-          }
-          return states;
-        })
+        map((state) => state.error),
+        delay(2000)
       );
 
-    this.login.valueChanges.subscribe(() =>
-      this.store.dispatch(RESET_ERRORS())
-    );
+    error$.subscribe((err) => {
+      if (err) {
+        this.isError = true;
+        this.errorText = err.message ? err.message : 'Sistema indisponível';
+        this.isLoading = false;
+      }
+    });
+
+    this.login.valueChanges.subscribe(() => {
+      this.errorText = '';
+      this.store.dispatch(RESET_ERRORS());
+    });
 
     const payload = await this.onToken();
 
@@ -70,6 +75,10 @@ export class SigninComponent implements OnInit {
       await toast.present();
       this.router.navigateForward('/dashboard');
     }
+  }
+
+  public checkboxChange(event: any): void {
+    this.login.get('keepConnect').patchValue(event.detail.checked);
   }
 
   private onToken(): Promise<string> {
@@ -81,7 +90,7 @@ export class SigninComponent implements OnInit {
   }
 
   private async createToast(message: string): Promise<HTMLIonToastElement> {
-    return await this.toastController.create({
+    return this.toastController.create({
       message,
       duration: 3000,
       position: 'bottom',
