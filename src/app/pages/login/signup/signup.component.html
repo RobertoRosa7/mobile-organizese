@@ -159,6 +159,7 @@
             >Voltar</ion-button
           >
           <ion-button
+            (keyup.enter)="onSubmit($event)"
             [disabled]="!signup.valid || isLoading"
             class="btn income"
             type="submit"

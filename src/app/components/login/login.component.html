@@ -117,6 +117,7 @@
         [disabled]="!login.valid || isLoading"
         class="btn income"
         type="submit"
+        (keyup.enter)="onSubmit($event)"
       >
         <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
         <span *ngIf="!isLoading">Entrar</span>

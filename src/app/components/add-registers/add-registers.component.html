@@ -2,26 +2,35 @@
   <div class="container">
     <div class="form-field">
       <div class="form-group">
-        <ion-label>Valor</ion-label>
-        <ion-input></ion-input>
+        <ion-input placeholder="Valor"></ion-input>
+        <ion-icon name="card-outline"></ion-icon>
       </div>
     </div>
 
     <div class="form-field">
       <div class="form-group">
-        <ion-label>Data</ion-label>
-        <ion-input></ion-input>
+        <ion-datetime
+          placeholder="Data"
+          [min]="settings.minYear"
+          [max]="settings.maxYear"
+          [monthShortNames]="settings.months"
+        ></ion-datetime>
+        <ion-icon name="calendar"></ion-icon>
       </div>
       <div class="form-group">
-        <ion-label>Categoria</ion-label>
-        <ion-input></ion-input>
+        <ion-select placeholder="Categoria" cancelText="Cancelar">
+          <ion-select-option value="brown">Brown</ion-select-option>
+          <ion-select-option value="blonde">Blonde</ion-select-option>
+          <ion-select-option value="black">Black</ion-select-option>
+          <ion-select-option value="red">Red</ion-select-option>
+        </ion-select>
+        <ion-icon name="apps-outline"></ion-icon>
       </div>
     </div>
 
     <div class="form-field">
       <div class="form-group">
-        <ion-label>Descrição</ion-label>
-        <ion-textarea></ion-textarea>
+        <ion-textarea placeholder="Descrição"></ion-textarea>
       </div>
     </div>
     <ion-buttons class="container-buttons">

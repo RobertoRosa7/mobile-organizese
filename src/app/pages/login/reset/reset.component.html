@@ -33,6 +33,7 @@
     <ion-buttons class="container-buttons">
       <ion-button routerLink="/" class="btn close">voltar</ion-button>
       <ion-button
+        (keyup.enter)="onSubmit($event)"
         [disabled]="!emailForm.valid || isLoading"
         type="submit"
         class="btn income"

@@ -10,16 +10,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 8080",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "runserve": "ionic serve",
-    "run:prod": "ionic capacitor run android --livereload --external --prod",
-    "run:dev": "ionic capacitor run android --livereload --external --disableHostCheck",
-    "run:android": "ionic capacitor run android",
-    "build:android": "ionic capacitor build android",
-    "build:apk": "ionic capacitor copy android && cd android && ./gradlew assembleDebug && ./gradlew installDebug && cd .."
+    "build:prod": "ionic cordova build --prod",
+    "run:dev": "ionic cordova run",
+    "gen:icons": "ionic cordova resources"
   },
   "private": true,
   "dependencies": {
@@ -32,12 +30,15 @@
     "@capacitor/android": "^2.4.7",
     "@capacitor/core": "2.4.7",
     "@ionic-native/date-picker": "^5.33.0",
+    "@ionic-native/deeplinks": "^5.33.0",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage": "^3.0.4",
     "@ionic/storage-angular": "^3.0.6",
+    "build": "0.1.4",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-sqlite-storage": "^6.0.0",
     "highcharts": "^9.0.1",
+    "ionic-plugin-deeplinks": "^1.0.22",
     "jquery": "^3.6.0",
     "localforage-cordovasqlitedriver": "^1.8.0",
     "moment": "^2.29.1",
@@ -59,6 +60,7 @@
     "@angular/language-service": "~11.2.0",
     "@capacitor/cli": "2.4.7",
     "@ionic/angular-toolkit": "^3.1.1",
+    "@ionic/cli-plugin-cordova": "^1.6.2",
     "@ngrx/effects": "^11.1.1",
     "@ngrx/store": "^11.1.1",
     "@ngrx/store-devtools": "^11.1.1",
@@ -67,6 +69,13 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
+    "cordova-android": "^9.1.0",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-ionic-keyboard": "^2.0.5",
+    "cordova-plugin-ionic-webview": "^4.0.0",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-statusbar": "2.4.2",
+    "cordova-plugin-whitelist": "^1.3.3",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -82,5 +91,26 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "typescript": "~4.0.2"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
+      "cordova-plugin-ionic-keyboard": {},
+      "ionic-plugin-deeplinks": {
+        "URL_SCHEME": "organizese",
+        "DEEPLINK_SCHEME": "https",
+        "DEEPLINK_HOST": "api-organizese.000webhostapp.com",
+        "ANDROID_PATH_PREFIX": "/"
+      }
+    },
+    "platforms": [
+      "android"
+    ]
   }
 }
