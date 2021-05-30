@@ -25,11 +25,10 @@ export class LoginService {
   }
 
   public signin(payload: any): Observable<any> {
-    const authorization = {
-      Authorization: `${btoa(payload.email)}:${btoa(payload.password)}`,
-    };
     return this.http
-      .get(this.constants.get('signin'), { headers: authorization })
+      .get(this.constants.get('signin'), {
+        headers: this.encriptPayload(payload),
+      })
       .pipe(
         mergeMap((token: any) => {
           if (token) {
@@ -98,6 +97,18 @@ export class LoginService {
 
   public mailToReset(payload: any): Observable<any> {
     return this.http.post<any>(this.constants.get('emailToReset'), payload);
+  }
+
+  public emailToVerified(payload: any): Observable<any> {
+    return this.http.get(this.constants.get('emailToVerified'), {
+      headers: this.encriptPayload(payload),
+    });
+  }
+
+  private encriptPayload(payload: any) {
+    return {
+      Authorization: `${btoa(payload.email)}:${btoa(payload.password)}`,
+    };
   }
 
   private getUser(): void {

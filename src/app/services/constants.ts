@@ -21,29 +21,32 @@ export class Constants {
     getStatusCode: 'dashboard/get_status_code',
     getListAutocomplete: 'dashboard/get_list_autocomplete',
     setDeMmode: 'dashboard/set_dev_mode',
+
     signup: 'login/signup',
     signin: 'login/signin',
     resetPassword: 'login/reset_password',
     loginVerified: 'login/login_verified',
     emailToReset: 'login/email_to_reset',
+    emailToVerified: 'login/email_to_verified',
+
     profileUpdate: 'profile/update',
     profileGet: 'profile/get_profile',
     profileDelete: 'profile/delete',
+
     fileImages: 'files/images?name=',
     fileDownloadList: 'files/download_list',
     fileDownload: 'files/download',
   };
 
   private readonly host: string;
+
   constructor() {
     if (environment.production) {
       console.log('prod server');
       this.host = 'https://api-organizese.herokuapp.com/';
-      // this.host = 'http://127.0.0.1:5000/'
     } else {
       console.log('local server');
       this.host = 'http://192.168.0.123:5000/';
-      // this.host = 'https://api-organizese.herokuapp.com/'
     }
   }
 
@@ -53,7 +56,6 @@ export class Constants {
     if (path === undefined) {
       throw new Error('Couldnt find ' + key + ' in paths');
     }
-
     return path;
   }
 }

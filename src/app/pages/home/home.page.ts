@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+/* eslint-disable @typescript-eslint/dot-notation */
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { IonRouterOutlet, ModalController, Platform } from '@ionic/angular';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 
 @Component({
@@ -7,14 +10,32 @@ import { ModalComponent } from 'src/app/components/modal/modal.component';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   public logo = 'assets/icon-default-white-512x512.svg';
 
-  constructor(private modalController: ModalController) {}
+  constructor(
+    private modalController: ModalController,
+    private platform: Platform,
+    private routerOutlet: IonRouterOutlet,
+    private location: Location
+  ) {
+    this.backButtonEvent();
+  }
+
+  ngOnInit() {}
 
   public async openDialog(type: string): Promise<any> {
     const modal = await this.modal(type);
     await modal.present();
+  }
+
+  private backButtonEvent() {
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      if (!this.routerOutlet.canGoBack()) {
+        (navigator as any).app.exitApp();
+      }
+      console.log('bingo');
+    });
   }
 
   private async modal(type: string, data?: any): Promise<HTMLIonModalElement> {

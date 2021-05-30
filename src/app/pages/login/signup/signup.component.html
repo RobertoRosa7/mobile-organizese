@@ -163,8 +163,10 @@
             [disabled]="!signup.valid || isLoading"
             class="btn income"
             type="submit"
-            >Entrar</ion-button
           >
+            <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!isLoading">Entrar</span>
+          </ion-button>
         </ion-buttons>
       </div>
     </form>

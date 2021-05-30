@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Deeplinks } from '@ionic-native/deeplinks/ngx';
+import { Platform } from '@ionic/angular';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private deepLink: Deeplinks) {}
+  constructor(private platform: Platform) {}
 }

@@ -9,15 +9,15 @@
   "description": "Organize seus gastos e tenha o controle do seu dinheiro.",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 8080",
+    "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "runserve": "ionic serve",
-    "build:prod": "ionic cordova build --prod",
-    "run:dev": "ionic cordova run",
-    "gen:icons": "ionic cordova resources"
+    "prod": "ionic cordova build --prod android",
+    "dev": "ionic cordova run android --livereload",
+    "run:device": "cordova run android"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +31,8 @@
     "@capacitor/core": "2.4.7",
     "@ionic-native/date-picker": "^5.33.0",
     "@ionic-native/deeplinks": "^5.33.0",
+    "@ionic-native/splash-screen": "^5.33.0",
+    "@ionic-native/status-bar": "^5.33.0",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage": "^3.0.4",
     "@ionic/storage-angular": "^3.0.6",
@@ -70,6 +72,9 @@
     "@typescript-eslint/eslint-plugin": "4.16.1",
     "@typescript-eslint/parser": "4.16.1",
     "cordova-android": "^9.1.0",
+    "cordova-plugin-app-exit": "github:huangang/cordova-plugin-app-exit",
+    "cordova-plugin-cleartext": "^1.0.0",
+    "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^4.0.0",
@@ -98,16 +103,16 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {
-        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
-      },
+      "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "ionic-plugin-deeplinks": {
         "URL_SCHEME": "organizese",
         "DEEPLINK_SCHEME": "https",
         "DEEPLINK_HOST": "api-organizese.000webhostapp.com",
         "ANDROID_PATH_PREFIX": "/"
-      }
+      },
+      "cordova-plugin-console": {},
+      "cordova-plugin-app-exit": {}
     },
     "platforms": [
       "android"

@@ -2,6 +2,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { EffectsModule } from '@ngrx/effects';
@@ -15,8 +16,6 @@ import { LoginEffect } from './effects/login.effect';
 import { DashboardInterceptor } from './interceptors/dashboard.interceptor';
 import { SharedModule } from './shared.module';
 import { organizeseStore } from './store/organizese.store';
-import { DatePicker } from '@ionic-native/date-picker/ngx';
-import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +31,6 @@ import { Deeplinks } from '@ionic-native/deeplinks/ngx';
     EffectsModule.forRoot([AppEffect, DashboardEffect, LoginEffect]),
   ],
   providers: [
-    Deeplinks,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: DashboardInterceptor, multi: true },
     { provide: DatePicker },

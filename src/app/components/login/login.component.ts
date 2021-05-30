@@ -5,6 +5,7 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { delay, filter, map } from 'rxjs/operators';
 import { RESET_ERRORS } from 'src/app/actions/errors.actions';
+import { LoginService } from 'src/app/services/login.service';
 import { actionsTypes, SIGNIN } from '../../actions/login.actions';
 @Component({
   selector: 'app-login',
@@ -15,8 +16,10 @@ export class LoginComponent implements OnInit {
   @Output() sendClose = new EventEmitter();
   public changeTexts = true;
   public isLoading = false;
+  public isLoadingVerify = false;
   public errorText: string;
   public isError: boolean;
+  public isVerifiedEmail = true;
 
   public login: FormGroup = this.formBuild.group({
     email: ['', [Validators.required, Validators.email]],
@@ -31,7 +34,8 @@ export class LoginComponent implements OnInit {
     private formBuild: FormBuilder,
     private store: Store,
     private toastController: ToastController,
-    private as: ActionsSubject
+    private as: ActionsSubject,
+    private loginService: LoginService
   ) {}
 
   ngOnInit() {}
@@ -52,6 +56,9 @@ export class LoginComponent implements OnInit {
 
     error$.subscribe((err) => {
       if (err) {
+        if (err.verified != null && !err.verified) {
+          this.isVerifiedEmail = err.verified;
+        }
         this.isError = true;
         this.errorText = err.message ? err.message : 'Sistema indisponível';
         this.isLoading = false;
@@ -78,6 +85,24 @@ export class LoginComponent implements OnInit {
 
   public checkboxChange(event: any): void {
     this.login.get('keepConnect').patchValue(event.detail.checked);
+  }
+
+  public verifiedEmail(): void {
+    this.isError = false;
+    this.isLoadingVerify = true;
+    this.loginService.emailToVerified(this.login.value).subscribe({
+      next: async (res) => {
+        this.isLoadingVerify = false;
+        this.isVerifiedEmail = true;
+        const toast = await this.createToast(res.message);
+        await toast.present();
+      },
+      error: (err) => {
+        this.isError = true;
+        this.isLoadingVerify = false;
+        this.errorText = err.message ? err.message : 'Sistema indisponível';
+      },
+    });
   }
 
   private async createToast(message: string): Promise<HTMLIonToastElement> {

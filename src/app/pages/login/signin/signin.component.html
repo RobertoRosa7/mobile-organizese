@@ -81,7 +81,7 @@
           <ion-text class="hint-error" color="danger">{{ errorText }}</ion-text>
         </span>
 
-        <ion-buttons class="container-forget">
+        <ion-buttons *ngIf="isVerifiedEmail" class="container-forget">
           <ion-button size="small" routerLink="/login/reset" class="no-account">
             <small>Esqueci a senha</small>
           </ion-button>
@@ -94,6 +94,19 @@
             <small>Não tenho conta</small>
           </ion-button>
         </ion-buttons>
+
+        <p *ngIf="!isVerifiedEmail" style="cursor: pointer">
+          <ion-button
+            (click)="verifiedEmail()"
+            color="medium"
+            fill="clear"
+            size="small"
+            expand="full"
+          >
+            <ion-spinner *ngIf="isLoadingVerify" name="crescent"></ion-spinner>
+            <span *ngIf="!isLoadingVerify">solicitar nova verificação?</span>
+          </ion-button>
+        </p>
 
         <ion-item class="container-checkbox">
           <ion-checkbox

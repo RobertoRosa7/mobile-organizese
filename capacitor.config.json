@@ -1,5 +1,5 @@
 {
-  "appId": "organizese",
+  "appId": "com.organizese.app",
   "appName": "Organizese",
   "bundledWebRuntime": false,
   "npmClient": "npm",
