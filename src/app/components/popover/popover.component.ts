@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, PopoverController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -9,13 +10,20 @@ import { ModalComponent } from '../modal/modal.component';
 })
 export class PopoverComponent implements OnInit {
   @Input() public type: string;
+  @Input() public data: any;
+
+  public profile$: Observable<any>;
 
   constructor(
     private modalController: ModalController,
     protected popoverController?: PopoverController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.type === 'profile') {
+      this.profile$ = this.data.profile;
+    }
+  }
 
   public async add(type: string): Promise<any> {
     this.popoverController.dismiss();

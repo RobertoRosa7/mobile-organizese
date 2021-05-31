@@ -10,6 +10,13 @@
     </ion-button>
   </div>
   <div *ngSwitchCase="'profile'" class="profile">
-    <h1>Perfil</h1>
+    <ng-container *ngIf="profile$ | async as profile">
+      <div class="profile-icon">
+        <ion-icon slot="only-icon" name="person"></ion-icon>
+      </div>
+      <p>{{ profile.name }}</p>
+      <p>{{ profile.email }}</p>
+      <p>{{ profile.tel }}</p>
+    </ng-container>
   </div>
 </div>
