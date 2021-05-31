@@ -1,21 +1,42 @@
-<ion-menu side="start" type="overlay" contentId="main">
-  <ion-menu-button></ion-menu-button>
-  <ion-content>
-    <ion-list>
-      <ion-item>
-        <a disabled="true" routerDirection="back" routerLink="/home">HOME</a>
-      </ion-item>
-      <ion-item>
-        <a disabled="true" routerDirection="back" routerLink="/home"
-          >DASHBOARD</a
+<ion-menu side="start" type="overlay" contentId="main" class="menu">
+  <div class="menu-item-close">
+    <ion-menu-button></ion-menu-button>
+  </div>
+  <ion-content class="menu-content">
+    <ion-list class="menu-list">
+      <ion-item class="menu-item">
+        <ion-icon color="light" name="home"></ion-icon>
+        <ion-button
+          expand="block"
+          routerDirection="back"
+          routerLink="/home"
+          fill="clear"
+          color="light"
+          size="medium"
         >
+          home
+        </ion-button>
+      </ion-item>
+
+      <ion-item class="menu-item">
+        <ion-icon color="light" name="grid-outline"></ion-icon>
+        <ion-button
+          expand="block"
+          fill="clear"
+          color="light"
+          size="medium"
+          routerDirection="back"
+          routerLink="/dashboard"
+        >
+          DASHBOARD
+        </ion-button>
       </ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
 <ion-router-outlet id="main"></ion-router-outlet>
 
-<ion-header>
+<ion-header class="header">
   <ion-toolbar class="ion-toolbar">
     <ion-buttons>
       <ion-menu-button></ion-menu-button>

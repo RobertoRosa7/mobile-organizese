@@ -1,15 +1,35 @@
 <ion-card class="card">
-  <ion-card-header>
-    <ion-card-title>
-      <span>{{ card.title }}</span>
-      <small style="margin-left: 5px; font-size: 0.6em; font-weight: 400"
-        >{{ formatterPercent(card.percent) }}%</small
+  <ion-card-header class="card-header">
+    <ion-card-title class="card-title">
+      <div class="label">
+        <span>{{ card.title }}</span>
+        <small *ngIf="card.show; else hidePercent" class="percent"
+          >{{ formatterPercent(card.percent) }}%</small
+        >
+        <ng-template #hidePercent>
+          <small class="percent">--</small>
+        </ng-template>
+      </div>
+      <ion-button
+        (click)="hideAndShowValues($event)"
+        class="btn-eye"
+        color="light"
+        fill="clear"
+        size="small"
       >
+        <ion-icon [name]="card.icon"></ion-icon>
+      </ion-button>
     </ion-card-title>
   </ion-card-header>
-  <ion-card-content>
-    <ion-label style="margin-left: 5px; font-size: 2em; font-weight: 400">{{
-      formatterValue(card.value)
-    }}</ion-label>
+  <ion-card-content class="card-content">
+    <ion-label *ngIf="card.show; else hideValues" style="font-size: 2em">
+      <span class="value">R$ {{ formatterValue(card.value) }}</span>
+    </ion-label>
+
+    <ng-template #hideValues>
+      <ion-label style="font-size: 2em">
+        <span class="value">-------</span>
+      </ion-label>
+    </ng-template>
   </ion-card-content>
 </ion-card>

@@ -1,3 +1,25 @@
 .card {
   --width: 200px;
+  --background: transparent;
+  box-shadow: none;
+  border: none;
+  .value {
+    font-weight: bold;
+    color: var(--white-one);
+  }
+  .percent {
+    margin-left: 5px;
+    font-size: 0.6em;
+    font-weight: 400;
+    color: var(--white-one);
+  }
+  .card-content,
+  .card-header {
+    padding: 0;
+  }
+  .card-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }

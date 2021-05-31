@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import { Store } from '@ngrx/store';
+import * as actionsApp from '../../actions/app.actions';
 @Component({
   selector: 'app-cards',
   templateUrl: './cards.component.html',
@@ -7,8 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CardsComponent implements OnInit {
   @Input() public card: any;
+  public showValues = false;
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   ngOnInit() {}
 
@@ -21,5 +23,13 @@ export class CardsComponent implements OnInit {
 
   public formatterPercent(value: number): string {
     return value.toFixed(2);
+  }
+
+  public hideAndShowValues(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showValues = !this.showValues;
+    this.store.dispatch(
+      actionsApp.SET_HIDE_VALUES({ payload: this.showValues })
+    );
   }
 }

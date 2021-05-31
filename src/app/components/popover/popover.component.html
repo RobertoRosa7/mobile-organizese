@@ -1,17 +1,12 @@
 <div [ngSwitch]="type">
   <div *ngSwitchCase="'add-registers'" class="add-registers">
-    <ion-button (click)="add('income')" expand="full" fill="clear">
-      <ion-icon slot="start" name="add"></ion-icon>
-      Receita
+    <ion-button color="dark" (click)="add('income')" fill="clear">
+      <ion-icon color="success" slot="start" name="add"></ion-icon>
+      <span>Receita</span>
     </ion-button>
-    <ion-button
-      (click)="add('outcome')"
-      expand="full"
-      fill="clear"
-      color="danger"
-    >
-      <ion-icon name="add"></ion-icon>
-      Despesas
+    <ion-button color="dark" (click)="add('outcome')" fill="clear">
+      <ion-icon color="danger" name="remove-outline"></ion-icon>
+      <span>Despesas</span>
     </ion-button>
   </div>
   <div *ngSwitchCase="'profile'" class="profile">

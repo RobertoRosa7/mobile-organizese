@@ -3,7 +3,7 @@ import * as actions from '../actions/app.actions';
 
 const INITIAL_STATES = {
   online: {},
-  hidevalues: true,
+  hidevalues: false,
 };
 
 const appReducer = createReducer(
@@ -12,7 +12,7 @@ const appReducer = createReducer(
     ...states,
     online: payload,
   })),
-  on(actions.hidevalues, (states, { payload }) => ({
+  on(actions.PUT_HIDE_VALUES, (states, { payload }) => ({
     ...states,
     hidevalues: payload,
   })),

@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { DashboardPage } from '../dashboard.page';
-import * as actionsDashboard from '../../../actions/dashboard.actions';
 import { Observable } from 'rxjs';
 import { SourceErrors } from 'src/app/actions/errors.actions';
-import { map } from 'rxjs/operators';
-
+import * as actionsApp from '../../../actions/app.actions';
+import * as actionsDashboard from '../../../actions/dashboard.actions';
+import { DashboardPage } from '../dashboard.page';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -19,21 +18,24 @@ export class MainComponent extends DashboardPage implements OnInit {
   public cards: any[] = [
     {
       title: 'Consolidado',
-      icon: 'account_balance',
+      icon: '',
+      show: true,
       value: 0,
       type: 'consolidado',
       percent: 0,
     },
     {
-      title: 'Credito',
-      icon: 'account_balance',
+      title: 'Crédito',
+      icon: '',
+      show: true,
       value: 0,
       type: 'incoming',
       percent: 0,
     },
     {
-      title: 'Debito',
-      icon: 'account_balance',
+      title: 'Débito',
+      icon: '',
+      show: true,
       value: 0,
       type: 'outcoming',
       percent: 0,
@@ -45,8 +47,10 @@ export class MainComponent extends DashboardPage implements OnInit {
 
   public async ngOnInit() {
     await this.initializingMain();
-    this.dashboard$ = this.store.select(({ dashboard, errors }: any) => ({
+    this.dashboard$ = this.store.select(({ dashboard, errors, app }: any) => ({
       consolidado: this.cards.map((value: any) => {
+        value.show = app.hidevalues;
+        value.icon = app.hidevalues ? 'eye' : 'eye-off';
         switch (value.type) {
           case 'incoming':
             value.value = dashboard.consolidado.total_credit || 0;
@@ -77,6 +81,7 @@ export class MainComponent extends DashboardPage implements OnInit {
   private initializingMain(): Promise<boolean> {
     return new Promise(async (resolve) => {
       await this.initMain();
+      await this.initHideValues();
       setTimeout(() => resolve(true), 500);
     });
   }
@@ -85,5 +90,9 @@ export class MainComponent extends DashboardPage implements OnInit {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.INIT_DASHBOARD())
     );
+  }
+
+  private initHideValues(): Promise<any> {
+    return Promise.resolve(this.store.dispatch(actionsApp.GET_HIDE_VALUES()));
   }
 }
