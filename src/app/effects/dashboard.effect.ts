@@ -2,19 +2,22 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-import * as actions from '../actions/dashboard.actions';
+import {
+  actionsTypes,
+  GET_TOTALS,
+  SET_DASHBOARD,
+} from '../actions/dashboard.actions';
 import { SET_ERRORS, SourceErrors } from '../actions/errors.actions';
 import { DashboardService } from '../services/dashboard.service';
 import { StorageService } from '../services/storage.service';
-// import { DashboardService } from '../services/dashboard.service';
 
 @Injectable()
 export class DashboardEffect {
   public init$ = createEffect(() =>
     this.action.pipe(
-      ofType(actions.actionsTypes.INIT_DASHBOARD),
+      ofType(actionsTypes.INIT_DASHBOARD),
       switchMap(() => this.storageService.getStore('consolidado_id')),
       mergeMap((store) => {
         if (store) {
@@ -34,10 +37,53 @@ export class DashboardEffect {
       }),
       map((payload) => {
         if (payload instanceof HttpErrorResponse) {
-          const source = { ...payload, source: SourceErrors.INIT_DASHBOARD };
-          return SET_ERRORS({ payload: source });
+          return SET_ERRORS({
+            payload: { ...payload, source: SourceErrors.INIT_DASHBOARD },
+          });
         } else {
-          return actions.GET_TOTALS({ payload });
+          return GET_TOTALS({ payload });
+        }
+      }),
+      catchError((err) => of(err))
+    )
+  );
+
+  public fetchDashboard$ = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.FETCH_DASHBOARD),
+      switchMap(() =>
+        forkJoin([
+          this.storageService.getStore('registersToDashboard'),
+          from(this.getDatesFromStore()),
+        ])
+      ),
+      mergeMap(([store, { dates }]) => {
+        console.log('bingo');
+        if (store) {
+          return of(store);
+        } else {
+          return this.dashboardService.fetchDashboard(dates).pipe(
+            mergeMap((payload) =>
+              forkJoin([
+                this.storageService.setStore('registersToDashboard', payload),
+                of(payload),
+              ])
+            ),
+            map(([_, payload]) => payload),
+            catchError((e) => of(e))
+          );
+        }
+      }),
+      map((payload) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: {
+              ...payload,
+              source: actionsTypes.ERROR_FETCH_DASHBOARD,
+            },
+          });
+        } else {
+          return SET_DASHBOARD({ payload });
         }
       }),
       catchError((err) => of(err))
@@ -138,87 +184,6 @@ export class DashboardEffect {
   //   catchError((err) => of(err))
   // );
 
-  // deprecated
-  // @Effect()
-  // public fetchEvolucao$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.FETCH_EVOLUCAO),
-  //   switchMap(() => from(this.getDatesFromStore())),
-  //   mergeMap(({ dates }) =>
-  //     this.dashboardService.fetchEvocucao(dates).pipe(catchError((e) => of(e)))
-  //   ),
-  //   map((payload: any) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'fetch_evolucao' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_EVOLUCAO({ payload });
-  //     }
-  //   }),
-  //   catchError((e) => of(e))
-  // );
-
-  // deprecated
-  // @Effect()
-  // public fetchEvolucaoDespesas$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.FETCH_EVOLUCAO_DESPESAS),
-  //   switchMap(() => from(this.getDatesFromStore())),
-  //   mergeMap(({ dates }) =>
-  //     this.dashboardService
-  //       .fetchEvocucaoDespesas(dates)
-  //       .pipe(catchError((e) => of(e)))
-  //   ),
-  //   map((payload: any) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'fetch_evolucao_despesas' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_EVOLUCAO_DESPESAS({ payload });
-  //     }
-  //   }),
-  //   catchError((e) => of(e))
-  // );
-
-  // deprecated
-  // @Effect()
-  // public fetchEvolucaoDetail$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.FETCH_EVOLUCAO_DETAIL),
-  //   mergeMap(({ payload }) =>
-  //     this.dashboardService
-  //       .fetchEvocucaoDetail(payload)
-  //       .pipe(catchError((e) => of(e)))
-  //   ),
-  //   map((payload: any) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'fetch_evolucao_detail' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_EVOLUCAO_DETAIL({ payload });
-  //     }
-  //   }),
-  //   catchError((e) => of(e))
-  // );
-
-  // deprecated
-  // @Effect()
-  // public graphCategory$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.FETCH_GRAPH_CATEGORY),
-  //   switchMap(() => from(this.getDatesFromStore())),
-  //   mergeMap(({ dates }) =>
-  //     this.dashboardService
-  //       .fetchGraphCategory(dates)
-  //       .pipe(catchError((e) => of(e)))
-  //   ),
-  //   map((payload) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'graph_category' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_GRAPH_CATEGORY({ payload });
-  //     }
-  //   }),
-  //   catchError((err) => of(err))
-  // );
-
   // @Effect()
   // public graphOutcomeIncome$: Observable<Actions> = this.action.pipe(
   //   ofType(actions.actionsTypes.FETCH_GRAPH_OUTCOME_INCOME),
@@ -274,39 +239,6 @@ export class DashboardEffect {
   //       return SET_ERRORS({ payload: source });
   //     } else {
   //       return actions.SET_GRAPH_OUTCOME_INCOME({ payload });
-  //     }
-  //   }),
-  //   catchError((err) => of(err))
-  // );
-
-  // @Effect()
-  // public fetchDashboard$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.FETCH_DASHBOARD),
-  //   switchMap(() =>
-  //     forkJoin([
-  //       this.indexedb.getById('registers_to_dashboard_id'),
-  //       from(this.getDatesFromStore()),
-  //     ])
-  //   ),
-  //   mergeMap(([payload, { dates }]) => {
-  //     if (payload) {
-  //       return of(payload.payload);
-  //     } else {
-  //       return this.dashboardService.fetchDashboard(dates).pipe(
-  //         map((payload) => {
-  //           this.indexedb.create({ id: 'registers_to_dashboard_id', payload });
-  //           return payload;
-  //         }),
-  //         catchError((e) => of(e))
-  //       );
-  //     }
-  //   }),
-  //   map((payload) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'set_dashboard' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_DASHBOARD({ payload });
   //     }
   //   }),
   //   catchError((err) => of(err))
@@ -406,11 +338,13 @@ export class DashboardEffect {
 
   private getDatesFromStore(): Promise<any> {
     return new Promise((resolve) =>
-      this.store
-        .select(({ dashboard }: any) => ({
-          dates: dashboard.graph_dates,
-        }))
-        .subscribe((dates) => resolve(dates))
+      this.getDates().subscribe((dates) => resolve(dates))
     );
+  }
+
+  private getDates(): Observable<any> {
+    return this.store.select(({ dashboard }: any) => ({
+      dates: dashboard.graph_dates,
+    }));
   }
 }
