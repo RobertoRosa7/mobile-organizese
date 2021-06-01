@@ -9,3 +9,19 @@
 .profile-icon ion-icon {
   font-size: 3em;
 }
+
+.notify {
+  .content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-left: 16px;
+    span {
+      font-weight: bold;
+    }
+    time {
+      font-size: 0.8em;
+    }
+  }
+}

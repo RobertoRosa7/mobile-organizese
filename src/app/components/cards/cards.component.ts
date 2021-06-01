@@ -32,4 +32,17 @@ export class CardsComponent implements OnInit {
       actionsApp.SET_HIDE_VALUES({ payload: this.showValues })
     );
   }
+
+  public returnClassValue(type: string): string {
+    switch (type) {
+      case 'consolidado':
+        return 'var(--white-one)';
+      case 'incoming':
+        return 'var(--ion-color-success-tint)';
+      case 'outcoming':
+        return 'var(--ion-color-danger-tint)';
+      default:
+        return 'var(--white-one)';
+    }
+  }
 }

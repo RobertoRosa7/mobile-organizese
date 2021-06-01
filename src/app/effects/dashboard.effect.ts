@@ -58,7 +58,6 @@ export class DashboardEffect {
         ])
       ),
       mergeMap(([store, { dates }]) => {
-        console.log('bingo');
         if (store) {
           return of(store);
         } else {

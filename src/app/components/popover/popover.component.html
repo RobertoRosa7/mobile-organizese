@@ -1,5 +1,5 @@
 <div [ngSwitch]="type">
-  <div *ngSwitchCase="'add-registers'" class="add-registers">
+  <div *ngSwitchCase="'[ADD_REGISTER]'" class="add-registers">
     <ion-button color="dark" (click)="add('income')" fill="clear">
       <ion-icon color="success" slot="start" name="add"></ion-icon>
       <span>Receita</span>
@@ -9,7 +9,36 @@
       <span>Despesas</span>
     </ion-button>
   </div>
-  <div *ngSwitchCase="'profile'" class="profile">
+
+  <div *ngSwitchCase="'[NOTIFY]'" class="notify">
+    <ng-container *ngIf="notify$ | async as notifies">
+      <ng-container *ngIf="notifies.length > 0; else noNotify">
+        <ion-list *ngFor="let notify of notifies">
+          <ion-item>
+            <ion-icon
+              *ngIf="notify.type === 'incoming'"
+              color="success"
+              name="trending-up-outline"
+            ></ion-icon>
+            <ion-icon
+              *ngIf="notify.type === 'outcoming'"
+              color="danger"
+              name="trending-down-outline"
+            ></ion-icon>
+            <div class="content">
+              <span>R$ {{ formatterValue(notify.value) }}</span>
+              <time>{{ notify.created_at * 1000 | date: "medium" }}</time>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ng-container>
+      <ng-template #noNotify>
+        <h1 style="text-align: center">Vazio</h1>
+      </ng-template>
+    </ng-container>
+  </div>
+
+  <div *ngSwitchCase="'[PROFILE]'" class="profile">
     <ng-container *ngIf="profile$ | async as profile">
       <div class="profile-icon">
         <ion-icon slot="only-icon" name="person"></ion-icon>

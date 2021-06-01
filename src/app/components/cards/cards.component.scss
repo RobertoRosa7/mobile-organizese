@@ -22,4 +22,23 @@
     justify-content: space-between;
     align-items: center;
   }
+  .percent.hide {
+    width: 48px;
+  }
+  .value.hide {
+    width: 50%;
+  }
+  .percent.hide,
+  .value.hide {
+    height: 16px;
+    background: rgba(255, 255, 255, 0.25);
+    display: inline-block;
+    filter: blur(2px);
+  }
+  .incoming {
+    color: green;
+  }
+  .outcoming {
+    color: red;
+  }
 }

@@ -24,6 +24,7 @@ const BASE = {
   evolucao_despesas: {},
   auto_complete: [],
   graph_category: [],
+  notification_list: [],
   outcome_income: {},
   lastdate_outcome: {},
   graph_dates: {
@@ -75,6 +76,10 @@ const dashboardReducers = createReducer(
   on(actions.SET_GRAPH_OUTCOME_INCOME, (states, { payload }) => ({
     ...states,
     outcome_income: utils.formatterOutcomeIncome(payload),
+  })),
+  on(actions.SET_NOTIFICATION_LIST, (states, { payload }) => ({
+    ...states,
+    notification_list: payload,
   })),
   on(actions.SET_DASHBOARD, (states, { payload }) => {
     const totals: any = utils.total(payload.data.results);

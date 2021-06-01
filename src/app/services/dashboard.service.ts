@@ -195,6 +195,14 @@ export class DashboardService {
     );
   }
 
+  public fetchAllLastRegisters(payload: any): Observable<any> {
+    return this.http.get(
+      `${this.constants.get('fetchAllLastRegisters')}${this.convertJsonToUrl(
+        payload
+      )}`
+    );
+  }
+
   private convertDates(dates: any) {
     return {
       dtStart: new Date(dates.dt_start).getTime() / 1000,

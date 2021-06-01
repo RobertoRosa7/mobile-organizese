@@ -2,12 +2,12 @@
   <ion-card-header class="card-header">
     <ion-card-title class="card-title">
       <div class="label">
-        <span>{{ card.title }}</span>
+        <span style="color: var(--white-one)">{{ card.title }}</span>
         <small *ngIf="card.show; else hidePercent" class="percent"
           >{{ formatterPercent(card.percent) }}%</small
         >
         <ng-template #hidePercent>
-          <small class="percent">--</small>
+          <small class="percent hide"></small>
         </ng-template>
       </div>
       <ion-button
@@ -23,12 +23,15 @@
   </ion-card-header>
   <ion-card-content class="card-content">
     <ion-label *ngIf="card.show; else hideValues" style="font-size: 2em">
-      <span class="value">R$ {{ formatterValue(card.value) }}</span>
+      <span class="value" [style.color]="returnClassValue(card.type)">
+        <small *ngIf="card.type === 'outcoming'">-</small>
+        R$ {{ formatterValue(card.value) }}
+      </span>
     </ion-label>
 
     <ng-template #hideValues>
       <ion-label style="font-size: 2em">
-        <span class="value">-------</span>
+        <span class="value hide"></span>
       </ion-label>
     </ng-template>
   </ion-card-content>

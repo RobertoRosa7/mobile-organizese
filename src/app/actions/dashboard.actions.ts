@@ -18,6 +18,7 @@ export enum actionsTypes {
   FETCH_DATES = '[FETCH_DATES]',
   FETCH_LASTDATE_OUTCOME = 'FETCH_LASTDATE_OUTCOME',
 
+  SET_NOTIFICATION_LIST = '[SET_NOTIFICATION_LIST]',
   SET_AUTOCOMPLETE = '[SET_AUTOCOMPLETE]',
   SET_EVOLUCAO = '[SET_EVOLUCAO]',
   SET_EVOLUCAO_DESPESAS = '[SET_EVOLUCAO_DESPESAS]',
@@ -110,7 +111,10 @@ export const SET_LASTDATE_OUTCOME = createAction(
   actionsTypes.SET_LASTDATE_OUTCOME,
   props<{ payload: any }>()
 );
-
+export const SET_NOTIFICATION_LIST = createAction(
+  actionsTypes.SET_NOTIFICATION_LIST,
+  props<{ payload: any }>()
+);
 export const DARK_MODE = createAction(
   actionsTypes.DARK_MODE,
   props<{ payload: any }>()

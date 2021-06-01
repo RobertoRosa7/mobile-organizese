@@ -14,6 +14,7 @@ export class Constants {
     fetchGraphCategory: 'dashboard/fetch_graph_category',
     fetchGraphOutcomeIncome: 'dashboard/fetch_graph_outcome_income',
     fetchLastdate: 'dashboard/fetch_lastdate_outcome',
+    fetchAllLastRegisters: 'dashboard/fetch_all_last_registers',
     newRegister: 'dashboard/new_register',
     deleteRegister: 'dashboard/delete_register',
     updateRegister: 'dashboard/update_register',
