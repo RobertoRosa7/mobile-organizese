@@ -24,6 +24,7 @@ export class PopoverComponent implements OnInit {
   ngOnInit() {
     switch (this.type) {
       case Strings.PROFILE:
+      case Strings.ADD_REGISTER:
         this.profile$ = this.data.profile;
         break;
       case Strings.NOTIFY:
@@ -33,9 +34,11 @@ export class PopoverComponent implements OnInit {
   }
 
   public async add(type: string): Promise<any> {
-    this.popoverController.dismiss();
-    const modal = await this.modal(type);
+    const modal = await this.modal(type, { profile: this.profile$ });
     await modal.present();
+
+    const { data } = await await modal.onWillDismiss();
+    this.popoverController.dismiss(data);
   }
 
   public formatterValue(value: number): string {

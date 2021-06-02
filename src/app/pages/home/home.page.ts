@@ -34,7 +34,6 @@ export class HomePage implements OnInit {
       if (!this.routerOutlet.canGoBack()) {
         (navigator as any).app.exitApp();
       }
-      console.log('bingo');
     });
   }
 

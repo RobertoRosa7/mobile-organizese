@@ -4,10 +4,10 @@ import { NgModule } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { AddRegistersComponent } from './components/add-registers/add-registers.component';
 import { LoginComponent } from './components/login/login.component';
 import { ModalComponent } from './components/modal/modal.component';
-import { PopoverComponent } from './components/popover/popover.component';
 import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
 import { WindowsHackerComponent } from './components/windows-hacker/windows-hacker.component';
 import { Constants } from './services/constants';
@@ -26,6 +26,7 @@ import { Constants } from './services/constants';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    CurrencyMaskModule,
   ],
   exports: [
     CommonModule,
@@ -34,6 +35,8 @@ import { Constants } from './services/constants';
     ReactiveFormsModule,
     RouterModule,
     IonicModule,
+    CurrencyMaskModule,
+
     SidepanelComponent,
     WindowsHackerComponent,
     ModalComponent,

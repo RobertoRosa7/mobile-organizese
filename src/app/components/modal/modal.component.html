@@ -9,9 +9,16 @@
 <ion-content [ngSwitch]="type" class="content">
   <app-login *ngSwitchCase="'login'" (sendClose)="onClose($event)"></app-login>
   <ion-title *ngSwitchCase="'registers'">Cadastro</ion-title>
-  <app-add-registers [type]="type" *ngSwitchCase="'income'"></app-add-registers>
   <app-add-registers
     [type]="type"
-    *ngSwitchCase="'outcome'"
+    [profile]="data.profile | async"
+    *ngSwitchCase="'incoming'"
+    (sendPayload)="isClose($event)"
+  ></app-add-registers>
+  <app-add-registers
+    [type]="type"
+    [profile]="data.profile | async"
+    *ngSwitchCase="'outcoming'"
+    (sendPayload)="isClose($event)"
   ></app-add-registers>
 </ion-content>

@@ -1,8 +1,16 @@
-<form class="form">
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <div class="container">
     <div class="form-field">
       <div class="form-group">
-        <ion-input placeholder="Valor"></ion-input>
+        <input
+          min="0.01"
+          required
+          class="input-value"
+          ngDefaultControl
+          placeholder="Valor"
+          formControlName="value"
+          currencyMask
+        />
         <ion-icon name="card-outline"></ion-icon>
       </div>
     </div>
@@ -10,6 +18,9 @@
     <div class="form-field">
       <div class="form-group">
         <ion-datetime
+          required
+          style="width: 100%"
+          formControlName="date"
           placeholder="Data"
           [min]="settings.minYear"
           [max]="settings.maxYear"
@@ -18,11 +29,17 @@
         <ion-icon name="calendar"></ion-icon>
       </div>
       <div class="form-group">
-        <ion-select placeholder="Categoria" cancelText="Cancelar">
-          <ion-select-option value="brown">Brown</ion-select-option>
-          <ion-select-option value="blonde">Blonde</ion-select-option>
-          <ion-select-option value="black">Black</ion-select-option>
-          <ion-select-option value="red">Red</ion-select-option>
+        <ion-select
+          style="width: 100%"
+          formControlName="category"
+          placeholder="Categoria"
+          cancelText="Cancelar"
+        >
+          <ng-container *ngIf="categories$ | async as cats">
+            <ion-select-option *ngFor="let cat of cats" [value]="cat">{{
+              cat
+            }}</ion-select-option>
+          </ng-container>
         </ion-select>
         <ion-icon name="apps-outline"></ion-icon>
       </div>
@@ -30,12 +47,20 @@
 
     <div class="form-field">
       <div class="form-group">
-        <ion-textarea placeholder="Descrição"></ion-textarea>
+        <ion-textarea
+          name="description"
+          formControlName="description"
+          placeholder="Descrição"
+        ></ion-textarea>
       </div>
     </div>
     <ion-buttons class="container-buttons">
-      <ion-button class="btn close" type="button">Fechar</ion-button>
-      <ion-button class="btn income" type="submit">Registrar</ion-button>
+      <ion-button (click)="close(false)" class="btn close" type="button"
+        >Fechar</ion-button
+      >
+      <ion-button [disabled]="!form.valid" class="btn income" type="submit"
+        >Registrar</ion-button
+      >
     </ion-buttons>
   </div>
 </form>

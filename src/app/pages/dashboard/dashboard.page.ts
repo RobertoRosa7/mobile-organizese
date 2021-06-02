@@ -45,6 +45,12 @@ export class DashboardPage implements OnInit {
         notification: dashboard.notification_list,
       }))
       .pipe(map((states) => states.notification));
+
+    this.profile$ = this.store
+      .select(({ profile }: any) => ({
+        user: profile.profile,
+      }))
+      .pipe(map((state) => state.user));
   }
 
   public sync(ev): void {}
@@ -54,16 +60,10 @@ export class DashboardPage implements OnInit {
   }
 
   public add(ev): void {
-    this.presentPopover(ev, Strings.ADD_REGISTER);
+    this.presentPopover(ev, Strings.ADD_REGISTER, { profile: this.profile$ });
   }
 
   public profile(ev): void {
-    this.profile$ = this.store
-      .select(({ profile }: any) => ({
-        user: profile.profile,
-      }))
-      .pipe(map((state) => state.user));
-
     this.presentPopover(ev, Strings.PROFILE, { profile: this.profile$ });
   }
 
@@ -78,6 +78,10 @@ export class DashboardPage implements OnInit {
       },
     });
     await popover.present();
+    const event = (await popover.onDidDismiss()).data;
+    if (event) {
+      console.log(event.payload);
+    }
   }
 
   private fetchErrors(): void {

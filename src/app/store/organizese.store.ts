@@ -4,6 +4,7 @@ import { reducerDashboard } from '../reducers/dashboard.reducer';
 import { reducerErrors } from '../reducers/errors.reducer';
 import { reducerLogin } from '../reducers/login.reducer';
 import { reducerProfile } from '../reducers/profile.reducer';
+import { reducer as reducerRegisters } from '../reducers/registers.reducer';
 
 export const organizeseStore: ActionReducerMap<any> = {
   app: reducerApp,
@@ -11,4 +12,5 @@ export const organizeseStore: ActionReducerMap<any> = {
   login: reducerLogin,
   errors: reducerErrors,
   profile: reducerProfile,
+  registers: reducerRegisters,
 };

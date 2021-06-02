@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { RESET_ERRORS } from '../../actions/errors.actions';
 
 @Component({
@@ -10,6 +11,7 @@ import { RESET_ERRORS } from '../../actions/errors.actions';
 })
 export class ModalComponent implements OnInit {
   @Input() public type: string;
+  @Input() public data: Observable<any>;
 
   constructor(
     private modalController: ModalController,
@@ -29,6 +31,10 @@ export class ModalComponent implements OnInit {
       this.router.navigateForward('/dashboard');
     }
     this.store.dispatch(RESET_ERRORS());
+    this.modalController.dismiss(event);
+  }
+
+  public isClose(event): void {
     this.modalController.dismiss(event);
   }
 }
