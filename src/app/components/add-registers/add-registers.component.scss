@@ -13,17 +13,42 @@
   border-radius: 8px;
   display: flex;
   align-items: center;
-  padding: 4px 16px;
+  padding: 8px;
   justify-content: space-between;
+
+  ion-datetime,
+  ion-select,
+  ion-textarea {
+    --padding-end: 0px;
+    --padding-start: 0px;
+  }
 }
 .form-field {
   margin: 8px 0;
   display: flex;
   gap: 10px;
 }
+.form-field.inline .form-group {
+  width: 48%;
+}
 .input-value {
   width: 100%;
   height: 45px;
   border: none;
   outline: none;
+}
+.container-buttons {
+  justify-content: space-between;
+  ion-button {
+    @include btn;
+    width: 120px;
+  }
+  .btn.close {
+    --background: var(--ion-color-danger);
+    color: var(--white-one);
+  }
+  .btn.income {
+    --background: var(--green-microsoft);
+    color: var(--white-one);
+  }
 }
