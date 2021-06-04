@@ -44,11 +44,13 @@
         <ion-button (click)="sync($event)" shape="round" slot="end">
           <ion-icon shape="round" name="sync-outline"></ion-icon>
         </ion-button>
-        <ng-container *ngIf="notifications$ | async as notifications">
-          <ng-container *ngIf="notifications.length > 0; else noNotify">
+        <ng-container *ngIf="states$ | async as states">
+          <ng-container *ngIf="states.notification.length > 0; else noNotify">
             <ion-button (click)="notify($event)" shape="round" slot="end">
               <ion-icon name="notifications"></ion-icon>
-              <ion-badge color="danger">{{notifications.length}}</ion-badge>
+              <ion-badge color="danger"
+                >{{states.notification.length}}</ion-badge
+              >
             </ion-button>
           </ng-container>
           <ng-template #noNotify>

@@ -5,7 +5,7 @@ import * as actions from '../actions/errors.actions';
 
 const INITIAL_STATES = {
   error: {},
-  success: '',
+  from: '',
 };
 
 const errorsReducers = createReducer(
@@ -17,7 +17,7 @@ const errorsReducers = createReducer(
 
 const setSuccess = (states, payload) => ({
   ...states,
-  success: payload,
+  from: payload,
 });
 const setErrors = (states, payload) => ({
   ...states,
@@ -26,7 +26,7 @@ const setErrors = (states, payload) => ({
 const resetErrors = (states) => ({
   ...states,
   error: {},
-  success: '',
+  from: '',
 });
 
 export const reducerErrors = (state: any, action: any): any =>

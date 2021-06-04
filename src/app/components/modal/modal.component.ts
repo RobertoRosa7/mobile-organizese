@@ -22,7 +22,7 @@ export class ModalComponent implements OnInit {
   ngOnInit() {}
 
   public close(): void {
-    this.modalController.dismiss({ teste: this.type });
+    this.modalController.dismiss();
     this.store.dispatch(RESET_ERRORS());
   }
 

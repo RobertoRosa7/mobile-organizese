@@ -89,36 +89,69 @@ export class DashboardEffect {
     )
   );
 
+  public putDashboard$ = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.PUT_DASHBOARD),
+      switchMap(() => from(this.getDatesFromStore())),
+      mergeMap(({ dates }) =>
+        this.dashboardService.fetchDashboard(dates).pipe(
+          mergeMap((payload) =>
+            forkJoin([
+              this.storageService.setStore('registersToDashboard', payload),
+              of(payload),
+            ])
+          ),
+          map(([_, payload]) => payload),
+          catchError((e) => of(e))
+        )
+      ),
+      map((payload) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: { ...payload, source: actionsTypes.ERROR_PUT_DASHBOARD },
+          });
+        } else {
+          return SET_DASHBOARD({ payload });
+        }
+      }),
+      catchError((err) => of(err))
+    )
+  );
+
+  public putConsolidado$ = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.PUT_CONSOLIDADO),
+      mergeMap(() =>
+        this.dashboardService.fetchConsolidado().pipe(
+          mergeMap((payload) =>
+            forkJoin([
+              this.storageService.setStore('consolidado_id', payload),
+              of(payload),
+            ])
+          ),
+          map(([_, payload]) => payload),
+          catchError((e) => of(e))
+        )
+      ),
+      map((payload) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: { ...payload, source: actionsTypes.ERROR_PUT_CONSOLIDADO },
+          });
+        } else {
+          return GET_TOTALS({ payload });
+        }
+      }),
+      catchError((err) => of(err))
+    )
+  );
+
   constructor(
     private action: Actions,
     private storageService: StorageService,
     private dashboardService: DashboardService,
     private store: Store
   ) {}
-
-  // @Effect()
-  // public putConsolidado$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.PUT_CONSOLIDADO),
-  //   mergeMap(() =>
-  //     this.dashboardService.fetchConsolidado().pipe(
-  //       map((payload) => {
-  //         this.indexedb.update({ id: 'consolidado_id', payload });
-  //         return payload;
-  //       }),
-  //       catchError((e) => of(e))
-  //     )
-  //   ),
-  //   map((payload) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'update_consolidado' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.GET_TOTALS({ payload });
-  //     }
-  //   }),
-  //   catchError((err) => of(err))
-  // );
-
   // @Effect()
   // public getAutocomplete$: Observable<Actions> = this.action.pipe(
   //   ofType(actions.FETCH_AUTOCOMPLETE),
@@ -238,30 +271,6 @@ export class DashboardEffect {
   //       return SET_ERRORS({ payload: source });
   //     } else {
   //       return actions.SET_GRAPH_OUTCOME_INCOME({ payload });
-  //     }
-  //   }),
-  //   catchError((err) => of(err))
-  // );
-
-  // @Effect()
-  // public putDashboard$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.PUT_DASHBOARD),
-  //   switchMap(() => from(this.getDatesFromStore())),
-  //   mergeMap(({ dates }) =>
-  //     this.dashboardService.fetchDashboard(dates).pipe(
-  //       map((payload) => {
-  //         this.indexedb.update({ id: 'registers_to_dashboard_id', payload });
-  //         return payload;
-  //       }),
-  //       catchError((e) => of(e))
-  //     )
-  //   ),
-  //   map((payload) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'put_dashboard' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_DASHBOARD({ payload });
   //     }
   //   }),
   //   catchError((err) => of(err))

@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
+import { Strings } from 'src/app/interfaces/strings';
 
 @Component({
   selector: 'app-add-registers',
@@ -17,6 +18,7 @@ export class AddRegistersComponent implements OnInit {
   @Output() public sendPayload = new EventEmitter();
 
   public categories$: Observable<any>;
+  public isLoading = false;
 
   public form: FormGroup = this.fb.group({
     date: [''],
@@ -64,7 +66,9 @@ export class AddRegistersComponent implements OnInit {
       description: this.form.value.description?.trim() || 'Sem descrição',
     };
 
-    this.sendPayload.emit({ payload });
+    this.sendPayload.emit({
+      payload: { ...payload, from: Strings.ADD_REGISTER },
+    });
   }
 
   public close(options?): void {

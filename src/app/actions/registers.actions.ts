@@ -18,6 +18,11 @@ export enum actionsTypes {
   SET_REGISTERS = '[SET_REGISTERS]',
   SET_UPDATE = '[SET_UPDATE]',
   SET_SEARCH = '[SET_SEARCH]',
+
+  ERROR_ADD_REGISTERS = '[ERROR_ADD_REGISTERS]',
+  ERROR_INIT = '[ERROR_INIT]',
+
+  SUCCESS_ADD_REGISTERS = '[SUCCESS_ADD_REGISTER]',
 }
 export const INIT = createAction(actionsTypes.INIT, (payload: any) => payload);
 

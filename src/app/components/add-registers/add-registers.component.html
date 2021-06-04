@@ -58,9 +58,10 @@
       <ion-button (click)="close(false)" class="btn close" type="button"
         >Fechar</ion-button
       >
-      <ion-button [disabled]="!form.valid" class="btn income" type="submit"
-        >Registrar</ion-button
-      >
+      <ion-button [disabled]="!form.valid" class="btn income" type="submit">
+        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!isLoading">registrar</span>
+      </ion-button>
     </ion-buttons>
   </div>
 </form>

@@ -16,6 +16,7 @@ import { AppEffect } from './effects/app.effect';
 import { DashboardEffect } from './effects/dashboard.effect';
 import { LoginEffect } from './effects/login.effect';
 import { ProfileEffect } from './effects/profile.effect';
+import { RegistersEffect } from './effects/registers.effect';
 import { DashboardInterceptor } from './interceptors/dashboard.interceptor';
 import { SharedModule } from './shared.module';
 import { organizeseStore } from './store/organizese.store';
@@ -46,6 +47,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
       DashboardEffect,
       LoginEffect,
       ProfileEffect,
+      RegistersEffect,
     ]),
   ],
   providers: [

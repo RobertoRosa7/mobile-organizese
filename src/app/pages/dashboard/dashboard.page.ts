@@ -12,7 +12,7 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { StorageService } from 'src/app/services/storage.service';
 import * as actionsProfile from '../../actions/profile.actions';
-
+import * as actionsRegister from '../../actions/registers.actions';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -21,6 +21,7 @@ import * as actionsProfile from '../../actions/profile.actions';
 export class DashboardPage implements OnInit {
   public notifications$: Observable<any>;
   public profile$: Observable<any>;
+  public states$: Observable<any>;
 
   constructor(
     protected store?: Store,
@@ -36,35 +37,35 @@ export class DashboardPage implements OnInit {
     console.log('its working!');
     this.initializeApp();
     this.fetchErrors();
+    this.fetchSuccess();
     this.fetchLastRegister().subscribe(({ data: payload }) =>
       this.store?.dispatch(actionsDashboard.SET_NOTIFICATION_LIST({ payload }))
     );
 
-    this.notifications$ = this.store
-      .select(({ dashboard }: any) => ({
-        notification: dashboard.notification_list,
-      }))
-      .pipe(map((states) => states.notification));
-
-    this.profile$ = this.store
-      .select(({ profile }: any) => ({
-        user: profile.profile,
-      }))
-      .pipe(map((state) => state.user));
+    this.states$ = this.store.select(({ profile, dashboard }: any) => ({
+      user: profile.profile,
+      notification: dashboard.notification_list,
+    }));
   }
 
   public sync(ev): void {}
 
   public notify(ev): void {
-    this.presentPopover(ev, Strings.NOTIFY, { notify: this.notifications$ });
+    this.presentPopover(ev, Strings.NOTIFY, {
+      notify: this.states$.pipe(map((state) => state.notification)),
+    });
   }
 
   public add(ev): void {
-    this.presentPopover(ev, Strings.ADD_REGISTER, { profile: this.profile$ });
+    this.presentPopover(ev, Strings.ADD_REGISTER, {
+      profile: this.states$.pipe(map((state) => state.user)),
+    });
   }
 
   public profile(ev): void {
-    this.presentPopover(ev, Strings.PROFILE, { profile: this.profile$ });
+    this.presentPopover(ev, Strings.PROFILE, {
+      profile: this.states$.pipe(map((state) => state.user)),
+    });
   }
 
   async presentPopover(ev: any, type: string, data?: any) {
@@ -80,7 +81,13 @@ export class DashboardPage implements OnInit {
     await popover.present();
     const event = (await popover.onDidDismiss()).data;
     if (event) {
-      console.log(event.payload);
+      switch (event.payload.from) {
+        case Strings.ADD_REGISTER:
+          this.store.dispatch(
+            actionsRegister.ADD_REGISTERS({ payload: event.payload })
+          );
+          break;
+      }
     }
   }
 
@@ -100,6 +107,30 @@ export class DashboardPage implements OnInit {
         await toast.present();
       }
     });
+  }
+
+  private fetchSuccess(): void {
+    const success$ = this.store
+      .select(({ errors }: any) => ({
+        success: this.handlerSuccess(errors.from),
+      }))
+      .pipe(map((state) => state.success));
+
+    success$.subscribe(async (success) => {
+      if (success) {
+        const toast = await this.createToast(success);
+        await toast.present();
+      }
+    });
+  }
+
+  private handlerSuccess(from: string): string {
+    switch (from) {
+      case actionsRegister.actionsTypes.SUCCESS_ADD_REGISTERS:
+        return 'Registro cadastrado com sucesso.';
+      default:
+        return '';
+    }
   }
 
   private initializeApp(): Promise<any> {
@@ -133,6 +164,13 @@ export class DashboardPage implements OnInit {
       case actionsProfile.ActionsTypes.ERROR_PROFILE:
         if (error.status === 0) {
           message = 'Não foi possível carregar seu perfil';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
+      case actionsRegister.actionsTypes.ERROR_ADD_REGISTERS:
+        if (error.status === 0) {
+          message = 'Não foi possível adicionar seu registro.';
         } else {
           message = error.error.message;
         }
