@@ -48,7 +48,9 @@ export class DashboardPage implements OnInit {
     }));
   }
 
-  public sync(ev): void {}
+  public sync(ev): void {
+    this.dispatchActions();
+  }
 
   public notify(ev): void {
     this.presentPopover(ev, Strings.NOTIFY, {
@@ -217,6 +219,46 @@ export class DashboardPage implements OnInit {
           return of(null);
         }
       })
+    );
+  }
+
+  private async dispatchActions(payload?: any): Promise<any> {
+    await this.putDashboard();
+    await this.putConsolidado();
+    // await this.putGraphOutcomeIncome();
+    // await this.putLastDateOutcome();
+    // await this.putAutocomplete();
+    const toast = await this.createToast('Aplicação atualizada.');
+    await toast.present();
+  }
+
+  private putDashboard(): Promise<any> {
+    return Promise.resolve(
+      this.store?.dispatch(actionsDashboard.PUT_DASHBOARD())
+    );
+  }
+
+  private putConsolidado(): Promise<any> {
+    return Promise.resolve(
+      this.store?.dispatch(actionsDashboard.PUT_CONSOLIDADO())
+    );
+  }
+
+  private putGraphOutcomeIncome(): Promise<any> {
+    return Promise.resolve(
+      this.store?.dispatch(actionsDashboard.PUT_GRAPH_OUTCOME_INCOME())
+    );
+  }
+
+  private putLastDateOutcome(): Promise<any> {
+    return Promise.resolve(
+      this.store?.dispatch(actionsDashboard.PUT_LASTDATE_OUTCOME())
+    );
+  }
+
+  private putAutocomplete(): Promise<any> {
+    return Promise.resolve(
+      this.store?.dispatch(actionsDashboard.UPDATE_AUTOCOMPLETE())
     );
   }
 }

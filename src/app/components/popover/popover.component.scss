@@ -11,6 +11,8 @@
 }
 
 .notify {
+  max-height: 380px;
+  overflow: hidden auto;
   .content {
     display: flex;
     align-items: flex-start;
