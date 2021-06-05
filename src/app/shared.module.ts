@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { AddRegistersComponent } from './components/add-registers/add-registers.component';
+import { HighchartsComponent } from './components/highcharts/highcharts.component';
 import { LoginComponent } from './components/login/login.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
@@ -18,6 +19,7 @@ import { Constants } from './services/constants';
     ModalComponent,
     LoginComponent,
     AddRegistersComponent,
+    HighchartsComponent,
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { Constants } from './services/constants';
     ModalComponent,
     LoginComponent,
     AddRegistersComponent,
+    HighchartsComponent,
   ],
   providers: [
     {

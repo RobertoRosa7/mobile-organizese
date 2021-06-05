@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { IonRouterOutlet } from '@ionic/angular';
 import { LoginGuards } from './guards/login-guards';
 
 const routes: Routes = [

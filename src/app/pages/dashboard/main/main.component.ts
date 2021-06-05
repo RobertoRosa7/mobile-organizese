@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { SourceErrors } from 'src/app/actions/errors.actions';
 import * as actionsApp from '../../../actions/app.actions';
-import * as actionsDashboard from '../../../actions/dashboard.actions';
 import { DashboardPage } from '../dashboard.page';
 @Component({
   selector: 'app-main',
@@ -11,7 +10,7 @@ import { DashboardPage } from '../dashboard.page';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent extends DashboardPage implements OnInit {
-  public isLoaded: boolean;
+  public isLoaded = false;
   public error$: Observable<any>;
   public dashboard$: Observable<any>;
 
@@ -45,8 +44,17 @@ export class MainComponent extends DashboardPage implements OnInit {
     super();
   }
 
-  public async ngOnInit() {
-    await this.initializingMain();
+  public ngOnInit() {
+    this.initializingMain();
+  }
+
+  private async initializingMain(): Promise<any> {
+    await this.initHideValues();
+    this.fetchStore();
+    this.isLoaded = true;
+  }
+
+  private fetchStore() {
     this.dashboard$ = this.store.select(({ dashboard, errors, app }: any) => ({
       consolidado: this.cards.map((value: any) => {
         value.show = app.hidevalues;
@@ -75,21 +83,6 @@ export class MainComponent extends DashboardPage implements OnInit {
           ? errors.error.error
           : undefined,
     }));
-    this.isLoaded = true;
-  }
-
-  private initializingMain(): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      await this.initMain();
-      await this.initHideValues();
-      setTimeout(() => resolve(true), 500);
-    });
-  }
-
-  private initMain(): Promise<any> {
-    return Promise.resolve(
-      this.store.dispatch(actionsDashboard.INIT_DASHBOARD())
-    );
   }
 
   private initHideValues(): Promise<any> {

@@ -26,7 +26,7 @@
           color="light"
           size="medium"
           routerDirection="back"
-          routerLink="/dashboard"
+          routerLink="/dashboard/main"
         >
           DASHBOARD
         </ion-button>
@@ -39,7 +39,6 @@
 <ion-header class="header">
   <ion-toolbar class="ion-toolbar">
     <ion-buttons>
-      <ion-menu-button></ion-menu-button>
       <div class="container-buttons">
         <ion-button (click)="sync($event)" shape="round" slot="end">
           <ion-icon shape="round" name="sync-outline"></ion-icon>
@@ -69,6 +68,31 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <ion-router-outlet></ion-router-outlet>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="main">
+        <ion-icon name="grid-outline"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+        <ion-badge>6</ion-badge>
+      </ion-tab-button>
+
+      <ion-tab-button tab="extracts">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Extratos</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="settings">
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label>Configurações</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="about">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <ion-label>About</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-content>

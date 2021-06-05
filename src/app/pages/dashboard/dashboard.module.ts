@@ -6,9 +6,12 @@ import { OwlModule } from 'ngx-owl-carousel';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { SharedModule } from 'src/app/shared.module';
+import { AboutComponent } from './about/about.component';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { DashboardPage } from './dashboard.page';
+import { ExtractsComponent } from './extracts/extracts.component';
 import { MainComponent } from './main/main.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   imports: [
@@ -23,6 +26,9 @@ import { MainComponent } from './main/main.component';
     MainComponent,
     CardsComponent,
     PopoverComponent,
+    SettingsComponent,
+    AboutComponent,
+    ExtractsComponent,
   ],
 })
 export class DashboardPageModule {}

@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-shadow */
 import { Component, OnInit } from '@angular/core';
-import { PopoverController, ToastController } from '@ionic/angular';
+import { RouterOutlet } from '@angular/router';
+import {
+  NavController,
+  PopoverController,
+  ToastController,
+} from '@ionic/angular';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { delay, filter, map, mergeMap } from 'rxjs/operators';
@@ -30,7 +35,8 @@ export class DashboardPage implements OnInit {
     protected profileService?: ProfileService,
     protected toastController?: ToastController,
     protected as?: ActionsSubject,
-    protected dashboardService?: DashboardService
+    protected dashboardService?: DashboardService,
+    protected router?: NavController
   ) {}
 
   ngOnInit() {
@@ -70,7 +76,7 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  async presentPopover(ev: any, type: string, data?: any) {
+  public async presentPopover(ev: any, type: string, data?: any) {
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       translucent: true,
@@ -91,6 +97,10 @@ export class DashboardPage implements OnInit {
           break;
       }
     }
+  }
+
+  public backToDashboard(): void {
+    console.log('back', this.router);
   }
 
   private fetchErrors(): void {
@@ -139,6 +149,7 @@ export class DashboardPage implements OnInit {
     return new Promise(async (resolve) => {
       await this.initDashboard();
       await this.getProfile();
+      await this.initMain();
       setTimeout(() => resolve(true), 500);
     });
   }
@@ -150,6 +161,12 @@ export class DashboardPage implements OnInit {
   private initDashboard(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.FETCH_DASHBOARD())
+    );
+  }
+
+  private initMain(): Promise<any> {
+    return Promise.resolve(
+      this.store.dispatch(actionsDashboard.INIT_DASHBOARD())
     );
   }
 

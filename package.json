@@ -39,7 +39,7 @@
     "build": "0.1.4",
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-sqlite-storage": "^6.0.0",
-    "highcharts": "^9.0.1",
+    "highcharts": "^9.1.1",
     "ionic-plugin-deeplinks": "^1.0.22",
     "jquery": "^3.6.0",
     "localforage-cordovasqlitedriver": "^1.8.0",
