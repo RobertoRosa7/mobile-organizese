@@ -1,8 +1,33 @@
-<ion-menu side="start" type="overlay" contentId="main" class="menu">
+<ion-menu
+  side="start"
+  type="overlay"
+  menuId="main"
+  contentId="main"
+  class="menu"
+>
   <div class="menu-item-close">
-    <ion-menu-button></ion-menu-button>
+    <ion-button
+      (click)="closeMenu()"
+      fill="clear"
+      size="small"
+      color="light"
+      shape="round"
+    >
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
   </div>
   <ion-content class="menu-content">
+    <div class="user">
+      <ng-container *ngIf="states$ | async as states">
+        <div class="profile-icon">
+          <ion-icon slot="only-icon" name="person"></ion-icon>
+        </div>
+        <p>{{ states.user.name }}</p>
+        <p>{{ states.user.email }}</p>
+        <p>{{ states.user.tel }}</p>
+      </ng-container>
+    </div>
+
     <ion-list class="menu-list">
       <ion-item class="menu-item">
         <ion-icon color="light" name="home"></ion-icon>

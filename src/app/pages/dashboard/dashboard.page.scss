@@ -28,3 +28,20 @@
   justify-content: flex-start;
   padding-left: 5px;
 }
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+
+  p {
+    line-height: 5px;
+  }
+
+  .profile-icon {
+    min-width: 48px;
+    min-height: 48px;
+    font-size: 48px;
+  }
+}

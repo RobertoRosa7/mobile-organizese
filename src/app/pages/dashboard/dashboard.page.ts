@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {
+  MenuController,
   NavController,
   PopoverController,
   ToastController,
@@ -36,7 +37,8 @@ export class DashboardPage implements OnInit {
     protected toastController?: ToastController,
     protected as?: ActionsSubject,
     protected dashboardService?: DashboardService,
-    protected router?: NavController
+    protected router?: NavController,
+    protected menu?: MenuController
   ) {}
 
   ngOnInit() {
@@ -71,9 +73,14 @@ export class DashboardPage implements OnInit {
   }
 
   public profile(ev): void {
-    this.presentPopover(ev, Strings.PROFILE, {
-      profile: this.states$.pipe(map((state) => state.user)),
-    });
+    this.menu.open('main');
+    // this.presentPopover(ev, Strings.PROFILE, {
+    //   profile: this.states$.pipe(map((state) => state.user)),
+    // });
+  }
+
+  public closeMenu(): void {
+    this.menu.close('main');
   }
 
   public async presentPopover(ev: any, type: string, data?: any) {
