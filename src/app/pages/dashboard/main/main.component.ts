@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { SourceErrors } from 'src/app/actions/errors.actions';
 import * as actionsApp from '../../../actions/app.actions';
+import * as actionsDashboard from '../../../actions/dashboard.actions';
 import { DashboardPage } from '../dashboard.page';
 @Component({
   selector: 'app-main',
@@ -50,6 +51,7 @@ export class MainComponent extends DashboardPage implements OnInit {
 
   private async initializingMain(): Promise<any> {
     await this.initHideValues();
+    await this.initGraphOutcomeIncome();
     this.fetchStore();
     this.isLoaded = true;
   }
@@ -87,5 +89,11 @@ export class MainComponent extends DashboardPage implements OnInit {
 
   private initHideValues(): Promise<any> {
     return Promise.resolve(this.store.dispatch(actionsApp.GET_HIDE_VALUES()));
+  }
+
+  private initGraphOutcomeIncome(): Promise<any> {
+    return Promise.resolve(
+      this.store.dispatch(actionsDashboard.FETCH_GRAPH_OUTCOME_INCOME())
+    );
   }
 }

@@ -187,6 +187,13 @@ export class DashboardPage implements OnInit {
           message = error.error.message;
         }
         return { ...error, message };
+      case actionsDashboard.actionsTypes.ERROR_GRAPH_OUTCOME_INCOME:
+        if (error.status === 0) {
+          message = 'Não foi possível carregar os registros.';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
       case actionsProfile.ActionsTypes.ERROR_PROFILE:
         if (error.status === 0) {
           message = 'Não foi possível carregar seu perfil';

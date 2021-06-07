@@ -189,7 +189,7 @@ export class DashboardService {
   public fetchGraphOutcomeIncome(dates?: any): Observable<any> {
     const params = dates ? this.convertDates(dates) : '';
     return this.http.get<any>(
-      `${this.constants.get('fetchGaphOutcomeIncome')}${this.convertJsonToUrl(
+      `${this.constants.get('fetchGraphOutcomeIncome')}${this.convertJsonToUrl(
         params
       )}`
     );
