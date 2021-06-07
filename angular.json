@@ -22,7 +22,9 @@
             "allowedCommonJsDependencies": [
               "babel",
               "raf",
-              "@babel/runtime-corejs3"
+              "@babel/runtime-corejs3",
+              "highcharts",
+              "ngx-owl-carousel"
             ],
             "assets": [
               {

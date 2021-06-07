@@ -2,6 +2,7 @@
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -36,6 +37,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   entryComponents: [],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot({ animated: false }),
     AppRoutingModule,
     SharedModule,

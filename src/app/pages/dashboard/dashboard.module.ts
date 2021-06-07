@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OwlModule } from 'ngx-owl-carousel';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
+import { ExtractComponent } from 'src/app/components/extract/extract.component';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { SharedModule } from 'src/app/shared.module';
 import { AboutComponent } from './about/about.component';
@@ -29,6 +30,7 @@ import { SettingsComponent } from './settings/settings.component';
     SettingsComponent,
     AboutComponent,
     ExtractsComponent,
+    ExtractComponent,
   ],
 })
 export class DashboardPageModule {}
