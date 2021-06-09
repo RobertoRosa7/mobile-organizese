@@ -62,7 +62,7 @@ export class AddRegistersComponent implements OnInit {
       status: 'pending',
       brand: this.form.value.brand || '',
       edit: false,
-      user: this.profile,
+      user: this.profile.user,
       description: this.form.value.description?.trim() || 'Sem descrição',
     };
 

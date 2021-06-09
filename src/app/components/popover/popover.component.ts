@@ -34,10 +34,12 @@ export class PopoverComponent implements OnInit {
   }
 
   public async add(type: string): Promise<any> {
-    const modal = await this.modal(type, { profile: this.profile$ });
+    const modal = await this.modal(type, {
+      profile: this.profile$,
+    });
     await modal.present();
 
-    const { data } = await await modal.onWillDismiss();
+    const { data } = await modal.onWillDismiss();
     this.popoverController.dismiss(data);
   }
 

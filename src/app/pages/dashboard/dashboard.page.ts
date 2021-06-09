@@ -68,7 +68,7 @@ export class DashboardPage implements OnInit {
 
   public add(ev): void {
     this.presentPopover(ev, Strings.ADD_REGISTER, {
-      profile: this.states$.pipe(map((state) => state.user)),
+      profile: this.states$,
     });
   }
 

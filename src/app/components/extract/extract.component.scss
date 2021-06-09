@@ -1,0 +1,110 @@
+@import "../../../theme/mixins.scss";
+
+.extract {
+  .title {
+    @include timeline-dates;
+    text-align: left;
+    padding: 0 16px;
+  }
+  .extract-container {
+    .extract-timeline {
+      padding: 0 16px;
+      .extract-timeline-area {
+        margin: 45px auto;
+        width: 100%;
+        max-width: 768px;
+        border-left: 1px solid var(--ion-color-medium);
+        padding-left: 11px;
+      }
+      .extract-timeline-icon {
+        max-width: 32px;
+        max-height: 32px;
+      }
+      .extract-timeline-body {
+        width: 100%;
+      }
+      .extract-timeline-dates {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        @include timeline-dates;
+        .badge-values {
+          font-size: 0.7em;
+          padding: 4px 12px;
+          border-radius: 32px;
+          background-color: var(--white-two);
+          font-weight: 500;
+          position: relative;
+          margin-top: 8px;
+        }
+        .badge-values::before {
+          content: "";
+          width: 0;
+          height: 0;
+          border-style: solid;
+          border-color: transparent transparent var(--white-two) transparent;
+          border-width: 8px;
+          position: absolute;
+          top: -15px;
+          transform: translateX(-50%);
+          left: 50%;
+        }
+      }
+      .extract-timeline-values {
+        text-align: left;
+      }
+      .container-card {
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: space-between;
+        .hours {
+          margin-right: 8px;
+        }
+        .extract-timeline-card {
+          padding: 16px 0px;
+          background-color: #fff;
+          font-size: 14px;
+          line-height: 1.7;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          position: relative;
+          font-weight: 200;
+          p {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex-direction: column;
+            line-height: 14px;
+          }
+        }
+        // .extract-timeline-card::after {
+        //   content: "";
+        //   width: 0;
+        //   height: 0;
+        //   border-style: solid;
+        //   border-color: transparent #ddd transparent transparent;
+        //   border-width: 8px;
+        //   position: absolute;
+        //   top: 50%;
+        //   transform: translateY(-50%);
+        //   left: -17px;
+        // }
+        .extract-timeline-icon {
+          position: absolute;
+          top: 50%;
+          left: -27px;
+          border: 3px solid #fff;
+          border-radius: 50%;
+          background-color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+}

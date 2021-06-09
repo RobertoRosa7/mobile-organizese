@@ -1,0 +1,36 @@
+<div class="extract" *ngIf="data">
+  <h2 class="title">Extratos</h2>
+  <div class="extract-container">
+    <div *ngFor="let listGrouped of listGroupByDay" class="extract-timeline">
+      <div class="extract-timeline-dates">
+        <span>{{ listGrouped.day | date: "fullDate" }}</span>
+        <small class="badge-values">R$ {{ formatterValue(1000000000) }}</small>
+      </div>
+      <div class="extract-timeline-area">
+        <div *ngFor="let extract of listGrouped.list" class="container-card">
+          <div class="hours">
+            <small>{{ extract.created_at * 1000 | date: "shortTime" }}hs</small>
+          </div>
+          <span class="extract-timeline-icon">
+            <mat-icon>{{ extract.cat_icon }}</mat-icon>
+          </span>
+          <div class="extract-timeline-card">
+            <p>
+              <span>{{ extract.category }}</span>
+              <small>{{ extract.description }}</small>
+            </p>
+            <span>R$ {{ formatterValue(extract.value) }}</span>
+          </div>
+          <button
+            disableRipple="true"
+            (click)="$event.stopPropagation()"
+            title="Menu"
+            mat-icon-button
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

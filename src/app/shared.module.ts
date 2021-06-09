@@ -12,6 +12,12 @@ import { ModalComponent } from './components/modal/modal.component';
 import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
 import { WindowsHackerComponent } from './components/windows-hacker/windows-hacker.component';
 import { Constants } from './services/constants';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [
     SidepanelComponent,
@@ -29,6 +35,11 @@ import { Constants } from './services/constants';
     ReactiveFormsModule,
     RouterModule,
     CurrencyMaskModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   exports: [
     CommonModule,
@@ -38,6 +49,11 @@ import { Constants } from './services/constants';
     RouterModule,
     IonicModule,
     CurrencyMaskModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
 
     SidepanelComponent,
     WindowsHackerComponent,

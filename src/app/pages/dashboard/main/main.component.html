@@ -19,7 +19,7 @@
     </div>
 
     <div class="extact">
-      <app-extract></app-extract>
+      <app-extract [data]="dashboard$ | async"></app-extract>
     </div>
   </div>
   <ng-template #isLoading>

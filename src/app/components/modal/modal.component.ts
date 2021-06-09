@@ -11,7 +11,7 @@ import { RESET_ERRORS } from '../../actions/errors.actions';
 })
 export class ModalComponent implements OnInit {
   @Input() public type: string;
-  @Input() public data: Observable<any>;
+  @Input() public data: any;
 
   constructor(
     private modalController: ModalController,
