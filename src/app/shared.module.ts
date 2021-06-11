@@ -4,7 +4,11 @@ import localePt from '@angular/common/locales/pt';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,6 +30,17 @@ import { Constants } from './services/constants';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 registerLocaleData(localePt, 'pt');
+
+const MY_FORMATS = {
+  parse: { dateInput: 'DD MM YYYY' },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 @NgModule({
   declarations: [
     SidepanelComponent,
@@ -92,6 +107,7 @@ registerLocaleData(localePt, 'pt');
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE],
     },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
 export class SharedModule {}
