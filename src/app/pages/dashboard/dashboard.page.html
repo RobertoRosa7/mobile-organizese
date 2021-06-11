@@ -66,12 +66,12 @@
     <ion-buttons>
       <div class="container-buttons">
         <ion-button (click)="sync($event)" shape="round" slot="end">
-          <ion-icon shape="round" name="sync-outline"></ion-icon>
+          <mat-icon svgIcon="sync_white"></mat-icon>
         </ion-button>
         <ng-container *ngIf="states$ | async as states">
           <ng-container *ngIf="states.notification.length > 0; else noNotify">
             <ion-button (click)="notify($event)" shape="round" slot="end">
-              <ion-icon name="notifications"></ion-icon>
+              <mat-icon svgIcon="notifications_white"></mat-icon>
               <ion-badge color="danger"
                 >{{states.notification.length}}</ion-badge
               >
@@ -79,16 +79,28 @@
           </ng-container>
           <ng-template #noNotify>
             <ion-button (click)="notify($event)" shape="round" slot="end">
-              <ion-icon name="notifications-outline"></ion-icon>
+              <mat-icon svgIcon="notifications_none_white"></mat-icon>
             </ion-button>
           </ng-template>
         </ng-container>
-        <ion-button (click)="add($event)" shape="round" slot="end">
-          <ion-icon name="add-outline"></ion-icon>
+        <ion-button [matMenuTriggerFor]="menu" shape="round" slot="end">
+          <mat-icon svgIcon="add_white"></mat-icon>
         </ion-button>
         <ion-button (click)="profile($event)" shape="round" slot="end">
-          <ion-icon name="person-outline"></ion-icon>
+          <mat-icon svgIcon="person_outline_white"></mat-icon>
         </ion-button>
+
+        <mat-menu #menu="matMenu" overlapTrigger="true">
+          <button (click)="add('incoming')" disableRipple="true" mat-menu-item>
+            <mat-icon svgIcon="add"></mat-icon>
+            <span>RECEITA</span>
+          </button>
+
+          <button (click)="add('outcoming')" disableRipple="true" mat-menu-item>
+            <mat-icon svgIcon="add"></mat-icon>
+            <span>DESPESA</span>
+          </button>
+        </mat-menu>
       </div>
     </ion-buttons>
   </ion-toolbar>

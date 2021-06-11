@@ -43,7 +43,7 @@ export class HomePage implements OnInit {
       swipeToClose: true,
       componentProps: {
         type,
-        data,
+        data: { type },
       },
     });
   }

@@ -1,58 +1,53 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <div class="container">
-    <div class="form-field">
-      <div class="form-group">
-        <input
-          [min]="0.01"
-          required
-          class="input-value"
-          ngDefaultControl
-          placeholder="Valor"
-          formControlName="value"
-          currencyMask
-        />
-        <ion-icon name="card-outline"></ion-icon>
-      </div>
-    </div>
+    <mat-form-field floatLabel="always" appearance="outline">
+      <mat-label>Valor</mat-label>
+      <input
+        matInput
+        [min]="0.01"
+        required
+        placeholder="Valor"
+        formControlName="value"
+        currencyMask
+      />
+    </mat-form-field>
 
     <div class="form-field inline">
-      <div class="form-group">
-        <ion-datetime
-          required
-          style="width: 100%"
+      <mat-form-field class="form" floatLabel="always" appearance="outline">
+        <mat-label>Data</mat-label>
+        <input
+          (click)="$event.preventDefault(); picker.open()"
+          autocomplete="off"
           formControlName="date"
+          matInput
           placeholder="Data"
-          [min]="settings.minYear"
-          [max]="settings.maxYear"
-          [monthShortNames]="settings.months"
-        ></ion-datetime>
-        <ion-icon color="medium" name="calendar"></ion-icon>
-      </div>
-      <div class="form-group">
-        <ion-select
-          style="width: 100%"
-          formControlName="category"
-          placeholder="Categoria"
-          cancelText="Cancelar"
-        >
-          <ng-container *ngIf="categories$ | async as cats">
-            <ion-select-option *ngFor="let cat of cats" [value]="cat">{{
-              cat
-            }}</ion-select-option>
-          </ng-container>
-        </ion-select>
-      </div>
-    </div>
+          [matDatepicker]="picker"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker [touchUi]="isMobile" #picker> </mat-datepicker>
+      </mat-form-field>
 
-    <div class="form-field">
-      <div class="form-group">
-        <ion-textarea
-          name="description"
-          formControlName="description"
-          placeholder="Descrição"
-        ></ion-textarea>
-      </div>
+      <mat-form-field class="form" floatLabel="always" appearance="outline">
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="category" placeholder="Categoria">
+          <ng-container *ngIf="categories$ | async as cats">
+            <mat-option *ngFor="let cat of cats" [value]="cat">{{
+              cat
+            }}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
     </div>
+    <mat-form-field
+      class="form-textarea"
+      floatLabel="always"
+      appearance="outline"
+    >
+      <mat-label>Descrição</mat-label>
+      <textarea formControlName="description" matInput></textarea>
+      <!-- <mat-hint>caracteres restantes: {{ charCount }}</mat-hint> -->
+    </mat-form-field>
+
     <ion-buttons class="container-buttons">
       <ion-button (click)="close(false)" class="btn close" type="button"
         >Fechar</ion-button

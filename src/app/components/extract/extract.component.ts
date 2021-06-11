@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatStepper, MatStep } from '@angular/material/stepper';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-extract',
@@ -14,7 +14,6 @@ import { MatStepper, MatStep } from '@angular/material/stepper';
   ],
 })
 export class ExtractComponent implements OnInit {
-  // @ViewChild(MatStepper) stepper: MatStepper;
   @Input() public data: any;
   public listGroupByDay: any[];
 
@@ -23,10 +22,6 @@ export class ExtractComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       this.listGroupByDay = this.groupByDay(this.data.all);
-      // this.stepper.steps.forEach((st: MatStep) => {
-      //   st.completed = true;
-      //   st.state = st.state;
-      // });
     }, 200);
   }
 
@@ -64,6 +59,15 @@ export class ExtractComponent implements OnInit {
         prev[index].list.push(current);
         return prev;
       }, [])
-      .map((item: any) => ({ ...item, day: new Date(item.day).getTime() }));
+      .map((item: any) => ({
+        ...item,
+        day: new Date(item.day).getTime(),
+        total_credits: item.list
+          .map((v: any) => (v.type === 'incoming' ? v.value : 0))
+          .reduce((v, i) => v + i),
+        total_debits: item.list
+          .map((v: any) => (v.type === 'outcoming' ? v.value : 0))
+          .reduce((v, i) => v + i),
+      }));
   }
 }

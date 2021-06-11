@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { CommonModule, registerLocaleData } from '@angular/common';
-import localePt from '@angular/common/locales/pt';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OwlModule } from 'ngx-owl-carousel';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
@@ -14,9 +13,7 @@ import { DashboardPage } from './dashboard.page';
 import { ExtractsComponent } from './extracts/extracts.component';
 import { MainComponent } from './main/main.component';
 import { SettingsComponent } from './settings/settings.component';
-import { VerticalTimelineModule } from 'angular-vertical-timeline';
 
-registerLocaleData(localePt, 'pt');
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +21,6 @@ registerLocaleData(localePt, 'pt');
     DashboardPageRoutingModule,
     SharedModule,
     OwlModule,
-    VerticalTimelineModule,
   ],
   declarations: [
     DashboardPage,
@@ -36,6 +32,5 @@ registerLocaleData(localePt, 'pt');
     ExtractsComponent,
     ExtractComponent,
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt' }],
 })
 export class DashboardPageModule {}

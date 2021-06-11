@@ -1,34 +1,62 @@
 <div class="extract" *ngIf="data">
-  <h2 class="title">Extratos</h2>
+  <h2 class="title">Extrato</h2>
   <div class="extract-container">
     <div *ngFor="let listGrouped of listGroupByDay" class="extract-timeline">
       <div class="extract-timeline-dates">
         <span>{{ listGrouped.day | date: "fullDate" }}</span>
-        <small class="badge-values">R$ {{ formatterValue(1000000000) }}</small>
+        <small class="badge-values"
+          >R$
+          {{
+            formatterValue(listGrouped.total_credits - listGrouped.total_debits)
+          }}</small
+        >
       </div>
       <div class="extract-timeline-area">
         <div *ngFor="let extract of listGrouped.list" class="container-card">
           <div class="hours">
             <small>{{ extract.created_at * 1000 | date: "shortTime" }}hs</small>
           </div>
-          <span class="extract-timeline-icon">
-            <mat-icon>{{ extract.cat_icon }}</mat-icon>
-          </span>
+          <button
+            mat-icon-button
+            disableRipple="true"
+            class="extract-timeline-icon"
+          >
+            <mat-icon [svgIcon]="extract.cat_icon"></mat-icon>
+          </button>
           <div class="extract-timeline-card">
             <p>
               <span>{{ extract.category }}</span>
               <small>{{ extract.description }}</small>
             </p>
-            <span>R$ {{ formatterValue(extract.value) }}</span>
+            <span
+              >{{ extract.type === "outcoming" ? "-" : "" }} R$
+              {{ formatterValue(extract.value) }}</span
+            >
           </div>
           <button
+            class="btn-menu"
             disableRipple="true"
             (click)="$event.stopPropagation()"
             title="Menu"
             mat-icon-button
+            [matMenuTriggerFor]="menu"
           >
-            <mat-icon>more_vert</mat-icon>
+            <mat-icon svgIcon="more_vert"></mat-icon>
           </button>
+          <mat-menu #menu="matMenu" overlapTrigger="true">
+            <button disableRipple="true" mat-menu-item>
+              <mat-icon svgIcon="edit"></mat-icon>
+              <span>EDITAR</span>
+            </button>
+
+            <button disableRipple="true" mat-menu-item>
+              <mat-icon
+                svgIcon="delete_outline"
+                class="icon-mat-menu"
+              ></mat-icon>
+              <span>DELETAR</span>
+            </button>
+          </mat-menu>
         </div>
       </div>
     </div>

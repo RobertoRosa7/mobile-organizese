@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -19,7 +20,9 @@ export class ModalComponent implements OnInit {
     private router: NavController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.data);
+  }
 
   public close(): void {
     this.modalController.dismiss();

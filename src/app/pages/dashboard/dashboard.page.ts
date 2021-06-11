@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-shadow */
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import {
   MenuController,
+  ModalController,
   NavController,
   PopoverController,
   ToastController,
@@ -12,6 +12,7 @@ import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { delay, filter, map, mergeMap } from 'rxjs/operators';
 import * as actionsDashboard from 'src/app/actions/dashboard.actions';
+import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { Strings } from 'src/app/interfaces/strings';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -38,7 +39,8 @@ export class DashboardPage implements OnInit {
     protected as?: ActionsSubject,
     protected dashboardService?: DashboardService,
     protected router?: NavController,
-    protected menu?: MenuController
+    protected menu?: MenuController,
+    protected modalController?: ModalController
   ) {}
 
   ngOnInit() {
@@ -66,17 +68,20 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  public add(ev): void {
-    this.presentPopover(ev, Strings.ADD_REGISTER, {
-      profile: this.states$,
+  public async add(type: string): Promise<any> {
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+      swipeToClose: true,
+      componentProps: {
+        type,
+        data: { type, profile: this.states$ },
+      },
     });
+    await modal.present();
   }
 
   public profile(ev): void {
     this.menu.open('main');
-    // this.presentPopover(ev, Strings.PROFILE, {
-    //   profile: this.states$.pipe(map((state) => state.user)),
-    // });
   }
 
   public closeMenu(): void {

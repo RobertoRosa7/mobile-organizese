@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,6 +21,7 @@ export class AddRegistersComponent implements OnInit {
 
   public categories$: Observable<any>;
   public isLoading = false;
+  public isMobile = false;
 
   public form: FormGroup = this.fb.group({
     date: [''],
@@ -33,7 +36,15 @@ export class AddRegistersComponent implements OnInit {
     months: 'Jan, Fev, Mar, Abr, Mai, Jun, Jul, Aug, Sep, Out, Nov, Dez',
   };
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private breakpoint: BreakpointObserver
+  ) {
+    this.breakpoint
+      .observe([Breakpoints.XSmall])
+      .subscribe((result) => (this.isMobile = !!result.matches));
+  }
 
   ngOnInit() {
     this.categories$ = this.store
