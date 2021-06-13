@@ -74,31 +74,38 @@ export class RegistersEffect {
     )
   );
 
+  public deleteRegisters = createEffect(() =>
+    this.action.pipe(
+      ofType(actions.actionsTypes.DELETE_REGISTERS),
+      mergeMap(({ payload }: any) =>
+        this.dashboardService
+          .deleteRegister(payload)
+          .pipe(catchError((e) => of(e)))
+      ),
+      map((payload) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: {
+              ...payload,
+              source: actions.actionsTypes.ERROR_DELETE_REGISTERS,
+            },
+          });
+        } else {
+          this.dispatchActions({
+            payload: actions.actionsTypes.SUCCESS_DELETE_REGISTERS,
+          });
+          return actions.GET_REGISTERS({ payload });
+        }
+      }),
+      catchError((err) => of(err))
+    )
+  );
+
   constructor(
     private action: Actions,
     private store: Store,
     private dashboardService: DashboardService
   ) {}
-
-  // @Effect()
-  // public deleteRegisters$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.DELETE_REGISTERS),
-  //   mergeMap(({ payload }: any) =>
-  //     this.dashboardService
-  //       .deleteRegister(payload)
-  //       .pipe(catchError((e) => of(e)))
-  //   ),
-  //   map((payload) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: this.props.delete_register };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       this.dispatchActions({ payload: this.props.delete_register });
-  //       return actions.GET_REGISTERS({ payload });
-  //     }
-  //   }),
-  //   catchError((err) => of(err))
-  // );
 
   // @Effect()
   // public showTab$: Observable<Actions> = this.action.pipe(

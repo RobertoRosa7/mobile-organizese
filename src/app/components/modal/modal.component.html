@@ -9,6 +9,17 @@
 <ion-content [ngSwitch]="data.type" class="content">
   <app-login *ngSwitchCase="'login'" (sendClose)="onClose($event)"></app-login>
   <ion-title *ngSwitchCase="'registers'">Cadastro</ion-title>
+
+  <div *ngSwitchCase="'confirm'">
+    <div class="container-confirm">
+      <h3 class="title">Tem certeza que deseja excluir?</h3>
+      <ion-buttons class="container-buttons">
+        <button mat-raised-button color="accent">Cancelar</button>
+        <button mat-raised-button>Excluir</button>
+      </ion-buttons>
+    </div>
+  </div>
+
   <app-add-registers
     [type]="type"
     [profile]="data.profile | async"

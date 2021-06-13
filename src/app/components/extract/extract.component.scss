@@ -4,11 +4,11 @@
   .title {
     @include timeline-dates;
     text-align: left;
-    padding: 0 16px;
+    padding-left: 16px;
   }
   .extract-container {
     .extract-timeline {
-      padding: 0 16px;
+      padding-left: 16px;
       .extract-timeline-area {
         margin: 45px auto;
         width: 100%;
@@ -63,10 +63,6 @@
           margin-left: 8px;
         }
         .btn-menu {
-          width: 24px;
-          height: 40px;
-          display: flex;
-          align-items: center;
           mat-icon {
             font-size: 24px;
           }

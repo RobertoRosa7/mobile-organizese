@@ -92,8 +92,13 @@ const abstract = (payload: any, index: number): any =>
 export const formatterOutcomeIncome = (payload: any): any =>
   payload.outcome_income.map((value: any) => ({
     ...value,
-    name: value.name === 'incoming' ? 'Entrada' : 'Saída',
+    name:
+      value.name === 'incoming'
+        ? 'Entrada'
+        : value.name === 'outcoming'
+        ? 'Saída'
+        : '',
     dates: value.dates.map((date: any) => new Date(date).getTime()),
-    data: value.values,
+    data: value.values ? value.values : 0,
     color: value.name === 'incoming' ? '#0FF5E6' : '#FF4081',
   }));

@@ -148,6 +148,8 @@ export class DashboardPage implements OnInit {
     switch (from) {
       case actionsRegister.actionsTypes.SUCCESS_ADD_REGISTERS:
         return 'Registro cadastrado com sucesso.';
+      case actionsRegister.actionsTypes.SUCCESS_DELETE_REGISTERS:
+        return 'Registro excluído com sucesso.';
       default:
         return '';
     }

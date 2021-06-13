@@ -17,6 +17,10 @@ export class AppComponent implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.addSvgIcon('more_vert')
+      .addSvgIcon('train')
+      .addSvgIcon('restaurant')
+      .addSvgIcon('perm_identity')
+      .addSvgIcon('checkroom')
       .addSvgIcon('edit')
       .addSvgIcon('add')
       .addSvgIcon('person_outline')

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import {
   Component,
   DoCheck,
@@ -7,6 +6,9 @@ import {
   KeyValueDiffers,
   OnInit,
 } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { DELETE_REGISTERS } from '../../actions/registers.actions';
 
 @Component({
   selector: 'app-extract',
@@ -18,7 +20,11 @@ export class ExtractComponent implements OnInit, DoCheck {
   public differ: any;
   public listGroupByDay: any[];
 
-  constructor(private differs: KeyValueDiffers) {
+  constructor(
+    private differs: KeyValueDiffers,
+    private alertController: AlertController,
+    private store: Store
+  ) {
     this.differ = this.differs.find({}).create();
   }
 
@@ -52,6 +58,28 @@ export class ExtractComponent implements OnInit, DoCheck {
 
   public formatterDate(timestamp: number): Date {
     return new Date(timestamp);
+  }
+
+  public async remove(payload: any): Promise<any> {
+    const modal = await this.alertController.create({
+      header: `R$ ${this.formatterValue(payload.value)}`,
+      message: 'Tem certeza que quer excluir?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Excluir',
+          handler: () => this.store.dispatch(DELETE_REGISTERS({ payload })),
+        },
+      ],
+    });
+    await modal.present();
+  }
+
+  public edit(extract: any): void {
+    console.log(extract);
   }
 
   private groupByDay(list: any): any {

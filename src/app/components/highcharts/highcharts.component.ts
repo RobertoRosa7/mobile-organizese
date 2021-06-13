@@ -19,7 +19,6 @@ export class HighchartsComponent implements OnInit, DoCheck {
   @ViewChild('highchart', { static: true }) public highchart: ElementRef;
   @Input() public data: any;
 
-  public highchartData: any;
   public differ: any;
 
   constructor(
@@ -36,20 +35,16 @@ export class HighchartsComponent implements OnInit, DoCheck {
     if (change) {
       change.forEachChangedItem((item: any) => {
         if (item.key === 'data') {
-          this.startChart(this.data);
+          this.chartService.getCharts().subscribe((chart) => {
+            if (this.data.length > 0) {
+              chart.chart.type = 'spline';
+              chart.series = this.data;
+              chart.xAxis.categories = this.data[0].dates;
+              Highcharts.chart(this.highchart.nativeElement, chart);
+            }
+          });
         }
       });
     }
-  }
-
-  private startChart(data) {
-    this.chartService.getCharts().subscribe((chart) => {
-      chart.chart.type = 'spline';
-      if (data.length > 0) {
-        chart.series = data;
-        chart.xAxis.categories = data[0].dates;
-      }
-      Highcharts.chart(this.highchart.nativeElement, chart);
-    });
   }
 }

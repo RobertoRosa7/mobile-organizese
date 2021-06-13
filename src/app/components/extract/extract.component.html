@@ -44,12 +44,16 @@
             <mat-icon svgIcon="more_vert"></mat-icon>
           </button>
           <mat-menu #menu="matMenu" overlapTrigger="true">
-            <button disableRipple="true" mat-menu-item>
+            <button (click)="edit(extract)" disableRipple="true" mat-menu-item>
               <mat-icon svgIcon="edit"></mat-icon>
               <span>EDITAR</span>
             </button>
 
-            <button disableRipple="true" mat-menu-item>
+            <button
+              (click)="remove(extract)"
+              disableRipple="true"
+              mat-menu-item
+            >
               <mat-icon
                 svgIcon="delete_outline"
                 class="icon-mat-menu"
