@@ -26,10 +26,7 @@ export class DashboardEffect {
         } else {
           return this.dashboardService.fetchConsolidado().pipe(
             mergeMap((payload) =>
-              forkJoin([
-                this.storageService.setStore('consolidado_id', payload),
-                of(payload),
-              ])
+              this.setPayloadOnStore('consolidado_id', payload)
             ),
             map(([_, payload]) => payload),
             catchError((e) => of(e))
@@ -64,10 +61,7 @@ export class DashboardEffect {
         } else {
           return this.dashboardService.fetchDashboard(dates).pipe(
             mergeMap((payload) =>
-              forkJoin([
-                this.storageService.setStore('registersToDashboard', payload),
-                of(payload),
-              ])
+              this.setPayloadOnStore('registersToDashboard', payload)
             ),
             map(([_, payload]) => payload),
             catchError((e) => of(e))
@@ -97,10 +91,7 @@ export class DashboardEffect {
       mergeMap(({ dates }) =>
         this.dashboardService.fetchDashboard(dates).pipe(
           mergeMap((payload) =>
-            forkJoin([
-              this.storageService.setStore('registersToDashboard', payload),
-              of(payload),
-            ])
+            this.setPayloadOnStore('registersToDashboard', payload)
           ),
           map(([_, payload]) => payload),
           catchError((e) => of(e))
@@ -125,10 +116,7 @@ export class DashboardEffect {
       mergeMap(() =>
         this.dashboardService.fetchConsolidado().pipe(
           mergeMap((payload) =>
-            forkJoin([
-              this.storageService.setStore('consolidado_id', payload),
-              of(payload),
-            ])
+            this.setPayloadOnStore('consolidado_id', payload)
           ),
           map(([_, payload]) => payload),
           catchError((e) => of(e))
@@ -162,13 +150,7 @@ export class DashboardEffect {
         } else {
           return this.dashboardService.fetchGraphOutcomeIncome(dates).pipe(
             mergeMap((payload) =>
-              forkJoin([
-                this.storageService.setStore(
-                  'fetchGraphOutcomeIncome',
-                  payload
-                ),
-                of(payload),
-              ])
+              this.setPayloadOnStore('fetchGraphOutcomeIncome', payload)
             ),
             map(([_, payload]) => payload),
             catchError((e) => of(e))
@@ -191,29 +173,34 @@ export class DashboardEffect {
     )
   );
 
-  // @Effect()
-  // public putOutcomeIncome$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.PUT_GRAPH_OUTCOME_INCOME),
-  //   switchMap(() => from(this.getDatesFromStore())),
-  //   mergeMap(({ dates }) =>
-  //     this.dashboardService.fetchGraphOutcomeIncome(dates).pipe(
-  //       map((payload) => {
-  //         this.indexedb.update({ id: 'outcome_income_id', payload });
-  //         return payload;
-  //       }),
-  //       catchError((e) => of(e))
-  //     )
-  //   ),
-  //   map((payload) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'put_outcome_income' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_GRAPH_OUTCOME_INCOME({ payload });
-  //     }
-  //   }),
-  //   catchError((err) => of(err))
-  // );
+  public putOutcomeIncome = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.PUT_GRAPH_OUTCOME_INCOME),
+      switchMap(() => from(this.getDatesFromStore())),
+      mergeMap(({ dates }) =>
+        this.dashboardService.fetchGraphOutcomeIncome(dates).pipe(
+          mergeMap((payload) =>
+            this.setPayloadOnStore('fetchGraphOutcomeIncome', payload)
+          ),
+          map(([_, payload]) => payload),
+          catchError((e) => of(e))
+        )
+      ),
+      map((payload) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: {
+              ...payload,
+              source: actionsTypes.ERROR_PUT_GRAPH_OUTCOME_INCOME,
+            },
+          });
+        } else {
+          return SET_GRAPH_OUTCOME_INCOME({ payload });
+        }
+      }),
+      catchError((err) => of(err))
+    )
+  );
 
   constructor(
     private action: Actions,
@@ -363,5 +350,12 @@ export class DashboardEffect {
     return this.store.select(({ dashboard }: any) => ({
       dates: dashboard.graph_dates,
     }));
+  }
+
+  private setPayloadOnStore(storeId: string, payload: any) {
+    return forkJoin([
+      this.storageService.setStore(storeId, payload),
+      of(payload),
+    ]);
   }
 }

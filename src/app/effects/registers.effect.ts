@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { forkJoin, Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import * as actionsDashboard from '../actions/dashboard.actions';
 import { SET_ERRORS, SET_SUCCESS } from '../actions/errors.actions';
@@ -39,10 +39,10 @@ export class RegistersEffect {
   public addRegisters$ = createEffect(() =>
     this.action.pipe(
       ofType(actions.actionsTypes.ADD_REGISTERS),
-      mergeMap(({ payload }) => [
-        actions.ADDED_REGISTERS({ payload }),
-        actions.SET_REGISTERS({ payload }),
-      ]),
+      map(({ payload }) => {
+        this.store.dispatch(actions.ADDED_REGISTERS({ payload }));
+        return actions.SET_REGISTERS({ payload });
+      }),
       catchError((err) => of(err))
     )
   );
@@ -73,14 +73,6 @@ export class RegistersEffect {
       catchError((e) => of(e))
     )
   );
-
-  private props = {
-    fetch_registers: 'fetch_registers',
-    new_register: 'new_register',
-    delete_register: 'delete_register',
-    update_register: 'update_register',
-    fetch_search: 'fetch_search',
-  };
 
   constructor(
     private action: Actions,
@@ -165,41 +157,51 @@ export class RegistersEffect {
   // );
 
   private async dispatchActions(payload?: any): Promise<any> {
-    this.store.dispatch(SET_SUCCESS(payload));
+    await this.setTime();
     await this.putDashboard();
-    await this.putConsolidado();
     await this.putGraphOutcomeIncome();
     await this.putLastDateOutcome();
-    await this.putAutocomplete();
+    await this.putConsolidado();
+    // await this.putAutocomplete();
+
+    await this.putMessageOnSuccess(payload);
   }
 
-  private putDashboard(): Promise<any> {
+  private async putDashboard(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.PUT_DASHBOARD())
     );
   }
 
-  private putConsolidado(): Promise<any> {
+  private async putConsolidado(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.PUT_CONSOLIDADO())
     );
   }
 
-  private putGraphOutcomeIncome(): Promise<any> {
+  private async putGraphOutcomeIncome(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.PUT_GRAPH_OUTCOME_INCOME())
     );
   }
 
-  private putLastDateOutcome(): Promise<any> {
+  private async putLastDateOutcome(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.PUT_LASTDATE_OUTCOME())
     );
   }
 
-  private putAutocomplete(): Promise<any> {
+  private async putAutocomplete(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.UPDATE_AUTOCOMPLETE())
     );
+  }
+
+  private putMessageOnSuccess(payload): Promise<any> {
+    return Promise.resolve(this.store.dispatch(SET_SUCCESS(payload)));
+  }
+
+  private setTime(): Promise<any> {
+    return new Promise((resolve) => setTimeout(() => resolve(true), 2000));
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { SourceErrors } from 'src/app/actions/errors.actions';
+import { map } from 'rxjs/operators';
 import * as actionsApp from '../../../actions/app.actions';
 import * as actionsDashboard from '../../../actions/dashboard.actions';
 import { DashboardPage } from '../dashboard.page';
@@ -14,6 +14,9 @@ export class MainComponent extends DashboardPage implements OnInit {
   public isLoaded = false;
   public error$: Observable<any>;
   public dashboard$: Observable<any>;
+  public highchartData$: Observable<any>;
+  public registersData$: Observable<any>;
+  public consolidadoData$: Observable<any>;
 
   public cards: any[] = [
     {
@@ -49,49 +52,54 @@ export class MainComponent extends DashboardPage implements OnInit {
     this.initializingMain();
   }
 
-  private async initializingMain(): Promise<any> {
+  protected async initializingMain(): Promise<any> {
     await this.initHideValues();
     await this.initGraphOutcomeIncome();
     this.fetchStore();
     this.isLoaded = true;
   }
 
-  private fetchStore() {
-    this.dashboard$ = this.store.select(({ dashboard, errors, app }: any) => ({
-      consolidado: this.cards.map((value: any) => {
-        value.show = app.hidevalues;
-        value.icon = app.hidevalues ? 'eye' : 'eye-off';
-        switch (value.type) {
-          case 'incoming':
-            value.value = dashboard.consolidado.total_credit || 0;
-            value.percent = dashboard.consolidado.percent_credit || 0;
-            break;
-          case 'outcoming':
-            value.value = dashboard.consolidado.total_debit || 0;
-            value.percent = dashboard.consolidado.percent_debit || 0;
-            break;
-          case 'consolidado':
-            value.value = dashboard.consolidado.total_consolidado || 0;
-            value.percent = dashboard.consolidado.percent_consolidado;
-            break;
-        }
-        return value;
-      }),
-      outcomeIncome: dashboard.outcome_income,
-      lastdate: dashboard.lastdate_outcome.dt_start,
+  protected fetchStore() {
+    this.consolidadoData$ = this.store
+      .select(({ dashboard, app }: any) => ({
+        consolidado: this.cards.map((value: any) => {
+          value.show = app.hidevalues;
+          value.icon = app.hidevalues ? 'eye' : 'eye-off';
+          switch (value.type) {
+            case 'incoming':
+              value.value = dashboard.consolidado.total_credit || 0;
+              value.percent = dashboard.consolidado.percent_credit || 0;
+              break;
+            case 'outcoming':
+              value.value = dashboard.consolidado.total_debit || 0;
+              value.percent = dashboard.consolidado.percent_debit || 0;
+              break;
+            case 'consolidado':
+              value.value = dashboard.consolidado.total_consolidado || 0;
+              value.percent = dashboard.consolidado.percent_consolidado;
+              break;
+          }
+          return value;
+        }),
+      }))
+      .pipe(map((state) => state.consolidado));
+
+    this.highchartData$ = this.store
+      .select(({ dashboard }: any) => ({
+        outcomeIncome: dashboard.outcome_income,
+      }))
+      .pipe(map((state) => state.outcomeIncome));
+
+    this.registersData$ = this.store.select(({ dashboard }: any) => ({
       all: dashboard.registers,
-      err:
-        errors.error.source === SourceErrors.INIT_DASHBOARD
-          ? errors.error.error
-          : undefined,
     }));
   }
 
-  private initHideValues(): Promise<any> {
+  protected initHideValues(): Promise<any> {
     return Promise.resolve(this.store.dispatch(actionsApp.GET_HIDE_VALUES()));
   }
 
-  private initGraphOutcomeIncome(): Promise<any> {
+  protected initGraphOutcomeIncome(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.FETCH_GRAPH_OUTCOME_INCOME())
     );

@@ -1,25 +1,25 @@
 <ion-content class="main">
   <div *ngIf="isLoaded; else isLoading" class="main-container">
     <div class="jumbotron">
-      <ng-container *ngIf="dashboard$ | async as states" class="cards-main">
+      <ng-container
+        *ngIf="consolidadoData$ | async as consolidado"
+        class="cards-main"
+      >
         <owl-carousel
           [options]="{ items: 1 }"
           [carouselClasses]="['owl-theme', 'row', 'sliding']"
         >
-          <app-cards
-            *ngFor="let card of states.consolidado"
-            [card]="card"
-          ></app-cards>
+          <app-cards *ngFor="let card of consolidado" [card]="card"></app-cards>
         </owl-carousel>
       </ng-container>
     </div>
 
     <div class="section-highcharts">
-      <app-highcharts [data]="dashboard$ | async"></app-highcharts>
+      <app-highcharts [data]="highchartData$ | async"></app-highcharts>
     </div>
 
     <div class="extact">
-      <app-extract [data]="dashboard$ | async"></app-extract>
+      <app-extract [data]="registersData$ | async"></app-extract>
     </div>
   </div>
   <ng-template #isLoading>

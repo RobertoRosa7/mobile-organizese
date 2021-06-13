@@ -20,9 +20,7 @@ export class ModalComponent implements OnInit {
     private router: NavController
   ) {}
 
-  ngOnInit() {
-    console.log(this.data);
-  }
+  ngOnInit() {}
 
   public close(): void {
     this.modalController.dismiss();

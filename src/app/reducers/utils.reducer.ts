@@ -2,11 +2,14 @@
 import { Register } from '../interfaces/general';
 
 export const updateAll = (all: any): any =>
-  all.map((s: Register) => ({
-    ...s,
-    status: statusTrans(s.status, s.type),
-    cat_icon: returnIcon(s.category),
+  all.map((register: Register) => ({
+    ...register,
+    status: statusTrans(register.status, register.type),
+    cat_icon: returnIcon(register.category),
   }));
+
+export const returnRegisters = (registers) =>
+  registers.length > 0 ? updateAll(registers) : [];
 
 export const total = (lista: any): any => {
   const totals: any = { despesa: 0, receita: 0 };

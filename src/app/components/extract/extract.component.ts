@@ -1,28 +1,38 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  Input,
+  KeyValueDiffers,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-extract',
   templateUrl: './extract.component.html',
   styleUrls: ['./extract.component.scss'],
-  providers: [
-    {
-      provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { displayDefaultIndicatorType: false },
-    },
-  ],
 })
-export class ExtractComponent implements OnInit {
+export class ExtractComponent implements OnInit, DoCheck {
   @Input() public data: any;
+  public differ: any;
   public listGroupByDay: any[];
 
-  constructor() {}
+  constructor(private differs: KeyValueDiffers) {
+    this.differ = this.differs.find({}).create();
+  }
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.listGroupByDay = this.groupByDay(this.data.all);
-    }, 200);
+  ngOnInit() {}
+
+  ngDoCheck(): void {
+    const change = this.differ.diff(this);
+    if (change) {
+      change.forEachChangedItem((item: any) => {
+        if (item.key === 'data') {
+          this.listGroupByDay = this.groupByDay(this.data.all);
+        }
+      });
+    }
   }
 
   public formatterValue(value: number): string {

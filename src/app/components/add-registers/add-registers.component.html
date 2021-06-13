@@ -1,6 +1,6 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <div class="container">
-    <mat-form-field floatLabel="always" appearance="outline">
+    <mat-form-field class="form" floatLabel="always" appearance="outline">
       <mat-label>Valor</mat-label>
       <input
         matInput
@@ -38,14 +38,9 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <mat-form-field
-      class="form-textarea"
-      floatLabel="always"
-      appearance="outline"
-    >
+    <mat-form-field class="form" floatLabel="always" appearance="outline">
       <mat-label>Descrição</mat-label>
       <textarea formControlName="description" matInput></textarea>
-      <!-- <mat-hint>caracteres restantes: {{ charCount }}</mat-hint> -->
     </mat-form-field>
 
     <ion-buttons class="container-buttons">

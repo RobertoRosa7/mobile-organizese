@@ -66,8 +66,8 @@ export class AddRegistersComponent implements OnInit {
   public onSubmit(event): void {
     const payload: Register = {
       category: this.form.value.category || 'Outros',
-      created_at: new Date(this.form.value.date).getTime() / 1000,
-      updated_at: new Date(this.form.value.date).getTime() / 1000,
+      created_at: this.getDateCreated(),
+      updated_at: this.getDateCreated(),
       type: this.type,
       value: this.form.value.value,
       status: 'pending',
@@ -77,12 +77,16 @@ export class AddRegistersComponent implements OnInit {
       description: this.form.value.description?.trim() || 'Sem descrição',
     };
 
-    this.sendPayload.emit({
-      payload: { ...payload, from: Strings.ADD_REGISTER },
-    });
+    this.sendPayload.emit({ payload });
   }
 
   public close(options?): void {
     this.sendPayload.emit(undefined);
+  }
+
+  private getDateCreated(): number {
+    return this.form.value.date
+      ? new Date(this.form.value.date).getTime() / 1000
+      : new Date().getTime() / 1000;
   }
 }

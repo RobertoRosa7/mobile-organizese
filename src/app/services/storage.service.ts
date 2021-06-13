@@ -7,30 +7,33 @@ import { mergeMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class StorageService {
-  constructor(private storage: Storage) {}
+  private localStore: Observable<Storage>;
+  constructor(private storage: Storage) {
+    this.localStore = this.store();
+  }
 
   public setStore(key: string, value: any): Observable<Storage> {
-    return this.store().pipe(mergeMap((store) => store.set(key, value)));
+    return this.localStore.pipe(mergeMap((store) => store.set(key, value)));
   }
 
   public getStore(name: string): Observable<Storage> {
-    return this.store().pipe(mergeMap((store) => store.get(name)));
+    return this.localStore.pipe(mergeMap((store) => store.get(name)));
   }
 
   public removeItem(name: string): Observable<Storage> {
-    return this.store().pipe(mergeMap((store) => store.remove(name)));
+    return this.localStore.pipe(mergeMap((store) => store.remove(name)));
   }
 
   public getAllKeys(): Observable<string[]> {
-    return this.store().pipe(mergeMap((store) => store.keys()));
+    return this.localStore.pipe(mergeMap((store) => store.keys()));
   }
 
   public getLength(): Observable<number> {
-    return this.store().pipe(mergeMap((store) => store.length()));
+    return this.localStore.pipe(mergeMap((store) => store.length()));
   }
 
   public clear(): Observable<void> {
-    return this.store().pipe(mergeMap((store) => store.clear()));
+    return this.localStore.pipe(mergeMap((store) => store.clear()));
   }
 
   private store(): Observable<Storage> {

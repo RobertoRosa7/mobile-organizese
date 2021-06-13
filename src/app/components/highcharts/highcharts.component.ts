@@ -1,15 +1,13 @@
 import {
   Component,
+  DoCheck,
   ElementRef,
   Input,
-  OnChanges,
+  KeyValueDiffers,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import * as moment from 'moment';
-import { Observable, pipe } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
 import { ChartService } from 'src/app/services/chart.service';
 
 @Component({
@@ -17,29 +15,41 @@ import { ChartService } from 'src/app/services/chart.service';
   templateUrl: './highcharts.component.html',
   styleUrls: ['./highcharts.component.scss'],
 })
-export class HighchartsComponent implements OnInit, OnChanges {
+export class HighchartsComponent implements OnInit, DoCheck {
   @ViewChild('highchart', { static: true }) public highchart: ElementRef;
   @Input() public data: any;
 
-  constructor(private chartService: ChartService) {}
+  public highchartData: any;
+  public differ: any;
 
-  ngOnInit() {
-    this.chartService
-      .getCharts()
-      .pipe(
-        delay(300),
-        map((chart) => {
-          chart.chart.type = 'spline';
-          chart.series = this.data.outcomeIncome;
-          chart.xAxis.categories = this.data.outcomeIncome[0].dates;
-          return chart;
-        })
-      )
-      .subscribe((chart) =>
-        Highcharts.chart(this.highchart.nativeElement, chart)
-      );
+  constructor(
+    private chartService: ChartService,
+    private differs: KeyValueDiffers
+  ) {
+    this.differ = this.differs.find({}).create();
   }
-  ngOnChanges() {
-    console.log();
+
+  ngOnInit() {}
+
+  ngDoCheck(): void {
+    const change = this.differ.diff(this);
+    if (change) {
+      change.forEachChangedItem((item: any) => {
+        if (item.key === 'data') {
+          this.startChart(this.data);
+        }
+      });
+    }
+  }
+
+  private startChart(data) {
+    this.chartService.getCharts().subscribe((chart) => {
+      chart.chart.type = 'spline';
+      if (data.length > 0) {
+        chart.series = data;
+        chart.xAxis.categories = data[0].dates;
+      }
+      Highcharts.chart(this.highchart.nativeElement, chart);
+    });
   }
 }

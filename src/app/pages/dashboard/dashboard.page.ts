@@ -78,6 +78,12 @@ export class DashboardPage implements OnInit {
       },
     });
     await modal.present();
+    const event = (await modal.onDidDismiss()).data;
+    if (event) {
+      this.store.dispatch(
+        actionsRegister.ADD_REGISTERS({ payload: event.payload })
+      );
+    }
   }
 
   public profile(ev): void {
@@ -99,23 +105,13 @@ export class DashboardPage implements OnInit {
       },
     });
     await popover.present();
-    const event = (await popover.onDidDismiss()).data;
-    if (event) {
-      switch (event.payload.from) {
-        case Strings.ADD_REGISTER:
-          this.store.dispatch(
-            actionsRegister.ADD_REGISTERS({ payload: event.payload })
-          );
-          break;
-      }
-    }
   }
 
   public backToDashboard(): void {
     console.log('back', this.router);
   }
 
-  private fetchErrors(): void {
+  protected fetchErrors(): void {
     const error$ = this.store
       .select(({ errors }: any) => ({
         error: this.handlerErrors(errors.error),
@@ -133,7 +129,7 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  private fetchSuccess(): void {
+  protected fetchSuccess(): void {
     const success$ = this.store
       .select(({ errors }: any) => ({
         success: this.handlerSuccess(errors.from),
@@ -148,7 +144,7 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  private handlerSuccess(from: string): string {
+  protected handlerSuccess(from: string): string {
     switch (from) {
       case actionsRegister.actionsTypes.SUCCESS_ADD_REGISTERS:
         return 'Registro cadastrado com sucesso.';
@@ -157,32 +153,20 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  private initializeApp(): Promise<any> {
+  protected initializeApp(): Promise<any> {
     return new Promise(async (resolve) => {
+      await this.initMain();
       await this.initDashboard();
       await this.getProfile();
-      await this.initMain();
       setTimeout(() => resolve(true), 500);
     });
   }
 
-  private getProfile(): Promise<any> {
+  protected getProfile(): Promise<any> {
     return Promise.resolve(this.store.dispatch(actionsProfile.GET_PROFILE()));
   }
 
-  private initDashboard(): Promise<any> {
-    return Promise.resolve(
-      this.store.dispatch(actionsDashboard.FETCH_DASHBOARD())
-    );
-  }
-
-  private initMain(): Promise<any> {
-    return Promise.resolve(
-      this.store.dispatch(actionsDashboard.INIT_DASHBOARD())
-    );
-  }
-
-  private handlerErrors(error: any) {
+  protected handlerErrors(error: any) {
     let message = '';
     switch (error.source) {
       case actionsDashboard.actionsTypes.ERROR_FETCH_DASHBOARD:
@@ -216,7 +200,7 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  private async createToast(message: string): Promise<HTMLIonToastElement> {
+  protected async createToast(message: string): Promise<HTMLIonToastElement> {
     return this.toastController.create({
       message,
       duration: 5000,
@@ -224,11 +208,11 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  private onActionsTypes(type: string): Observable<any> {
+  protected onActionsTypes(type: string): Observable<any> {
     return this.as ? this.as.pipe(filter((a) => a.type === type)) : of(null);
   }
 
-  private getLastRegister(list: any[]): number {
+  protected getLastRegister(list: any[]): number {
     return list.length > 0
       ? [...list].sort((a: any, b: any) => {
           if (a.created_at > b.created_at) {
@@ -241,7 +225,7 @@ export class DashboardPage implements OnInit {
       : new Date().getTime();
   }
 
-  private fetchLastRegister(): Observable<any> {
+  protected fetchLastRegister(): Observable<any> {
     return this.onActionsTypes(
       actionsDashboard.actionsTypes.SET_DASHBOARD
     ).pipe(
@@ -258,41 +242,53 @@ export class DashboardPage implements OnInit {
     );
   }
 
-  private async dispatchActions(payload?: any): Promise<any> {
+  protected initDashboard(): Promise<any> {
+    return Promise.resolve(
+      this.store.dispatch(actionsDashboard.FETCH_DASHBOARD())
+    );
+  }
+
+  protected initMain(): Promise<any> {
+    return Promise.resolve(
+      this.store.dispatch(actionsDashboard.INIT_DASHBOARD())
+    );
+  }
+
+  protected async dispatchActions(payload?: any): Promise<any> {
     await this.putDashboard();
     await this.putConsolidado();
-    // await this.putGraphOutcomeIncome();
-    // await this.putLastDateOutcome();
+    await this.putGraphOutcomeIncome();
+    await this.putLastDateOutcome();
     // await this.putAutocomplete();
     const toast = await this.createToast('Aplicação atualizada.');
     await toast.present();
   }
 
-  private putDashboard(): Promise<any> {
+  protected putDashboard(): Promise<any> {
     return Promise.resolve(
       this.store?.dispatch(actionsDashboard.PUT_DASHBOARD())
     );
   }
 
-  private putConsolidado(): Promise<any> {
+  protected putConsolidado(): Promise<any> {
     return Promise.resolve(
       this.store?.dispatch(actionsDashboard.PUT_CONSOLIDADO())
     );
   }
 
-  private putGraphOutcomeIncome(): Promise<any> {
+  protected putGraphOutcomeIncome(): Promise<any> {
     return Promise.resolve(
       this.store?.dispatch(actionsDashboard.PUT_GRAPH_OUTCOME_INCOME())
     );
   }
 
-  private putLastDateOutcome(): Promise<any> {
+  protected putLastDateOutcome(): Promise<any> {
     return Promise.resolve(
       this.store?.dispatch(actionsDashboard.PUT_LASTDATE_OUTCOME())
     );
   }
 
-  private putAutocomplete(): Promise<any> {
+  protected putAutocomplete(): Promise<any> {
     return Promise.resolve(
       this.store?.dispatch(actionsDashboard.UPDATE_AUTOCOMPLETE())
     );

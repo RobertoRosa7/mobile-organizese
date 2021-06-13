@@ -81,24 +81,10 @@ const dashboardReducers = createReducer(
     ...states,
     notification_list: payload,
   })),
-  on(actions.SET_DASHBOARD, (states, { payload }) => {
-    const totals: any = utils.total(payload.data.results);
-    return {
-      ...states,
-      registers:
-        payload.data.results.length > 0
-          ? utils.updateAll(payload.data.results)
-          : [],
-      // consolidado: payload.data.consolidado,
-      // total: payload.data.total,
-      // total_geral: payload.data.total_geral,
-      // total_despesas: totals.despesa,
-      // total_receita: totals.receita,
-      // a_pagar: payload.data.consolidado.a_pagar,
-      // a_receber: payload.data.consolidado.a_receber,
-      // all_days_period: payload.data.days <= 0 ? 1 : payload.data.days,
-    };
-  }),
+  on(actions.SET_DASHBOARD, (states, { payload }) => ({
+    ...states,
+    registers: utils.returnRegisters(payload.data.results),
+  })),
   on(actions.SET_GRAPH_CATEGORY, (states, { payload }) => {
     const payloadFormated: any = utils.formatDataToGraphCategory({
       ...payload,

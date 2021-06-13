@@ -28,7 +28,8 @@
   display: flex;
   gap: 10px;
 }
-.form-field.inline .form-group {
+.form-field.inline .form-group,
+.form-field.inline .form {
   width: 48%;
 }
 .input-value {
@@ -36,6 +37,11 @@
   height: 45px;
   border: none;
   outline: none;
+}
+.container {
+  .form {
+    width: 100%;
+  }
 }
 .container-buttons {
   justify-content: space-between;
