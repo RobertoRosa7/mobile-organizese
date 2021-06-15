@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import * as actionsDashboard from '../actions/dashboard.actions';
 import { SET_ERRORS, SET_SUCCESS } from '../actions/errors.actions';
@@ -101,6 +101,36 @@ export class RegistersEffect {
     )
   );
 
+  public updateRegister = createEffect(() =>
+    this.action.pipe(
+      ofType(actions.actionsTypes.UPDATE_REGISTER),
+      mergeMap(({ payload }: any) =>
+        forkJoin([
+          this.dashboardService
+            .updateRegister(payload)
+            .pipe(catchError((e) => of(e))),
+          of(payload),
+        ])
+      ),
+      map(([response, _]) => {
+        if (response instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: {
+              ...response,
+              source: actions.actionsTypes.ERROR_UPDATE_REGISTERS,
+            },
+          });
+        } else {
+          this.dispatchActions({
+            payload: actions.actionsTypes.SUCCESS_UPDATE_REGISTERS,
+          });
+          return actions.SET_UPDATE({ payload: response.data });
+        }
+      }),
+      catchError((err) => of(err))
+    )
+  );
+
   constructor(
     private action: Actions,
     private store: Store,
@@ -114,29 +144,6 @@ export class RegistersEffect {
   //     const showtabs: any = {};
   //     payload.forEach((e: any) => (showtabs[e] = true));
   //     return actions.SET_SHOWTAB({ payload: showtabs });
-  //   }),
-  //   catchError((err) => of(err))
-  // );
-
-  // @Effect()
-  // public updateRegister$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.UPDATE_REGISTER),
-  //   mergeMap(({ payload }: any) =>
-  //     forkJoin([
-  //       this.dashboardService
-  //         .updateRegister(payload)
-  //         .pipe(catchError((e) => of(e))),
-  //       of(payload),
-  //     ])
-  //   ),
-  //   map(([response, _]) => {
-  //     if (response instanceof HttpErrorResponse) {
-  //       const source = { ...response, source: this.props.update_register };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       this.dispatchActions({ payload: this.props.update_register });
-  //       return actions.SET_UPDATE({ payload: response.data });
-  //     }
   //   }),
   //   catchError((err) => of(err))
   // );

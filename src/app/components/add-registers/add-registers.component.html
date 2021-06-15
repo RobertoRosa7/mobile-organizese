@@ -49,7 +49,9 @@
       >
       <ion-button [disabled]="!form.valid" class="btn income" type="submit">
         <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-        <span *ngIf="!isLoading">registrar</span>
+        <span *ngIf="!isLoading">
+          {{ edit ? "atualizar" : "registrar" }}
+        </span>
       </ion-button>
     </ion-buttons>
   </div>

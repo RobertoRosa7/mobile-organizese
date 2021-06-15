@@ -17,6 +17,7 @@ export class MainComponent extends DashboardPage implements OnInit {
   public highchartData$: Observable<any>;
   public registersData$: Observable<any>;
   public consolidadoData$: Observable<any>;
+  public isContentLoaded: boolean;
 
   public cards: any[] = [
     {
@@ -56,7 +57,6 @@ export class MainComponent extends DashboardPage implements OnInit {
     await this.initHideValues();
     await this.initGraphOutcomeIncome();
     this.fetchStore();
-    this.isLoaded = true;
   }
 
   protected fetchStore() {
@@ -90,8 +90,9 @@ export class MainComponent extends DashboardPage implements OnInit {
       }))
       .pipe(map((state) => state.outcomeIncome));
 
-    this.registersData$ = this.store.select(({ dashboard }: any) => ({
+    this.registersData$ = this.store.select(({ dashboard, profile }: any) => ({
       all: dashboard.registers,
+      profile: profile.profile,
     }));
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
@@ -17,6 +18,9 @@ import { Strings } from 'src/app/interfaces/strings';
 export class AddRegistersComponent implements OnInit {
   @Input() public type: string;
   @Input() public profile: any;
+  @Input() public edit: boolean;
+  @Input() public extract: any;
+
   @Output() public sendPayload = new EventEmitter();
 
   public categories$: Observable<any>;
@@ -52,6 +56,15 @@ export class AddRegistersComponent implements OnInit {
         categories: registers.categories,
       }))
       .pipe(map((state) => state.categories));
+
+    if (this.edit) {
+      this.form.patchValue({
+        description: this.extract.description,
+        value: this.extract.value,
+        category: this.extract.category,
+        date: new Date(this.extract.created_at * 1000),
+      });
+    }
   }
 
   public formatterTitle(text: string): string {
@@ -70,11 +83,13 @@ export class AddRegistersComponent implements OnInit {
       updated_at: this.getDateCreated(),
       type: this.type,
       value: this.form.value.value,
-      status: 'pending',
+      status: this.edit ? this.extract.status : 'pending',
       brand: this.form.value.brand || '',
       edit: false,
-      user: this.profile.user,
+      user: { ...this.profile.user, _id: this.extract._id },
       description: this.form.value.description?.trim() || 'Sem descrição',
+      _id: this.extract._id,
+      cat_icon: this.edit ? this.extract.cat_icon : '',
     };
 
     this.sendPayload.emit({ payload });

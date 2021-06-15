@@ -6,9 +6,13 @@ import {
   KeyValueDiffers,
   OnInit,
 } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { DELETE_REGISTERS } from '../../actions/registers.actions';
+import {
+  DELETE_REGISTERS,
+  UPDATE_REGISTER,
+} from '../../actions/registers.actions';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-extract',
@@ -23,6 +27,7 @@ export class ExtractComponent implements OnInit, DoCheck {
   constructor(
     private differs: KeyValueDiffers,
     private alertController: AlertController,
+    private modalController: ModalController,
     private store: Store
   ) {
     this.differ = this.differs.find({}).create();
@@ -78,8 +83,27 @@ export class ExtractComponent implements OnInit, DoCheck {
     await modal.present();
   }
 
-  public edit(extract: any): void {
-    console.log(extract);
+  public async edit(extract: any): Promise<any> {
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+      swipeToClose: true,
+      componentProps: {
+        data: {
+          edit: true,
+          type: 'add-registers',
+          operation: extract.type,
+          profile: this.store.select(({ profile }: any) => ({
+            user: profile.profile,
+          })),
+          extract,
+        },
+      },
+    });
+    await modal.present();
+    const event = (await modal.onDidDismiss()).data;
+    if (event) {
+      this.store.dispatch(UPDATE_REGISTER({ payload: event.payload }));
+    }
   }
 
   private groupByDay(list: any): any {

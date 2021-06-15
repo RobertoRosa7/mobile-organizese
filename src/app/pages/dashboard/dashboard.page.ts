@@ -73,8 +73,13 @@ export class DashboardPage implements OnInit {
       component: ModalComponent,
       swipeToClose: true,
       componentProps: {
-        type,
-        data: { type, profile: this.states$ },
+        data: {
+          edit: false,
+          type: 'add-registers',
+          operation: type,
+          profile: this.states$,
+          extract: null,
+        },
       },
     });
     await modal.present();
@@ -150,56 +155,21 @@ export class DashboardPage implements OnInit {
         return 'Registro cadastrado com sucesso.';
       case actionsRegister.actionsTypes.SUCCESS_DELETE_REGISTERS:
         return 'Registro excluído com sucesso.';
+      case actionsRegister.actionsTypes.SUCCESS_UPDATE_REGISTERS:
+        return 'Registro atualizado com sucesso.';
       default:
         return '';
     }
   }
 
-  protected initializeApp(): Promise<any> {
-    return new Promise(async (resolve) => {
-      await this.initMain();
-      await this.initDashboard();
-      await this.getProfile();
-      setTimeout(() => resolve(true), 500);
-    });
+  protected async initializeApp(): Promise<any> {
+    await this.initMain();
+    await this.initDashboard();
+    await this.getProfile();
   }
 
   protected getProfile(): Promise<any> {
     return Promise.resolve(this.store.dispatch(actionsProfile.GET_PROFILE()));
-  }
-
-  protected handlerErrors(error: any) {
-    let message = '';
-    switch (error.source) {
-      case actionsDashboard.actionsTypes.ERROR_FETCH_DASHBOARD:
-        if (error.status === 0) {
-          message = 'Não foi possível carregar os registros.';
-        } else {
-          message = error.error.message;
-        }
-        return { ...error, message };
-      case actionsDashboard.actionsTypes.ERROR_GRAPH_OUTCOME_INCOME:
-        if (error.status === 0) {
-          message = 'Não foi possível carregar os registros.';
-        } else {
-          message = error.error.message;
-        }
-        return { ...error, message };
-      case actionsProfile.ActionsTypes.ERROR_PROFILE:
-        if (error.status === 0) {
-          message = 'Não foi possível carregar seu perfil';
-        } else {
-          message = error.error.message;
-        }
-        return { ...error, message };
-      case actionsRegister.actionsTypes.ERROR_ADD_REGISTERS:
-        if (error.status === 0) {
-          message = 'Não foi possível adicionar seu registro.';
-        } else {
-          message = error.error.message;
-        }
-        return { ...error, message };
-    }
   }
 
   protected async createToast(message: string): Promise<HTMLIonToastElement> {
@@ -294,5 +264,53 @@ export class DashboardPage implements OnInit {
     return Promise.resolve(
       this.store?.dispatch(actionsDashboard.UPDATE_AUTOCOMPLETE())
     );
+  }
+
+  protected handlerErrors(error: any) {
+    let message = '';
+    switch (error.source) {
+      case actionsDashboard.actionsTypes.ERROR_FETCH_DASHBOARD:
+        if (error.status === 0) {
+          message = 'Não foi possível carregar os registros.';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
+      case actionsDashboard.actionsTypes.ERROR_GRAPH_OUTCOME_INCOME:
+        if (error.status === 0) {
+          message = 'Não foi possível carregar os registros.';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
+      case actionsProfile.ActionsTypes.ERROR_PROFILE:
+        if (error.status === 0) {
+          message = 'Não foi possível carregar seu perfil';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
+      case actionsRegister.actionsTypes.ERROR_ADD_REGISTERS:
+        if (error.status === 0) {
+          message = 'Não foi possível adicionar seu registro.';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
+      case actionsRegister.actionsTypes.ERROR_DELETE_REGISTERS:
+        if (error.status === 0) {
+          message = 'Não foi possível remover registro.';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
+      case actionsRegister.actionsTypes.ERROR_UPDATE_REGISTERS:
+        if (error.status === 0) {
+          message = 'Não foi possível atualizar registro.';
+        } else {
+          message = error.error.message;
+        }
+        return { ...error, message };
+    }
   }
 }
