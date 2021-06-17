@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet, ModalController, Platform } from '@ionic/angular';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
@@ -17,12 +16,12 @@ export class HomePage implements OnInit {
     private modalController: ModalController,
     private platform: Platform,
     private routerOutlet: IonRouterOutlet,
-    private location: Location
   ) {
     this.backButtonEvent();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   public async openDialog(type: string): Promise<any> {
     const modal = await this.modal(type);

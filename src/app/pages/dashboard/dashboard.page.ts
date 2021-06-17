@@ -45,6 +45,7 @@ export class DashboardPage implements OnInit {
 
   ngOnInit() {
     console.log('its working!');
+    console.log('this is my first code using vim')
     this.initializeApp();
     this.fetchErrors();
     this.fetchSuccess();
@@ -58,11 +59,11 @@ export class DashboardPage implements OnInit {
     }));
   }
 
-  public sync(ev): void {
+  public sync(): void {
     this.dispatchActions();
   }
 
-  public notify(ev): void {
+  public notify(ev:any): void {
     this.presentPopover(ev, Strings.NOTIFY, {
       notify: this.states$.pipe(map((state) => state.notification)),
     });
@@ -91,7 +92,7 @@ export class DashboardPage implements OnInit {
     }
   }
 
-  public profile(ev): void {
+  public profile(): void {
     this.menu.open('main');
   }
 

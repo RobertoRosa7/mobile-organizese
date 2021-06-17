@@ -65,7 +65,7 @@
   <ion-toolbar class="ion-toolbar">
     <ion-buttons>
       <div class="container-buttons">
-        <ion-button (click)="sync($event)" shape="round" slot="end">
+        <ion-button (click)="sync()" shape="round" slot="end">
           <mat-icon svgIcon="sync_white"></mat-icon>
         </ion-button>
         <ng-container *ngIf="states$ | async as states">
@@ -86,7 +86,7 @@
         <ion-button [matMenuTriggerFor]="menu" shape="round" slot="end">
           <mat-icon svgIcon="add_white"></mat-icon>
         </ion-button>
-        <ion-button (click)="profile($event)" shape="round" slot="end">
+        <ion-button (click)="profile()" shape="round" slot="end">
           <mat-icon svgIcon="person_outline_white"></mat-icon>
         </ion-button>
 
