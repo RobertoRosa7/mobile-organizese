@@ -57,6 +57,8 @@ export class DashboardPage implements OnInit {
       user: profile.profile,
       notification: dashboard.notification_list,
     }));
+
+    console.log('bingo de teste')
   }
 
   public sync(): void {
