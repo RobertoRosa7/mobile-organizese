@@ -3,12 +3,10 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
-import { Strings } from 'src/app/interfaces/strings';
 
 @Component({
   selector: 'app-add-registers',
@@ -86,11 +84,19 @@ export class AddRegistersComponent implements OnInit {
       status: this.edit ? this.extract.status : 'pending',
       brand: this.form.value.brand || '',
       edit: false,
-      user: { ...this.profile.user, _id: this.extract._id },
+      user: {
+        ...this.profile.user,
+        _id: this.edit
+          ? { $oid: this.profile.user._id }
+          : this.profile.user._id,
+      },
       description: this.form.value.description?.trim() || 'Sem descrição',
-      _id: this.extract._id,
       cat_icon: this.edit ? this.extract.cat_icon : '',
     };
+
+    if (this.edit) {
+      payload._id = this.extract._id;
+    }
 
     this.sendPayload.emit({ payload });
   }

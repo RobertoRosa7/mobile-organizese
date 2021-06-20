@@ -1,0 +1,39 @@
+@import "../../../theme/mixins";
+
+.highcharts {
+  .dates,
+  .dates .form-inline {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    display: flex;
+    position: relative;
+  }
+  .dates {
+    max-width: 480px;
+    margin-left: auto;
+    align-items: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding: 16px;
+    .form-inline,
+    .form {
+      width: 100%;
+    }
+    .form-inline {
+      max-width: 320px;
+      .form {
+        max-width: 130px;
+      }
+    }
+    .buttons button {
+      @include btn;
+      width: 120px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .date .form-inline {
+    max-width: 100% !important;
+  }
+}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -205,8 +206,8 @@ export class DashboardService {
 
   private convertDates(dates: any) {
     return {
-      dtStart: new Date(dates.dt_start).getTime() / 1000,
-      dtEnd: new Date(dates.dt_end).getTime() / 1000,
+      dt_start: new Date(dates.dt_start).getTime() / 1000,
+      dt_end: new Date(dates.dt_end).getTime() / 1000,
     };
   }
 

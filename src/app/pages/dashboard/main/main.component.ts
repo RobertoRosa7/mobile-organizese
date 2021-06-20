@@ -17,6 +17,7 @@ export class MainComponent extends DashboardPage implements OnInit {
   public highchartData$: Observable<any>;
   public registersData$: Observable<any>;
   public consolidadoData$: Observable<any>;
+  public minDate$: Observable<any>;
   public isContentLoaded: boolean;
 
   public cards: any[] = [
@@ -56,6 +57,7 @@ export class MainComponent extends DashboardPage implements OnInit {
   protected async initializingMain(): Promise<any> {
     await this.initHideValues();
     await this.initGraphOutcomeIncome();
+    await this.initLastDateOutcomeIncome();
     this.fetchStore();
   }
 
@@ -87,13 +89,21 @@ export class MainComponent extends DashboardPage implements OnInit {
     this.highchartData$ = this.store
       .select(({ dashboard }: any) => ({
         outcomeIncome: dashboard.outcome_income,
+        dtStart: dashboard.graph_dates.dt_start,
+        dtEnd: dashboard.graph_dates.dt_end,
       }))
-      .pipe(map((state) => state.outcomeIncome));
+      .pipe(map((state) => state));
 
     this.registersData$ = this.store.select(({ dashboard, profile }: any) => ({
       all: dashboard.registers,
       profile: profile.profile,
     }));
+
+    this.minDate$ = this.store
+      .select(({ dashboard }: any) => ({
+        lastDate: dashboard.lastdate_outcome,
+      }))
+      .pipe(map((state) => new Date(state.lastDate.dt_start)));
   }
 
   protected initHideValues(): Promise<any> {
@@ -103,6 +113,12 @@ export class MainComponent extends DashboardPage implements OnInit {
   protected initGraphOutcomeIncome(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.FETCH_GRAPH_OUTCOME_INCOME())
+    );
+  }
+
+  protected initLastDateOutcomeIncome(): Promise<any> {
+    return Promise.resolve(
+      this.store.dispatch(actionsDashboard.FETCH_LASTDATE_OUTCOME())
     );
   }
 }

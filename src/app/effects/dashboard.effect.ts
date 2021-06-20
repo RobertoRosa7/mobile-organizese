@@ -9,6 +9,7 @@ import {
   GET_TOTALS,
   SET_DASHBOARD,
   SET_GRAPH_OUTCOME_INCOME,
+  SET_LASTDATE_OUTCOME,
 } from '../actions/dashboard.actions';
 import { SET_ERRORS, SourceErrors } from '../actions/errors.actions';
 import { DashboardService } from '../services/dashboard.service';
@@ -202,6 +203,67 @@ export class DashboardEffect {
     )
   );
 
+  public fetchLastdateOutcome = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.FETCH_LASTDATE_OUTCOME),
+      mergeMap(() => this.storageService.getStore('lastDateOutcome')),
+      mergeMap((payload: any) => {
+        if (payload) {
+          return of(payload);
+        } else {
+          return this.dashboardService.fetchLastDate().pipe(
+            mergeMap((response: any) =>
+              this.setPayloadOnStore('lastDateOutcome', response)
+            ),
+            map(([_, response]) => response),
+            catchError((e) => of(e))
+          );
+        }
+      }),
+      map((payload: any) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: {
+              ...payload,
+              source: actionsTypes.ERROR_FETCH_LASTE_DATE_OUTCOME,
+            },
+          });
+        } else {
+          return SET_LASTDATE_OUTCOME({ payload });
+        }
+      }),
+      catchError((e) => of(e))
+    )
+  );
+
+  public putLastdateOutcome = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.PUT_LASTDATE_OUTCOME),
+      mergeMap(() =>
+        this.dashboardService.fetchLastDate().pipe(
+          mergeMap((payload) =>
+            this.setPayloadOnStore('lastDateOutcome', payload)
+          ),
+          map(([_, payload]) => payload),
+          catchError((e) => of(e))
+        )
+      ),
+      map((payload: any) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: {
+              ...payload,
+              source: actionsTypes.ERROR_PUT_GRAPH_OUTCOME_INCOME,
+            },
+          });
+        } else {
+          return SET_LASTDATE_OUTCOME({ payload });
+        }
+      }),
+      catchError((e) => of(e))
+    )
+  );
+
   constructor(
     private action: Actions,
     private storageService: StorageService,
@@ -272,74 +334,6 @@ export class DashboardEffect {
   //   catchError((err) => of(err))
   // );
 
-  // @Effect()
-  // public devMode$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.GET_DEV_MODE),
-  //   mergeMap(({ payload }) =>
-  //     this.dashboardService.setDevMode(payload).pipe(catchError((e) => of(e)))
-  //   ),
-  //   map((payload: any) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'dev_mode' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_DEV_MODE({ payload });
-  //     }
-  //   }),
-  //   catchError((e) => of(e))
-  // );
-
-  // @Effect()
-  // public fetchLastdateOutcome$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.FETCH_LASTDATE_OUTCOME),
-  //   mergeMap(() => this.indexedb.getById('lastdate_outcome_id')),
-  //   mergeMap((payload) => {
-  //     if (payload) {
-  //       return of(payload.payload);
-  //     } else {
-  //       return this.dashboardService.fetchLastDate().pipe(
-  //         map((payload) => {
-  //           this.indexedb.create({ id: 'lastdate_outcome_id', payload });
-  //           return payload;
-  //         }),
-  //         catchError((e) => of(e))
-  //       );
-  //     }
-  //   }),
-  //   map((payload: any) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'lastdate_outcome' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_LASTDATE_OUTCOME({ payload });
-  //     }
-  //   }),
-  //   catchError((e) => of(e))
-  // );
-
-  // @Effect()
-  // public putLastdateOutcome$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.PUT_LASTDATE_OUTCOME),
-  //   mergeMap(() =>
-  //     this.dashboardService.fetchLastDate().pipe(
-  //       map((payload) => {
-  //         this.indexedb.update({ id: 'lastdate_outcome_id', payload });
-  //         return payload;
-  //       }),
-  //       catchError((e) => of(e))
-  //     )
-  //   ),
-  //   map((payload: any) => {
-  //     if (payload instanceof HttpErrorResponse) {
-  //       const source = { ...payload, source: 'put_lastdate_outcome' };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_LASTDATE_OUTCOME({ payload });
-  //     }
-  //   }),
-  //   catchError((e) => of(e))
-  // );
-
   private getDatesFromStore(): Promise<any> {
     return new Promise((resolve) =>
       this.getDates().subscribe((dates) => resolve(dates))
@@ -352,7 +346,7 @@ export class DashboardEffect {
     }));
   }
 
-  private setPayloadOnStore(storeId: string, payload: any) {
+  private setPayloadOnStore(storeId: string, payload: any): Observable<any[]> {
     return forkJoin([
       this.storageService.setStore(storeId, payload),
       of(payload),

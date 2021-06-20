@@ -1,5 +1,5 @@
 <div class="highcharts">
-  <!-- <form class="date" (ngSubmit)="onSubmit()">
+  <form class="dates" (ngSubmit)="onSubmit()">
     <div class="form-inline">
       <mat-form-field
         (click)="$event.preventDefault(); pickerStart.open()"
@@ -47,10 +47,10 @@
     </div>
 
     <div matTooltip="Filtrar" class="buttons">
-      <button disableRipple="true" type="submit" mat-raised-button>
+      <button class="btn-filter" disableRipple="true" type="submit" mat-raised-button>
         Filtrar
       </button>
     </div>
-  </form> -->
+  </form>
   <div #highchart></div>
 </div>
