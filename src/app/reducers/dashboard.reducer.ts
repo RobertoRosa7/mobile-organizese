@@ -28,8 +28,8 @@ const BASE = {
   outcome_income: {},
   lastdate_outcome: {},
   graph_dates: {
-    dt_start: moment().subtract(31, 'days'),
-    dt_end: moment(new Date()),
+    dt_start: moment().subtract(31, 'days').toLocaleString(),
+    dt_end: moment(new Date()).toLocaleString(),
   },
 };
 
@@ -69,7 +69,7 @@ const dashboardReducers = createReducer(
     ...states,
     auto_complete: payload,
   })),
-  on(actions.FETCH_DATES, (states, { payload }) => ({
+  on(actions.SET_DATES, (states, { payload }) => ({
     ...states,
     graph_dates: payload,
   })),

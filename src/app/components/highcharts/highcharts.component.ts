@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import {
   FETCH_DATES,
+  PUT_DATES,
   PUT_GRAPH_OUTCOME_INCOME,
 } from '../../actions/dashboard.actions';
 @Component({
@@ -58,8 +59,8 @@ export class HighchartsComponent implements OnInit, DoCheck {
         if (item.key === 'data') {
           this.chartService.getCharts().subscribe((chart) => {
             if (this.data.outcomeIncome.length > 0) {
-              this.dtEnd = this.data.dtEnd;
-              this.dtStart = this.data.dtStart;
+              this.dtEnd = new Date(this.data.dt_end);
+              this.dtStart = new Date(this.data.dt_start);
               chart.chart.type = 'spline';
               chart.series = this.data.outcomeIncome;
               chart.xAxis.categories = this.data.outcomeIncome[0].dates;
@@ -73,13 +74,14 @@ export class HighchartsComponent implements OnInit, DoCheck {
 
   public onSubmit(): void {
     this.store.dispatch(
-      FETCH_DATES({
+      PUT_DATES({
         payload: {
-          dt_end: moment(this.dtEnd),
-          dt_start: moment(this.dtStart),
+          dt_end: moment(this.dtEnd).toLocaleString(),
+          dt_start: moment(this.dtStart).toLocaleString(),
         },
       })
     );
+
     setTimeout(() => this.store.dispatch(PUT_GRAPH_OUTCOME_INCOME()), 100);
   }
 

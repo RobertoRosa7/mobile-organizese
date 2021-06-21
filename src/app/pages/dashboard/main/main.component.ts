@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -58,6 +59,7 @@ export class MainComponent extends DashboardPage implements OnInit {
     await this.initHideValues();
     await this.initGraphOutcomeIncome();
     await this.initLastDateOutcomeIncome();
+    await this.initDatesGraph();
     this.fetchStore();
   }
 
@@ -89,8 +91,8 @@ export class MainComponent extends DashboardPage implements OnInit {
     this.highchartData$ = this.store
       .select(({ dashboard }: any) => ({
         outcomeIncome: dashboard.outcome_income,
-        dtStart: dashboard.graph_dates.dt_start,
-        dtEnd: dashboard.graph_dates.dt_end,
+        dt_start: dashboard.graph_dates.dt_start,
+        dt_end: dashboard.graph_dates.dt_end,
       }))
       .pipe(map((state) => state));
 
@@ -120,5 +122,9 @@ export class MainComponent extends DashboardPage implements OnInit {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.FETCH_LASTDATE_OUTCOME())
     );
+  }
+
+  protected initDatesGraph(): Promise<any> {
+    return Promise.resolve(this.store.dispatch(actionsDashboard.FETCH_DATES()));
   }
 }

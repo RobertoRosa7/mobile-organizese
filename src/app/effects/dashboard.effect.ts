@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+import { keyframes } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -8,12 +10,14 @@ import {
   actionsTypes,
   GET_TOTALS,
   SET_DASHBOARD,
+  SET_DATES,
   SET_GRAPH_OUTCOME_INCOME,
   SET_LASTDATE_OUTCOME,
 } from '../actions/dashboard.actions';
 import { SET_ERRORS, SourceErrors } from '../actions/errors.actions';
 import { DashboardService } from '../services/dashboard.service';
 import { StorageService } from '../services/storage.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class DashboardEffect {
@@ -264,31 +268,35 @@ export class DashboardEffect {
     )
   );
 
-  // public setDatesFilter = createEffect(() =>
-  //   this.action.pipe(
-  //     ofType(actionsTypes.FETCH_DATES),
-  //     mergeMap(() => this.storageService.getStore('datesFilter'))
-  //     ),
-  //     map((store: any) => {
-  //       if (store) {
-  //         return of(store)
-  //       } else {
-  //         if (payload instanceof HttpErrorResponse) {
-  //           return SET_ERRORS({
-  //             payload: {
-  //               ...payload,
-  //               source: actionsTypes.ERROR_PUT_GRAPH_OUTCOME_INCOME,
-  //             },
-  //           });
-  //         } else {
-  //           return SET_LASTDATE_OUTCOME({ payload });
-  //         }
-  //       }
+  public setDatesFilter = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.FETCH_DATES),
+      mergeMap(() => this.storageService.getStore('datesFilter')),
+      mergeMap((store) => {
+        if (store) {
+          return of(store);
+        } else {
+          return from(this.getDatesFromStore()).pipe(
+            mergeMap(({ dates }) =>
+              this.setPayloadOnStore('datesFilter', dates)
+            ),
+            map(([_, payload]) => payload)
+          );
+        }
+      }),
+      map((payload) => SET_DATES({ payload })),
+      catchError((e) => of(e))
+    )
+  );
 
-  //     }),
-  //     catchError((e) => of(e))
-  //   )
-  // );
+  public putDatesFilter = createEffect(() =>
+    this.action.pipe(
+      ofType(actionsTypes.PUT_DATES),
+      mergeMap(({ payload }) => this.setPayloadOnStore('datesFilter', payload)),
+      map(([_, payload]) => SET_DATES({ payload })),
+      catchError((e) => of(e))
+    )
+  );
 
   constructor(
     private action: Actions,
@@ -372,7 +380,7 @@ export class DashboardEffect {
     }));
   }
 
-  private setPayloadOnStore(storeId: string, payload: any): Observable<any[]> {
+  private setPayloadOnStore(storeId: string, payload: any): Observable<any> {
     return forkJoin([
       this.storageService.setStore(storeId, payload),
       of(payload),

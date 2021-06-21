@@ -34,6 +34,7 @@ export enum actionsTypes {
   PUT_LASTDATE_OUTCOME = '[PUT_LASTDATE_OUTCOME]',
   PUT_CONSOLIDADO = '[PUT_CONSOLIDADO]',
   PUT_DASHBOARD = '[PUT_DASHBOARD]',
+  PUT_DATES = '[PUT_DATES]',
 
   ERROR_FETCH_DASHBOARD = '[ERROR_FETCH_DASHBOARD]',
   ERROR_FETCH_LASTE_DATE_OUTCOME = '[ERROR_LASTE_DATE_OUTCOME]',
@@ -68,10 +69,7 @@ export const FETCH_EVOLUCAO_DETAIL = createAction(
   props<{ payload: any }>()
 );
 export const FETCH_AUTOCOMPLETE = createAction(actionsTypes.FETCH_AUTOCOMPLETE);
-export const FETCH_DATES = createAction(
-  actionsTypes.FETCH_DATES,
-  props<{ payload: any }>()
-);
+export const FETCH_DATES = createAction(actionsTypes.FETCH_DATES);
 
 export const GET_TOTALS = createAction(
   actionsTypes.GET_TOTALS,
@@ -114,6 +112,10 @@ export const SET_DASHBOARD = createAction(
   actionsTypes.SET_DASHBOARD,
   props<{ payload: any }>()
 );
+export const SET_DATES = createAction(
+  actionsTypes.SET_DATES,
+  props<{ payload: any }>()
+);
 export const SET_LASTDATE_OUTCOME = createAction(
   actionsTypes.SET_LASTDATE_OUTCOME,
   props<{ payload: any }>()
@@ -135,7 +137,10 @@ export const PUT_GRAPH_OUTCOME_INCOME = createAction(
 export const PUT_LASTDATE_OUTCOME = createAction(
   actionsTypes.PUT_LASTDATE_OUTCOME
 );
-
 export const UPDATE_AUTOCOMPLETE = createAction(
   actionsTypes.UPDATE_AUTOCOMPLETE
+);
+export const PUT_DATES = createAction(
+  actionsTypes.PUT_DATES,
+  props<{ payload: any }>()
 );
