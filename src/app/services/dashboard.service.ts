@@ -66,10 +66,7 @@ import { Constants } from './constants';
   providedIn: 'root',
 })
 export class DashboardService {
-  constructor(
-    private http: HttpClient,
-    private constants: Constants // @Inject(SAVER) private save: Saver
-  ) {}
+  constructor(private http: HttpClient, private constants: Constants) {}
 
   public fetchRegisters(params?: any): Observable<Register[]> {
     return this.http.get<Register[]>(

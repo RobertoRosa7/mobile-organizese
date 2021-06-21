@@ -81,8 +81,6 @@ export class HighchartsComponent implements OnInit, DoCheck {
       })
     );
     setTimeout(() => this.store.dispatch(PUT_GRAPH_OUTCOME_INCOME()), 100);
-    // fetch_graph_outcome_income?dt_start=1620356400&dt_end=1624216450.403
-    // fetch_graph_outcome_income?dtStart=1620356400&dtEnd=1624217108.386
   }
 
   public filterEnd = (d: any): boolean =>

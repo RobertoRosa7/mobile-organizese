@@ -264,6 +264,32 @@ export class DashboardEffect {
     )
   );
 
+  // public setDatesFilter = createEffect(() =>
+  //   this.action.pipe(
+  //     ofType(actionsTypes.FETCH_DATES),
+  //     mergeMap(() => this.storageService.getStore('datesFilter'))
+  //     ),
+  //     map((store: any) => {
+  //       if (store) {
+  //         return of(store)
+  //       } else {
+  //         if (payload instanceof HttpErrorResponse) {
+  //           return SET_ERRORS({
+  //             payload: {
+  //               ...payload,
+  //               source: actionsTypes.ERROR_PUT_GRAPH_OUTCOME_INCOME,
+  //             },
+  //           });
+  //         } else {
+  //           return SET_LASTDATE_OUTCOME({ payload });
+  //         }
+  //       }
+
+  //     }),
+  //     catchError((e) => of(e))
+  //   )
+  // );
+
   constructor(
     private action: Actions,
     private storageService: StorageService,
