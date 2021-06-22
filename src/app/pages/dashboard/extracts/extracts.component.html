@@ -4,9 +4,13 @@
       <div class="page-extract-badge">
         <mat-chip-list aria-label="Fish selection">
           <owl-carousel [options]="carouselOptions">
-            <mat-chip class="chip" *ngFor="let chip of chips">{{
-              chip.label
-            }}</mat-chip>
+            <mat-chip
+              [selected]="chip.selected"
+              (click)="onChipChange(chip, index)"
+              class="chip"
+              *ngFor="let chip of chips; let index = index"
+              >{{ chip.label }}</mat-chip
+            >
           </owl-carousel>
         </mat-chip-list>
       </div>

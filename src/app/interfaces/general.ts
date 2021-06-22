@@ -67,3 +67,8 @@ export interface Download {
   progress: number;
   state: 'PENDING' | 'IN_PROGRESS' | 'DONE';
 }
+export interface Chip {
+  label: string;
+  value: string | number;
+  selected: boolean;
+}

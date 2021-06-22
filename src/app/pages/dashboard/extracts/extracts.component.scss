@@ -8,4 +8,7 @@
   ::ng-deep .owl-item.active {
     max-width: 80px !important;
   }
+  ::ng-deep .mat-chip.mat-standard-chip.mat-chip-selected {
+    background-color: var(--green-microsoft);
+  }
 }
