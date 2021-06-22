@@ -28,6 +28,7 @@ import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
 import { WindowsHackerComponent } from './components/windows-hacker/windows-hacker.component';
 import { Constants } from './services/constants';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MatChipsModule } from '@angular/material/chips';
 
 registerLocaleData(localePt, 'pt');
 
@@ -67,6 +68,7 @@ const MY_FORMATS = {
     MatDialogModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatChipsModule,
   ],
   exports: [
     CommonModule,
@@ -85,6 +87,7 @@ const MY_FORMATS = {
     MatDialogModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatChipsModule,
 
     SidepanelComponent,
     WindowsHackerComponent,

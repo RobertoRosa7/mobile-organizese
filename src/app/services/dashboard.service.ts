@@ -2,7 +2,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { Register } from '../interfaces/general';
 // import { Consolidado, Download, Register } from '../models/models';
 import { Constants } from './constants';

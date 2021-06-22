@@ -69,14 +69,16 @@ export class ExtractComponent implements OnInit, DoCheck {
     const modal = await this.alertController.create({
       header: `R$ ${this.formatterValue(payload.value)}`,
       message: 'Tem certeza que quer excluir?',
+      cssClass: 'dialog-confirm',
       buttons: [
+        {
+          text: 'Excluir',
+          cssClass: 'btn-delete',
+          handler: () => this.store.dispatch(DELETE_REGISTERS({ payload })),
+        },
         {
           text: 'Cancel',
           role: 'cancel',
-        },
-        {
-          text: 'Excluir',
-          handler: () => this.store.dispatch(DELETE_REGISTERS({ payload })),
         },
       ],
     });

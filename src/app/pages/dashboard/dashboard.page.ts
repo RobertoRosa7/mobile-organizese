@@ -18,6 +18,7 @@ import { Strings } from 'src/app/interfaces/strings';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { SubjectService } from 'src/app/services/subject.service';
 import * as actionsProfile from '../../actions/profile.actions';
 import * as actionsRegister from '../../actions/registers.actions';
 @Component({
@@ -40,12 +41,11 @@ export class DashboardPage implements OnInit {
     protected dashboardService?: DashboardService,
     protected router?: NavController,
     protected menu?: MenuController,
-    protected modalController?: ModalController
+    protected modalController?: ModalController,
+    protected subjectService?: SubjectService
   ) {}
 
   ngOnInit() {
-    console.log('its working!');
-    console.log('this is my first code using vim');
     this.initializeApp();
     this.fetchErrors();
     this.fetchSuccess();

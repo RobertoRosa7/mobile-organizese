@@ -26,6 +26,32 @@
 @import "~@ionic/angular/css/flex-utils.css";
 @import "~angular-vertical-timeline/dist/vertical-timeline.css";
 
+.dialog-confirm {
+  .alert-wrapper {
+    width: 100%;
+    max-width: 557px;
+    .alert-button-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      button {
+        width: 100%;
+        max-width: 278.5px;
+        text-align: center;
+      }
+    }
+    .alert-button-inner {
+      justify-content: center;
+    }
+  }
+  .btn-delete {
+    border-radius: 32px;
+    background-color: var(--text-accent);
+    color: var(--white-one);
+  }
+}
+
 ::-webkit-scrollbar-track {
   // background: #ff408190;
   background: #0ff5e680;

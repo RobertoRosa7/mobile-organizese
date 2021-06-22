@@ -7,7 +7,7 @@
           >{{ formatterPercent(card.percent) }}%</small
         >
         <ng-template #hidePercent>
-          <small class="percent hide"></small>
+          <small class="percent">...%</small>
         </ng-template>
       </div>
       <ion-button
@@ -31,7 +31,7 @@
 
     <ng-template #hideValues>
       <ion-label style="font-size: 2em">
-        <span class="value hide"></span>
+        <span class="value">R$ ...</span>
       </ion-label>
     </ng-template>
   </ion-card-content>

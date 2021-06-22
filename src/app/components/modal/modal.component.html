@@ -8,7 +8,6 @@
 
 <ion-content [ngSwitch]="data.type" class="content">
   <app-login *ngSwitchCase="'login'" (sendClose)="onClose($event)"></app-login>
-  <!-- <ion-title *ngSwitchCase="'registers'">Cadastro</ion-title> -->
   <app-add-registers
     [type]="data.operation"
     [edit]="data.edit"

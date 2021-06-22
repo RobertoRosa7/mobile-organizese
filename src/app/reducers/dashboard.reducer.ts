@@ -28,7 +28,7 @@ const BASE = {
   outcome_income: {},
   lastdate_outcome: {},
   graph_dates: {
-    dt_start: moment().subtract(31, 'days').toLocaleString(),
+    dt_start: moment().subtract(10, 'days').toLocaleString(),
     dt_end: moment(new Date()).toLocaleString(),
   },
 };

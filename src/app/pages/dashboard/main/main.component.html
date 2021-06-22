@@ -6,7 +6,7 @@
         class="cards-main"
       >
         <owl-carousel
-          [options]="{ items: 1 }"
+          [options]="{ items: 1, lazyLoad: true }"
           [carouselClasses]="['owl-theme', 'row', 'sliding']"
         >
           <app-cards *ngFor="let card of consolidado" [card]="card"></app-cards>

@@ -137,39 +137,6 @@ export class RegistersEffect {
     private dashboardService: DashboardService
   ) {}
 
-  // @Effect()
-  // public showTab$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.GET_SHOWTAB),
-  //   map(({ payload }: any) => {
-  //     const showtabs: any = {};
-  //     payload.forEach((e: any) => (showtabs[e] = true));
-  //     return actions.SET_SHOWTAB({ payload: showtabs });
-  //   }),
-  //   catchError((err) => of(err))
-  // );
-
-  // @Effect()
-  // public fetchSearch$: Observable<Actions> = this.action.pipe(
-  //   ofType(actions.actionsTypes.GET_SEARCH),
-  //   mergeMap(({ payload }: any) =>
-  //     forkJoin([
-  //       this.dashboardService
-  //         .fetchSearch(payload)
-  //         .pipe(catchError((e) => of(e))),
-  //       of(payload),
-  //     ])
-  //   ),
-  //   map(([response, _]) => {
-  //     if (response instanceof HttpErrorResponse) {
-  //       const source = { ...response, source: this.props.fetch_search };
-  //       return SET_ERRORS({ payload: source });
-  //     } else {
-  //       return actions.SET_SEARCH({ payload: response.search });
-  //     }
-  //   }),
-  //   catchError((err) => of(err))
-  // );
-
   private async dispatchActions(payload?: any): Promise<any> {
     await this.setTime();
     await this.putDashboard();

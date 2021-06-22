@@ -1,0 +1,11 @@
+.page-extract {
+  .page-extract-badge {
+    margin: 16px;
+    .chip {
+      max-width: 80px;
+    }
+  }
+  ::ng-deep .owl-item.active {
+    max-width: 80px !important;
+  }
+}

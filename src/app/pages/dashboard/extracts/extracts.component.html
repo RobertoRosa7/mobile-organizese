@@ -1,3 +1,16 @@
-<p>
-  extracts works!
-</p>
+<ion-content class="page-extract">
+  <ng-container *ngIf="all$ | async as all">
+    <div class="extact">
+      <div class="page-extract-badge">
+        <mat-chip-list aria-label="Fish selection">
+          <owl-carousel [options]="carouselOptions">
+            <mat-chip class="chip" *ngFor="let chip of chips">{{
+              chip.label
+            }}</mat-chip>
+          </owl-carousel>
+        </mat-chip-list>
+      </div>
+      <app-extract [data]="all"></app-extract>
+    </div>
+  </ng-container>
+</ion-content>
