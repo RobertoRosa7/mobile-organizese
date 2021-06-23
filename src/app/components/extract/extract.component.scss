@@ -1,6 +1,9 @@
 @import "../../../theme/mixins.scss";
 
 .extract {
+  background-color: var(--white-two);
+  padding-top: 30px;
+  padding-bottom: 30px;
   .title {
     @include timeline-dates;
     text-align: left;
@@ -32,7 +35,7 @@
           font-size: 0.7em;
           padding: 4px 12px;
           border-radius: 32px;
-          background-color: var(--white-two);
+          background-color: var(--white-one);
           font-weight: 500;
           position: relative;
           margin-top: 8px;
@@ -42,7 +45,7 @@
           width: 0;
           height: 0;
           border-style: solid;
-          border-color: transparent transparent var(--white-two) transparent;
+          border-color: transparent transparent var(--white-one) transparent;
           border-width: 8px;
           position: absolute;
           top: -15px;
@@ -69,7 +72,7 @@
         }
         .extract-timeline-card {
           padding: 16px 0px;
-          background-color: #fff;
+          background-color: inherit;
           font-size: 14px;
           line-height: 1.7;
           display: flex;
@@ -102,15 +105,25 @@
           position: absolute;
           top: 50%;
           left: -27px;
-          border: 3px solid #fff;
+          border: 3px solid var(--white-two);
           border-radius: 50%;
-          background-color: #fff;
           display: flex;
           align-items: center;
           justify-content: center;
           transform: translateY(-50%);
+          background-color: var(--white-two);
         }
       }
     }
+  }
+  .title,
+  .extract-container,
+  .extract-container .extract-timeline,
+  .extract-container .extract-timeline-area,
+  .extract-container .extract-timeline-body,
+  .extract-container .extract-timeline-card,
+  .extract-container .extract-timeline-values,
+  .extract-container .extract-timeline-icon {
+    background-color: inherit;
   }
 }

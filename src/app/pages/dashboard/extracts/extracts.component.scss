@@ -1,8 +1,10 @@
 .page-extract {
   .page-extract-badge {
     margin: 16px;
-    .chip {
-      max-width: 80px;
+    .container-chips {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
     }
   }
   ::ng-deep .owl-item.active {

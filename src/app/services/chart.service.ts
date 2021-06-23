@@ -9,8 +9,8 @@ export class ChartService {
   public chartLine: any = {
     chart: {
       type: '',
-      height: 350,
-      spacingTop: 20,
+      height: 285,
+      spacingTop: 15,
     },
     navigator: { enabled: false },
     scrollbar: { enabled: false },

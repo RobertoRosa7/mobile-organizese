@@ -6,6 +6,9 @@
   font-weight: 400;
   font-size: 0.8em;
   min-height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 @mixin logo {
   width: 100%;
@@ -62,4 +65,10 @@
   font-size: 1.2em;
   font-weight: 200;
   text-align: center;
+}
+@mixin btn-spinner {
+  ::ng-deep .mat-progress-spinner circle,
+  ::ng-deep .mat-spinner circle {
+    stroke: red !important;
+  }
 }

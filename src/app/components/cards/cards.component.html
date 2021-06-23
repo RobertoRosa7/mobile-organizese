@@ -1,38 +1,45 @@
-<ion-card class="card">
-  <ion-card-header class="card-header">
-    <ion-card-title class="card-title">
-      <div class="label">
-        <span style="color: var(--white-one)">{{ card.title }}</span>
-        <small *ngIf="card.show; else hidePercent" class="percent"
-          >{{ formatterPercent(card.percent) }}%</small
-        >
-        <ng-template #hidePercent>
-          <small class="percent">...%</small>
-        </ng-template>
-      </div>
-      <ion-button
-        (click)="hideAndShowValues($event)"
-        class="btn-eye"
-        color="light"
-        fill="clear"
-        size="small"
-      >
-        <ion-icon [name]="card.icon"></ion-icon>
-      </ion-button>
-    </ion-card-title>
-  </ion-card-header>
-  <ion-card-content class="card-content">
-    <ion-label *ngIf="card.show; else hideValues" style="font-size: 2em">
-      <span class="value" [style.color]="returnClassValue(card.type)">
-        <small *ngIf="card.type === 'outcoming'">-</small>
-        R$ {{ formatterValue(card.value) }}
-      </span>
-    </ion-label>
+<ng-container *ngIf="consolidadoData$ | async as cards">
+  <owl-carousel
+    [options]="{ items: 1, lazyLoad: true }"
+    [carouselClasses]="['owl-theme', 'row', 'sliding']"
+  >
+    <ion-card *ngFor="let card of cards" class="card">
+      <ion-card-header class="card-header">
+        <ion-card-title class="card-title">
+          <div class="label">
+            <span style="color: var(--white-one)">{{ card.title }}</span>
+            <small *ngIf="card.show; else hidePercent" class="percent"
+              >{{ formatterPercent(card.percent) }}%</small
+            >
+            <ng-template #hidePercent>
+              <small class="percent">...</small>
+            </ng-template>
+          </div>
+          <ion-button
+            (click)="hideAndShowValues($event)"
+            class="btn-eye"
+            color="light"
+            fill="clear"
+            size="small"
+          >
+            <ion-icon [name]="card.icon"></ion-icon>
+          </ion-button>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="card-content">
+        <ion-label *ngIf="card.show; else hideValues" style="font-size: 2em">
+          <span class="value" [style.color]="returnClassValue(card.type)">
+            <small *ngIf="card.type === 'outcoming'">-</small>
+            R$ {{ formatterValue(card.value) }}
+          </span>
+        </ion-label>
 
-    <ng-template #hideValues>
-      <ion-label style="font-size: 2em">
-        <span class="value">R$ ...</span>
-      </ion-label>
-    </ng-template>
-  </ion-card-content>
-</ion-card>
+        <ng-template #hideValues>
+          <ion-label style="font-size: 2em">
+            <span class="value">R$ ...</span>
+          </ion-label>
+        </ng-template>
+      </ion-card-content>
+    </ion-card>
+  </owl-carousel>
+</ng-container>

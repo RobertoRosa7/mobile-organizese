@@ -11,7 +11,6 @@ import {
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { delay, filter, map, mergeMap } from 'rxjs/operators';
-import * as actionsDashboard from 'src/app/actions/dashboard.actions';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { Strings } from 'src/app/interfaces/strings';
@@ -21,6 +20,8 @@ import { StorageService } from 'src/app/services/storage.service';
 import { SubjectService } from 'src/app/services/subject.service';
 import * as actionsProfile from '../../actions/profile.actions';
 import * as actionsRegister from '../../actions/registers.actions';
+import * as actionsDashboard from 'src/app/actions/dashboard.actions';
+import * as actionsErrors from '../../actions/errors.actions';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -49,6 +50,7 @@ export class DashboardPage implements OnInit {
     this.initializeApp();
     this.fetchErrors();
     this.fetchSuccess();
+
     this.fetchLastRegister().subscribe(({ data: payload }) =>
       this.store?.dispatch(actionsDashboard.SET_NOTIFICATION_LIST({ payload }))
     );
@@ -84,12 +86,7 @@ export class DashboardPage implements OnInit {
       },
     });
     await modal.present();
-    const event = (await modal.onDidDismiss()).data;
-    if (event) {
-      this.store.dispatch(
-        actionsRegister.ADD_REGISTERS({ payload: event.payload })
-      );
-    }
+    await modal.onDidDismiss();
   }
 
   public profile(): void {
@@ -131,6 +128,7 @@ export class DashboardPage implements OnInit {
       if (err) {
         const toast = await this.createToast(err.message);
         await toast.present();
+        this.store.dispatch(actionsErrors.RESET_ERRORS());
       }
     });
   }
@@ -146,6 +144,7 @@ export class DashboardPage implements OnInit {
       if (success) {
         const toast = await this.createToast(success);
         await toast.present();
+        this.store.dispatch(actionsErrors.RESET_ERRORS());
       }
     });
   }
@@ -164,8 +163,6 @@ export class DashboardPage implements OnInit {
   }
 
   protected async initializeApp(): Promise<any> {
-    await this.initMain();
-    await this.initDashboard();
     await this.getProfile();
   }
 
@@ -215,24 +212,13 @@ export class DashboardPage implements OnInit {
     );
   }
 
-  protected initDashboard(): Promise<any> {
-    return Promise.resolve(
-      this.store.dispatch(actionsDashboard.FETCH_DASHBOARD())
-    );
-  }
-
-  protected initMain(): Promise<any> {
-    return Promise.resolve(
-      this.store.dispatch(actionsDashboard.INIT_DASHBOARD())
-    );
-  }
-
   protected async dispatchActions(payload?: any): Promise<any> {
     await this.putDashboard();
     await this.putConsolidado();
     await this.putGraphOutcomeIncome();
     await this.putLastDateOutcome();
     // await this.putAutocomplete();
+    await this.messageSuccess(payload);
     const toast = await this.createToast('Aplicação atualizada.');
     await toast.present();
   }
@@ -264,6 +250,12 @@ export class DashboardPage implements OnInit {
   protected putAutocomplete(): Promise<any> {
     return Promise.resolve(
       this.store?.dispatch(actionsDashboard.UPDATE_AUTOCOMPLETE())
+    );
+  }
+
+  protected messageSuccess(payload) {
+    return Promise.resolve(
+      this.store.dispatch(actionsErrors.SET_SUCCESS({ payload }))
     );
   }
 

@@ -29,6 +29,7 @@ import { WindowsHackerComponent } from './components/windows-hacker/windows-hack
 import { Constants } from './services/constants';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 registerLocaleData(localePt, 'pt');
 
@@ -69,6 +70,7 @@ const MY_FORMATS = {
     MatDatepickerModule,
     MatSelectModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     CommonModule,
@@ -88,6 +90,7 @@ const MY_FORMATS = {
     MatDatepickerModule,
     MatSelectModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
 
     SidepanelComponent,
     WindowsHackerComponent,

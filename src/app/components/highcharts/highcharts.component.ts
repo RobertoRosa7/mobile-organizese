@@ -2,47 +2,51 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   Component,
-  DoCheck,
   ElementRef,
   Input,
   KeyValueDiffers,
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ActionsSubject, Store } from '@ngrx/store';
 import * as Highcharts from 'highcharts';
-import { ChartService } from 'src/app/services/chart.service';
 import * as moment from 'moment';
-import { Store } from '@ngrx/store';
+import { Observable, of, timer } from 'rxjs';
+import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { ChartService } from 'src/app/services/chart.service';
+import * as actionsDashboard from '../../actions/dashboard.actions';
 import {
-  FETCH_DATES,
   PUT_DATES,
   PUT_GRAPH_OUTCOME_INCOME,
 } from '../../actions/dashboard.actions';
+
 @Component({
   selector: 'app-highcharts',
   templateUrl: './highcharts.component.html',
   styleUrls: ['./highcharts.component.scss'],
 })
-export class HighchartsComponent implements OnInit, DoCheck {
+export class HighchartsComponent implements OnInit {
   @ViewChild('highchart', { static: true }) public highchart: ElementRef;
-  @Input() public data: any;
-
-  @Input() public dtStart: Date;
-  @Input() public dtEnd: Date;
   @Input() public type: string;
-  @Input() public minDate: Date = new Date('1921-01-01');
 
+  public dtStart: Date;
+  public dtEnd: Date;
+
+  public minDate: Date = new Date('1920-01-01');
+  public highchartData$: Observable<any>;
   public enableButtonFilter = true;
   public isMobile: boolean;
   public setDtStart: any;
   public setDtEnd: any;
   public differ: any;
+  public btnLoadingSpinner: boolean;
 
   constructor(
     private chartService: ChartService,
     private differs: KeyValueDiffers,
     private breakpoint: BreakpointObserver,
-    private store: Store
+    private store: Store,
+    private as: ActionsSubject
   ) {
     this.breakpoint
       ?.observe([Breakpoints.XSmall])
@@ -50,29 +54,18 @@ export class HighchartsComponent implements OnInit, DoCheck {
     this.differ = this.differs.find({}).create();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.instanceChart();
 
-  ngDoCheck(): void {
-    const change = this.differ.diff(this);
-    if (change) {
-      change.forEachChangedItem((item: any) => {
-        if (item.key === 'data') {
-          this.chartService.getCharts().subscribe((chart) => {
-            if (this.data.outcomeIncome.length > 0) {
-              this.dtEnd = new Date(this.data.dt_end);
-              this.dtStart = new Date(this.data.dt_start);
-              chart.chart.type = 'spline';
-              chart.series = this.data.outcomeIncome;
-              chart.xAxis.categories = this.data.outcomeIncome[0].dates;
-              Highcharts.chart(this.highchart.nativeElement, chart);
-            }
-          });
-        }
-      });
-    }
+    this.onActionsTypes(
+      actionsDashboard.actionsTypes.SET_GRAPH_OUTCOME_INCOME
+    ).subscribe({
+      next: ({ payload }) => this.instanceChart(),
+    });
   }
 
   public onSubmit(): void {
+    this.btnLoadingSpinner = true;
     this.store.dispatch(
       PUT_DATES({
         payload: {
@@ -81,8 +74,9 @@ export class HighchartsComponent implements OnInit, DoCheck {
         },
       })
     );
-
-    setTimeout(() => this.store.dispatch(PUT_GRAPH_OUTCOME_INCOME()), 100);
+    timer(1000).subscribe(() =>
+      this.store.dispatch(PUT_GRAPH_OUTCOME_INCOME())
+    );
   }
 
   public filterEnd = (d: any): boolean =>
@@ -90,4 +84,42 @@ export class HighchartsComponent implements OnInit, DoCheck {
 
   public filterStart = (d: any): boolean =>
     moment(d).isSameOrBefore(moment(new Date()));
+
+  private instanceChart() {
+    const store$ = this.store.select(({ dashboard }: any) => ({
+      outcomeIncome: dashboard.outcome_income,
+      dt_start: dashboard.graph_dates.dt_start,
+      dt_end: dashboard.graph_dates.dt_end,
+      lastDate: dashboard.lastdate_outcome,
+    }));
+    timer(1000)
+      .pipe(
+        withLatestFrom(store$),
+        mergeMap(([_, states]) =>
+          this.chartService
+            .getCharts()
+            .pipe(map((chart) => this.mapToChart(chart, states)))
+        )
+      )
+      .subscribe({
+        next: (chart) => Highcharts.chart(this.highchart.nativeElement, chart),
+        error: (e) => console.error(e),
+        complete: () => (this.btnLoadingSpinner = false),
+      });
+  }
+
+  private mapToChart(chart, states): any {
+    this.dtEnd = new Date(states.dt_end);
+    this.dtStart = new Date(states.dt_start);
+    this.minDate = new Date(states.lastDate.dt_start);
+    chart.tooltip.backgroundColor = 'var(--white-one)';
+    chart.chart.type = 'spline';
+    chart.series = states.outcomeIncome;
+    chart.xAxis.categories = states.outcomeIncome[0].dates;
+    return chart;
+  }
+
+  private onActionsTypes(type: string): Observable<any> {
+    return this.as ? this.as.pipe(filter((a) => a.type === type)) : of(null);
+  }
 }

@@ -30,8 +30,14 @@
       width: 120px;
     }
   }
+  .btn-spinner {
+    @include btn-spinner;
+  }
 }
-
+::ng-deep .mat-progress-spinner circle,
+::ng-deep .mat-spinner circle {
+  stroke: var(--green-microsoft);
+}
 @media (max-width: 480px) {
   .date .form-inline {
     max-width: 100% !important;

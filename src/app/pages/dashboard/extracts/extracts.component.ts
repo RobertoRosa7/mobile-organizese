@@ -34,11 +34,6 @@ export class ExtractsComponent implements OnInit {
       selected: false,
     },
     {
-      label: '60 dias',
-      value: 60,
-      selected: false,
-    },
-    {
       label: 'todos',
       value: 'todos',
       selected: false,
@@ -54,7 +49,7 @@ export class ExtractsComponent implements OnInit {
   public onChipChange(_: Chip, index: number): void {
     this.chips.forEach((chip: Chip, i: number) => ({
       ...chip,
-      selected: (_.selected = index === i),
+      selected: (chip.selected = index === i),
     }));
   }
 

@@ -1,24 +1,11 @@
 <ion-content class="main">
   <div class="main-container">
     <div class="jumbotron">
-      <ng-container
-        *ngIf="consolidadoData$ | async as consolidado"
-        class="cards-main"
-      >
-        <owl-carousel
-          [options]="{ items: 1, lazyLoad: true }"
-          [carouselClasses]="['owl-theme', 'row', 'sliding']"
-        >
-          <app-cards *ngFor="let card of consolidado" [card]="card"></app-cards>
-        </owl-carousel>
-      </ng-container>
+      <app-cards></app-cards>
     </div>
 
     <div class="section-highcharts">
-      <app-highcharts
-        [minDate]="minDate$ | async"
-        [data]="highchartData$ | async"
-      ></app-highcharts>
+      <app-highcharts></app-highcharts>
     </div>
 
     <div class="extact">

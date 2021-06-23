@@ -100,5 +100,6 @@ export const formatterOutcomeIncome = (payload: any): any =>
         : '',
     dates: value.dates.map((date: any) => new Date(date).getTime()),
     data: value.values ? value.values : 0,
-    color: value.name === 'incoming' ? '#0FF5E6' : '#FF4081',
+    color:
+      value.name === 'incoming' ? 'var(--green-microsoft)' : 'var(--danger)',
   }));

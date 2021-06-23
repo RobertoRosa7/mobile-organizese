@@ -47,8 +47,17 @@
     </div>
 
     <div matTooltip="Filtrar" class="buttons">
-      <button class="btn-filter" disableRipple="true" type="submit" mat-raised-button>
-        Filtrar
+      <button
+        [disabled]="btnLoadingSpinner"
+        class="btn-filter"
+        disableRipple="true"
+        type="submit"
+        mat-raised-button
+      >
+        <span *ngIf="btnLoadingSpinner; else showLabelFilter">
+          <mat-spinner class="btn-spinner" diameter="20"></mat-spinner>
+        </span>
+        <ng-template #showLabelFilter>Filtrar</ng-template>
       </button>
     </div>
   </form>

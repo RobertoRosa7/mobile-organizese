@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
-
+import * as actionsRegister from '../../actions/registers.actions';
 @Component({
   selector: 'app-add-registers',
   templateUrl: './add-registers.component.html',
@@ -75,6 +75,7 @@ export class AddRegistersComponent implements OnInit {
   }
 
   public onSubmit(event): void {
+    this.isLoading = true;
     const payload: Register = {
       category: this.form.value.category || 'Outros',
       created_at: this.getDateCreated(),
@@ -98,11 +99,32 @@ export class AddRegistersComponent implements OnInit {
       payload._id = this.extract._id;
     }
 
-    this.sendPayload.emit({ payload });
+    this.store.dispatch(actionsRegister.ADD_REGISTERS({ payload }));
+    const success$ = this.store
+      .select(({ errors }: any) => ({
+        success: this.handlerSuccess(errors.from),
+      }))
+      .pipe(map((state) => state.success));
+
+    success$.subscribe(async (success) => {
+      if (success) {
+        this.sendPayload.emit(true);
+        this.isLoading = false;
+      }
+    });
   }
 
   public close(options?): void {
     this.sendPayload.emit(undefined);
+  }
+
+  private handlerSuccess(from: string): string {
+    switch (from) {
+      case actionsRegister.actionsTypes.SUCCESS_ADD_REGISTERS:
+        return 'Registro cadastrado com sucesso.';
+      default:
+        return '';
+    }
   }
 
   private getDateCreated(): number {
