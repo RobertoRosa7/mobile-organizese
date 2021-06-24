@@ -4,13 +4,16 @@
       <app-cards></app-cards>
     </div>
 
-    <div class="section-highcharts">
-      <app-highcharts></app-highcharts>
-    </div>
+    <ng-container
+      *ngIf="highchCharts$ | async as highchart"
+      class="section-highcharts"
+    >
+      <app-highcharts [data]="highchart"></app-highcharts>
+    </ng-container>
 
-    <div class="extact">
-      <app-extract [data]="registersData$ | async"></app-extract>
-    </div>
+    <ng-container>
+      <app-extract [data]="teste"></app-extract>
+    </ng-container>
   </div>
 
   <ng-template #isLoading>

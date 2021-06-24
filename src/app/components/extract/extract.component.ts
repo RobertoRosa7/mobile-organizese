@@ -4,10 +4,14 @@ import {
   DoCheck,
   Input,
   KeyValueDiffers,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
+import { Subscription, timer } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
+import { SubjectService } from 'src/app/services/subject.service';
 import {
   DELETE_REGISTERS,
   UPDATE_REGISTER,
@@ -19,31 +23,50 @@ import { ModalComponent } from '../modal/modal.component';
   templateUrl: './extract.component.html',
   styleUrls: ['./extract.component.scss'],
 })
-export class ExtractComponent implements OnInit, DoCheck {
+export class ExtractComponent implements OnInit, DoCheck, OnDestroy {
   @Input() public data: any;
+
+  @Input() public page: string;
+
   public differ: any;
   public listGroupByDay: any[];
-
+  public subscription = new Subscription();
   constructor(
     private differs: KeyValueDiffers,
     private alertController: AlertController,
     private modalController: ModalController,
-    private store: Store
+    private store: Store,
+    private subjectService: SubjectService
   ) {
     this.differ = this.differs.find({}).create();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.subscription = timer(1000)
+      .pipe(
+        withLatestFrom(this.data),
+        map(([_, state]) => state)
+      )
+      .subscribe({
+        next: (state: any) => {
+          this.listGroupByDay = this.groupByDay(state.all);
+        },
+      });
+  }
 
   ngDoCheck(): void {
     const change = this.differ.diff(this);
     if (change) {
       change.forEachChangedItem((item: any) => {
         if (item.key === 'data') {
-          this.listGroupByDay = this.groupByDay(this.data.all);
+          // this.listGroupByDay = this.groupByDay(this.data.all);
         }
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   public formatterValue(value: number): string {

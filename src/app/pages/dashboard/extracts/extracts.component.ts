@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Chip } from 'src/app/interfaces/general';
+import { SubjectService } from 'src/app/services/subject.service';
 import { INIT } from '../../../actions/registers.actions';
 @Component({
   selector: 'app-extracts',
@@ -10,7 +10,7 @@ import { INIT } from '../../../actions/registers.actions';
   styleUrls: ['./extracts.component.scss'],
 })
 export class ExtractsComponent implements OnInit {
-  public all$: Observable<any>;
+  public all$: BehaviorSubject<any> = new BehaviorSubject(null);
   public carouselOptions = {
     nav: false,
     lazyLoad: true,
@@ -40,7 +40,7 @@ export class ExtractsComponent implements OnInit {
     },
   ];
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private subjectService: SubjectService) {}
 
   ngOnInit() {
     this.initExtract();
@@ -55,11 +55,11 @@ export class ExtractsComponent implements OnInit {
 
   private async initExtract(): Promise<any> {
     await this.fetchRegisters();
-    this.all$ = this.store
+    this.store
       .select(({ registers }: any) => ({
         all: registers.all,
       }))
-      .pipe(map((state) => state));
+      .subscribe((state) => this.all$.next(state));
   }
 
   private async fetchRegisters(): Promise<any> {

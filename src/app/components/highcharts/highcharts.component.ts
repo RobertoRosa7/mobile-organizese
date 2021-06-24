@@ -2,6 +2,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   Component,
+  DoCheck,
   ElementRef,
   Input,
   KeyValueDiffers,
@@ -11,14 +12,17 @@ import {
 import { ActionsSubject, Store } from '@ngrx/store';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
-import { Observable, of, timer } from 'rxjs';
+import { Observable, of, Subject, timer } from 'rxjs';
 import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { ChartService } from 'src/app/services/chart.service';
-import * as actionsDashboard from '../../actions/dashboard.actions';
 import {
   PUT_DATES,
   PUT_GRAPH_OUTCOME_INCOME,
 } from '../../actions/dashboard.actions';
+import * as actionsRegister from '../../actions/registers.actions';
+import * as actionsDashboard from '../../actions/dashboard.actions';
+import { delay } from 'q';
+import { SubjectService } from 'src/app/services/subject.service';
 
 @Component({
   selector: 'app-highcharts',
@@ -28,6 +32,7 @@ import {
 export class HighchartsComponent implements OnInit {
   @ViewChild('highchart', { static: true }) public highchart: ElementRef;
   @Input() public type: string;
+  @Input() public data: any;
 
   public dtStart: Date;
   public dtEnd: Date;
@@ -51,17 +56,12 @@ export class HighchartsComponent implements OnInit {
     this.breakpoint
       ?.observe([Breakpoints.XSmall])
       .subscribe((result) => (this.isMobile = !!result.matches));
-    this.differ = this.differs.find({}).create();
   }
 
   ngOnInit() {
-    this.instanceChart();
-
     this.onActionsTypes(
       actionsDashboard.actionsTypes.SET_GRAPH_OUTCOME_INCOME
-    ).subscribe({
-      next: ({ payload }) => this.instanceChart(),
-    });
+    ).subscribe(() => setTimeout(() => this.instanceChart()));
   }
 
   public onSubmit(): void {
@@ -74,9 +74,9 @@ export class HighchartsComponent implements OnInit {
         },
       })
     );
-    timer(1000).subscribe(() =>
-      this.store.dispatch(PUT_GRAPH_OUTCOME_INCOME())
-    );
+    timer(1000).subscribe(() => {
+      this.store.dispatch(PUT_GRAPH_OUTCOME_INCOME());
+    });
   }
 
   public filterEnd = (d: any): boolean =>
@@ -86,15 +86,9 @@ export class HighchartsComponent implements OnInit {
     moment(d).isSameOrBefore(moment(new Date()));
 
   private instanceChart() {
-    const store$ = this.store.select(({ dashboard }: any) => ({
-      outcomeIncome: dashboard.outcome_income,
-      dt_start: dashboard.graph_dates.dt_start,
-      dt_end: dashboard.graph_dates.dt_end,
-      lastDate: dashboard.lastdate_outcome,
-    }));
     timer(1000)
       .pipe(
-        withLatestFrom(store$),
+        withLatestFrom(of(this.data)),
         mergeMap(([_, states]) =>
           this.chartService
             .getCharts()

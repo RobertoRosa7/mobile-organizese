@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { SubjectService } from 'src/app/services/subject.service';
 import * as actionsApp from '../../../actions/app.actions';
 import * as actionsDashboard from '../../../actions/dashboard.actions';
 import { DashboardPage } from '../dashboard.page';
@@ -10,46 +11,30 @@ import { DashboardPage } from '../dashboard.page';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent extends DashboardPage implements OnInit {
+export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
   public isLoaded = false;
   public error$: Observable<any>;
   public dashboard$: Observable<any>;
   public registersData$: Observable<any>;
+  public highchCharts$: Observable<any>;
   public isContentLoaded: boolean;
+  public teste = new BehaviorSubject(null);
 
-  public cards: any[] = [
-    {
-      title: 'Consolidado',
-      icon: '',
-      show: true,
-      value: 0,
-      type: 'consolidado',
-      percent: 0,
-    },
-    {
-      title: 'Crédito',
-      icon: '',
-      show: true,
-      value: 0,
-      type: 'incoming',
-      percent: 0,
-    },
-    {
-      title: 'Débito',
-      icon: '',
-      show: true,
-      value: 0,
-      type: 'outcoming',
-      percent: 0,
-    },
-  ];
+  private subscription: Subscription = new Subscription();
 
-  constructor(protected store: Store) {
+  constructor(
+    protected store: Store,
+    protected subjectService: SubjectService
+  ) {
     super();
   }
 
-  public ngOnInit() {
+  ngOnInit() {
     this.initializingMain();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   protected async initializingMain(): Promise<any> {
@@ -63,9 +48,18 @@ export class MainComponent extends DashboardPage implements OnInit {
   }
 
   protected fetchStore() {
-    this.registersData$ = this.store.select(({ dashboard, profile }: any) => ({
-      all: dashboard.registers,
-      profile: profile.profile,
+    this.subscription = this.store
+      .select(({ dashboard, profile }: any) => ({
+        all: dashboard.registers,
+        profile: profile.profile,
+      }))
+      .subscribe((state) => this.teste.next(state));
+
+    this.highchCharts$ = this.store.select(({ dashboard }: any) => ({
+      outcomeIncome: dashboard.outcome_income,
+      dt_start: dashboard.graph_dates.dt_start,
+      dt_end: dashboard.graph_dates.dt_end,
+      lastDate: dashboard.lastdate_outcome,
     }));
   }
 
