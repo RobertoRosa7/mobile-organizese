@@ -4,17 +4,30 @@
 .ion-toolbar ion-buttons {
   justify-content: flex-end;
 }
+
+.ion-toolbar {
+  background: var(--green-microsoft);
+  --background: var(--green-microsoft);
+
+  --color: var(--white-one);
+  color: var(--white-one);
+
+  --padding: 0;
+  padding: 0;
+}
 .menu-item-close,
-.ion-toolbar,
+.menu-item-close ion-button,
+.menu-item ion-button,
 .menu-content,
 .menu-list,
-.menu-item,
-.menu-item ion-button {
-  --background: var(--green-microsoft);
-  --color: var(--white-one);
+.menu-item {
+  background: var(--white-two);
+  --background: var(--white-two);
+
+  --color: var(--color-dark);
+  color: var(--color-dark);
+
   --padding: 0;
-  background: var(--green-microsoft);
-  color: var(--white-one);
   padding: 0;
 }
 .menu-item ion-button {
@@ -28,20 +41,34 @@
   justify-content: flex-start;
   padding-left: 5px;
 }
-.user {
+.user,
+.user .profile-icon {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.user {
   font-size: 0.8em;
-
+  padding: 8px 0;
   p {
     line-height: 5px;
+    color: var(--color-dark);
   }
-
   .profile-icon {
-    min-width: 48px;
-    min-height: 48px;
-    font-size: 48px;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background-color: var(--white-one);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
+    ion-icon {
+      min-width: 48px;
+      min-height: 48px;
+      font-size: 48px;
+    }
   }
+}
+.icon-user-toolbar {
+  border-radius: 8px;
+  border: 1px solid var(--white-one);
 }

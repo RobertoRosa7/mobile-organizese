@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
+import { BehaviorSubject, Observable, timer } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Register, RegisterByDay } from 'src/app/interfaces/general';
 import { DELETE_REGISTERS } from '../../actions/registers.actions';

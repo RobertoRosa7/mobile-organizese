@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
 import { SubjectService } from 'src/app/services/subject.service';
+import { UtilsService } from 'src/app/services/utils.service';
 import * as actionsApp from '../../../actions/app.actions';
 import * as actionsDashboard from '../../../actions/dashboard.actions';
 import { DashboardPage } from '../dashboard.page';
@@ -13,7 +14,7 @@ import { DashboardPage } from '../dashboard.page';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
+export class MainComponent extends DashboardPage implements OnInit {
   public isLoaded = false;
   public error$: Observable<any>;
   public dashboard$: Observable<any>;
@@ -30,10 +31,7 @@ export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initializingMain();
-    this.isLoaded = true;
   }
-
-  ngOnDestroy() {}
 
   protected async initializingMain(): Promise<any> {
     await this.initHideValues();
@@ -44,6 +42,7 @@ export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
     await this.initMain();
     this.getDataToHighchart();
     this.getDataToDashboard();
+    await this.waitTimeDefault();
   }
 
   protected getDataToHighchart() {
@@ -100,5 +99,14 @@ export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
 
   protected onActionsTypes(type: string): Observable<any> {
     return this.as ? this.as.pipe(filter((a) => a.type === type)) : of(null);
+  }
+
+  protected waitTimeDefault() {
+    return Promise.resolve(
+      setTimeout(
+        () => (this.isLoaded = true),
+        UtilsService.getTimeDefault(2000)
+      )
+    );
   }
 }

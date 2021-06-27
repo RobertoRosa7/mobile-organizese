@@ -5,10 +5,12 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import * as actionsDashboard from '../actions/dashboard.actions';
 import { SET_ERRORS, SET_SUCCESS } from '../actions/errors.actions';
-import * as actions from '../actions/registers.actions';
 import { DashboardService } from '../services/dashboard.service';
+import * as actions from '../actions/registers.actions';
+import * as actionsDashboard from '../actions/dashboard.actions';
+import * as actionsApp from '../actions/app.actions';
+import { UtilsService } from '../services/utils.service';
 
 @Injectable()
 export class RegistersEffect {
@@ -150,6 +152,7 @@ export class RegistersEffect {
     await this.putConsolidado();
     // await this.putAutocomplete();
     await this.putMessageOnSuccess(payload);
+    await this.upgrade();
   }
 
   private async putDashboard(): Promise<any> {
@@ -186,7 +189,13 @@ export class RegistersEffect {
     return Promise.resolve(this.store.dispatch(SET_SUCCESS(payload)));
   }
 
+  private upgrade(): Promise<any> {
+    return Promise.resolve(this.store.dispatch(actionsApp.UPGRADE()));
+  }
+
   private setTime(): Promise<any> {
-    return new Promise((resolve) => setTimeout(() => resolve(true), 2000));
+    return new Promise((resolve) =>
+      setTimeout(() => resolve(true), UtilsService.getTimeDefault(2000))
+    );
   }
 }

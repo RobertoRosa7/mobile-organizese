@@ -6,14 +6,8 @@
   class="menu"
 >
   <div class="menu-item-close">
-    <ion-button
-      (click)="closeMenu()"
-      fill="clear"
-      size="small"
-      color="light"
-      shape="round"
-    >
-      <ion-icon name="close"></ion-icon>
+    <ion-button (click)="closeMenu()" fill="clear" size="small" shape="round">
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
   </div>
   <ion-content class="menu-content">
@@ -30,25 +24,23 @@
 
     <ion-list class="menu-list">
       <ion-item class="menu-item">
-        <ion-icon color="light" name="home"></ion-icon>
+        <ion-icon name="home"></ion-icon>
         <ion-button
           expand="block"
           routerDirection="back"
           routerLink="/home"
           fill="clear"
-          color="light"
           size="medium"
         >
-          home
+          HOME
         </ion-button>
       </ion-item>
 
       <ion-item class="menu-item">
-        <ion-icon color="light" name="grid-outline"></ion-icon>
+        <ion-icon name="grid-outline"></ion-icon>
         <ion-button
           expand="block"
           fill="clear"
-          color="light"
           size="medium"
           routerDirection="back"
           routerLink="/dashboard/main"
@@ -86,7 +78,12 @@
         <ion-button [matMenuTriggerFor]="menu" shape="round" slot="end">
           <mat-icon svgIcon="add_white"></mat-icon>
         </ion-button>
-        <ion-button (click)="profile()" shape="round" slot="end">
+        <ion-button
+          class="icon-user-toolbar"
+          (click)="profile()"
+          shape="round"
+          slot="end"
+        >
           <mat-icon svgIcon="person_outline_white"></mat-icon>
         </ion-button>
 

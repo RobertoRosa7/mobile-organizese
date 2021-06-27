@@ -11,9 +11,12 @@ export enum ActionsTypes {
   GET_HIDE_VALUES = '[GET_HIDE_VALUES]',
   SET_HIDE_VALUES = '[SET_HIDE_VALUES]',
   PUT_HIDE_VALUES = '[PUT_HIDE_VALUES]',
+
+  UPGRADE = '[UPGRADE',
 }
 
 export const onLine = createAction(ActionsTypes.online);
+export const UPGRADE = createAction(ActionsTypes.UPGRADE);
 export const GET_HIDE_VALUES = createAction(ActionsTypes.GET_HIDE_VALUES);
 
 export const setonline = createAction(
