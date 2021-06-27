@@ -5,6 +5,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class SubjectService {
   public highchartData$: Subject<any> = new Subject();
   public extractData$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public payload: BehaviorSubject<any> = new BehaviorSubject(null);
 
   public setExtract(payload: any) {
     this.extractData$.next(payload);

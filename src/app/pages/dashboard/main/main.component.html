@@ -1,24 +1,23 @@
-<ion-content class="main">
+<ion-content *ngIf="isLoaded; else isLoading" class="main">
   <div class="main-container">
     <div class="jumbotron">
       <app-cards></app-cards>
     </div>
 
     <ng-container
-      *ngIf="highchCharts$ | async as highchart"
+      *ngIf="highchCharts$ | async as data"
       class="section-highcharts"
     >
-      <app-highcharts [data]="highchart"></app-highcharts>
+      <app-highcharts [data]="data"></app-highcharts>
     </ng-container>
 
-    <ng-container>
-      <app-extract [data]="teste"></app-extract>
+    <ng-container *ngIf="registersData | async as data">
+      <app-extract [data]="data"></app-extract>
     </ng-container>
   </div>
-
-  <ng-template #isLoading>
-    <div class="spinner">
-      <ion-spinner name="crescent"></ion-spinner>
-    </div>
-  </ng-template>
 </ion-content>
+<ng-template #isLoading>
+  <div class="spinner">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ng-template>

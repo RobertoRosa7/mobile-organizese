@@ -72,3 +72,13 @@
     stroke: red !important;
   }
 }
+@mixin spinner {
+  ::ng-deep .mat-progress-spinner circle,
+  ::ng-deep .mat-spinner circle {
+    stroke: var(--green-microsoft);
+  }
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

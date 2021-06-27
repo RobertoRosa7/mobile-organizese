@@ -4,6 +4,7 @@
   background-color: var(--white-two);
   padding-top: 30px;
   padding-bottom: 30px;
+  border-radius: 48px 48px 0 0;
   .title {
     @include timeline-dates;
     text-align: left;
@@ -89,18 +90,6 @@
             line-height: 14px;
           }
         }
-        // .extract-timeline-card::after {
-        //   content: "";
-        //   width: 0;
-        //   height: 0;
-        //   border-style: solid;
-        //   border-color: transparent #ddd transparent transparent;
-        //   border-width: 8px;
-        //   position: absolute;
-        //   top: 50%;
-        //   transform: translateY(-50%);
-        //   left: -17px;
-        // }
         .extract-timeline-icon {
           position: absolute;
           top: 50%;
@@ -126,4 +115,12 @@
   .extract-container .extract-timeline-icon {
     background-color: inherit;
   }
+}
+.spinner {
+  @include spinner;
+}
+
+.title {
+  @include display-1;
+  text-align: center;
 }

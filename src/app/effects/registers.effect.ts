@@ -112,7 +112,7 @@ export class RegistersEffect {
           of(payload),
         ])
       ),
-      map(([response, _]) => {
+      map(([response, payload]) => {
         if (response instanceof HttpErrorResponse) {
           return SET_ERRORS({
             payload: {
@@ -120,6 +120,11 @@ export class RegistersEffect {
               source: actions.actionsTypes.ERROR_UPDATE_REGISTERS,
             },
           });
+        } else if (response.modified === 0) {
+          this.dispatchActions({
+            payload: actions.actionsTypes.SUCCESS_UPDATE_REGISTERS,
+          });
+          return actions.SET_UPDATE({ payload });
         } else {
           this.dispatchActions({
             payload: actions.actionsTypes.SUCCESS_UPDATE_REGISTERS,
@@ -144,7 +149,6 @@ export class RegistersEffect {
     await this.putLastDateOutcome();
     await this.putConsolidado();
     // await this.putAutocomplete();
-
     await this.putMessageOnSuccess(payload);
   }
 

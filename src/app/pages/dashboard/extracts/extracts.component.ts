@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Chip } from 'src/app/interfaces/general';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Chip, Register } from 'src/app/interfaces/general';
 import { SubjectService } from 'src/app/services/subject.service';
 import { INIT } from '../../../actions/registers.actions';
 @Component({
@@ -10,13 +11,14 @@ import { INIT } from '../../../actions/registers.actions';
   styleUrls: ['./extracts.component.scss'],
 })
 export class ExtractsComponent implements OnInit {
-  public all$: BehaviorSubject<any> = new BehaviorSubject(null);
+  public registers$: Observable<Register[]>;
   public carouselOptions = {
     nav: false,
     lazyLoad: true,
     smartSpeed: 1000,
   };
   public chipSelected: boolean;
+  public chipActivate: Chip;
   public chips: Chip[] = [
     {
       label: '7 dias',
@@ -43,6 +45,7 @@ export class ExtractsComponent implements OnInit {
   constructor(private store: Store, private subjectService: SubjectService) {}
 
   ngOnInit() {
+    this.chipActivate = this.chips.filter((chip: Chip) => chip.selected)[0];
     this.initExtract();
   }
 
@@ -51,18 +54,26 @@ export class ExtractsComponent implements OnInit {
       ...chip,
       selected: (chip.selected = index === i),
     }));
+    this.fetchRegisters(this.checkChip(_));
+    this.chipActivate = this.chips.filter((chip: Chip) => chip.selected)[0];
   }
 
   private async initExtract(): Promise<any> {
-    await this.fetchRegisters();
-    this.store
+    await this.fetchRegisters(this.checkChip(this.chipActivate));
+    this.registers$ = this.store
       .select(({ registers }: any) => ({
         all: registers.all,
       }))
-      .subscribe((state) => this.all$.next(state));
+      .pipe(map((state) => state.all));
   }
 
-  private async fetchRegisters(): Promise<any> {
-    return Promise.resolve(this.store.dispatch(INIT({ payload: { days: 7 } })));
+  private async fetchRegisters(dates?: any): Promise<any> {
+    return Promise.resolve(this.store.dispatch(INIT({ payload: dates })));
+  }
+
+  private checkChip(chip: Chip): any {
+    return chip.value === 'todos'
+      ? { todos: chip.value }
+      : { days: chip.value };
   }
 }

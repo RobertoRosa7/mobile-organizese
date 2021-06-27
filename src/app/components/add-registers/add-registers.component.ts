@@ -3,11 +3,13 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ActionsSubject, ActionType, Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
+import { BuildsService } from 'src/app/services/builds.service';
 import * as actionsRegister from '../../actions/registers.actions';
+import * as actionsError from '../../actions/errors.actions';
 @Component({
   selector: 'app-add-registers',
   templateUrl: './add-registers.component.html',
@@ -17,7 +19,7 @@ export class AddRegistersComponent implements OnInit {
   @Input() public type: string;
   @Input() public profile: any;
   @Input() public edit: boolean;
-  @Input() public extract: any;
+  @Input() public extract: Register;
 
   @Output() public sendPayload = new EventEmitter();
 
@@ -41,7 +43,8 @@ export class AddRegistersComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private store: Store,
-    private breakpoint: BreakpointObserver
+    private breakpoint: BreakpointObserver,
+    private as: ActionsSubject
   ) {
     this.breakpoint
       .observe([Breakpoints.XSmall])
@@ -76,41 +79,33 @@ export class AddRegistersComponent implements OnInit {
 
   public onSubmit(event): void {
     this.isLoading = true;
-    const payload: Register = {
-      category: this.form.value.category || 'Outros',
-      created_at: this.getDateCreated(),
-      updated_at: this.getDateCreated(),
-      type: this.type,
-      value: this.form.value.value,
-      status: this.edit ? this.extract.status : 'pending',
-      brand: this.form.value.brand || '',
-      edit: false,
-      user: {
-        ...this.profile.user,
-        _id: this.edit
-          ? { $oid: this.profile.user._id }
-          : this.profile.user._id,
-      },
-      description: this.form.value.description?.trim() || 'Sem descrição',
-      cat_icon: this.edit ? this.extract.cat_icon : '',
-    };
 
-    if (this.edit) {
-      payload._id = this.extract._id;
+    if (this.edit && this.extract) {
+      this.store.dispatch(
+        actionsRegister.UPDATE_REGISTER({
+          payload: BuildsService.buildUpdateRegister(this.extract, this.form),
+        })
+      );
+    } else {
+      this.store.dispatch(
+        actionsRegister.ADD_REGISTERS({
+          payload: BuildsService.buildRegister(
+            this.form,
+            this.profile.user,
+            this.type
+          ),
+        })
+      );
     }
-
-    this.store.dispatch(actionsRegister.ADD_REGISTERS({ payload }));
-    const success$ = this.store
-      .select(({ errors }: any) => ({
-        success: this.handlerSuccess(errors.from),
-      }))
-      .pipe(map((state) => state.success));
-
-    success$.subscribe(async (success) => {
-      if (success) {
+    this.onActionSubject(actionsError.actionsTypes.SET_SUCCESS).subscribe(
+      () => {
         this.sendPayload.emit(true);
         this.isLoading = false;
       }
+    );
+    this.onActionSubject(actionsError.actionsTypes.SET_ERRORS).subscribe(() => {
+      this.sendPayload.emit(true);
+      this.isLoading = false;
     });
   }
 
@@ -118,18 +113,7 @@ export class AddRegistersComponent implements OnInit {
     this.sendPayload.emit(undefined);
   }
 
-  private handlerSuccess(from: string): string {
-    switch (from) {
-      case actionsRegister.actionsTypes.SUCCESS_ADD_REGISTERS:
-        return 'Registro cadastrado com sucesso.';
-      default:
-        return '';
-    }
-  }
-
-  private getDateCreated(): number {
-    return this.form.value.date
-      ? new Date(this.form.value.date).getTime() / 1000
-      : new Date().getTime() / 1000;
+  private onActionSubject(type: string) {
+    return this.as ? this.as.pipe(filter((a) => a.type === type)) : of(null);
   }
 }

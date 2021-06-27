@@ -2,7 +2,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   Component,
-  DoCheck,
   ElementRef,
   Input,
   KeyValueDiffers,
@@ -12,17 +11,15 @@ import {
 import { ActionsSubject, Store } from '@ngrx/store';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
-import { Observable, of, Subject, timer } from 'rxjs';
-import { filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, of, timer } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { ChartService } from 'src/app/services/chart.service';
+import { SubjectService } from 'src/app/services/subject.service';
+import * as actionsDashboard from '../../actions/dashboard.actions';
 import {
   PUT_DATES,
   PUT_GRAPH_OUTCOME_INCOME,
 } from '../../actions/dashboard.actions';
-import * as actionsRegister from '../../actions/registers.actions';
-import * as actionsDashboard from '../../actions/dashboard.actions';
-import { delay } from 'q';
-import { SubjectService } from 'src/app/services/subject.service';
 
 @Component({
   selector: 'app-highcharts',
@@ -32,7 +29,7 @@ import { SubjectService } from 'src/app/services/subject.service';
 export class HighchartsComponent implements OnInit {
   @ViewChild('highchart', { static: true }) public highchart: ElementRef;
   @Input() public type: string;
-  @Input() public data: any;
+  @Input() public data: Observable<any>;
 
   public dtStart: Date;
   public dtEnd: Date;
@@ -51,7 +48,8 @@ export class HighchartsComponent implements OnInit {
     private differs: KeyValueDiffers,
     private breakpoint: BreakpointObserver,
     private store: Store,
-    private as: ActionsSubject
+    private as: ActionsSubject,
+    private subjectService: SubjectService
   ) {
     this.breakpoint
       ?.observe([Breakpoints.XSmall])
@@ -86,19 +84,12 @@ export class HighchartsComponent implements OnInit {
     moment(d).isSameOrBefore(moment(new Date()));
 
   private instanceChart() {
-    timer(1000)
-      .pipe(
-        withLatestFrom(of(this.data)),
-        mergeMap(([_, states]) =>
-          this.chartService
-            .getCharts()
-            .pipe(map((chart) => this.mapToChart(chart, states)))
-        )
-      )
-      .subscribe({
-        next: (chart) => Highcharts.chart(this.highchart.nativeElement, chart),
-        error: (e) => console.error(e),
-        complete: () => (this.btnLoadingSpinner = false),
+    this.chartService
+      .getCharts()
+      .pipe(map((chart) => this.mapToChart(chart, this.data)))
+      .subscribe((chart) => {
+        Highcharts.chart(this.highchart.nativeElement, chart);
+        this.btnLoadingSpinner = false;
       });
   }
 

@@ -1,21 +1,17 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
   Component,
-  DoCheck,
   Input,
-  KeyValueDiffers,
-  OnDestroy,
+  OnChanges,
   OnInit,
+  SimpleChanges,
 } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
-import { Subscription, timer } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
-import { SubjectService } from 'src/app/services/subject.service';
-import {
-  DELETE_REGISTERS,
-  UPDATE_REGISTER,
-} from '../../actions/registers.actions';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { BehaviorSubject, Observable, Subject, timer } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Register, RegisterByDay } from 'src/app/interfaces/general';
+import { DELETE_REGISTERS } from '../../actions/registers.actions';
 import { ModalComponent } from '../modal/modal.component';
 
 @Component({
@@ -23,50 +19,35 @@ import { ModalComponent } from '../modal/modal.component';
   templateUrl: './extract.component.html',
   styleUrls: ['./extract.component.scss'],
 })
-export class ExtractComponent implements OnInit, DoCheck, OnDestroy {
-  @Input() public data: any;
+export class ExtractComponent implements OnInit, OnChanges {
+  @Input() public data: Register[];
+  public listGroupByDay$: Observable<RegisterByDay[]>;
+  public listGroupByDay2$: BehaviorSubject<RegisterByDay[]> =
+    new BehaviorSubject(null);
+  public list: RegisterByDay[] = [];
 
-  @Input() public page: string;
-
-  public differ: any;
-  public listGroupByDay: any[];
-  public subscription = new Subscription();
   constructor(
-    private differs: KeyValueDiffers,
     private alertController: AlertController,
     private modalController: ModalController,
     private store: Store,
-    private subjectService: SubjectService
-  ) {
-    this.differ = this.differs.find({}).create();
-  }
+    private as: ActionsSubject
+  ) {}
 
-  ngOnInit() {
-    this.subscription = timer(1000)
+  ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    timer(1000)
       .pipe(
-        withLatestFrom(this.data),
-        map(([_, state]) => state)
+        tap(() =>
+          this.listGroupByDay2$.next(this.groupByDay(changes.data.currentValue))
+        )
       )
-      .subscribe({
-        next: (state: any) => {
-          this.listGroupByDay = this.groupByDay(state.all);
-        },
-      });
-  }
-
-  ngDoCheck(): void {
-    const change = this.differ.diff(this);
-    if (change) {
-      change.forEachChangedItem((item: any) => {
-        if (item.key === 'data') {
-          // this.listGroupByDay = this.groupByDay(this.data.all);
-        }
-      });
-    }
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+      .subscribe();
+    timer(1500).subscribe(() => {
+      this.listGroupByDay2$.subscribe(
+        (list: RegisterByDay[]) => (this.list = list)
+      );
+    });
   }
 
   public formatterValue(value: number): string {
@@ -108,7 +89,7 @@ export class ExtractComponent implements OnInit, DoCheck, OnDestroy {
     await modal.present();
   }
 
-  public async edit(extract: any): Promise<any> {
+  public async edit(extract: Register): Promise<any> {
     const modal = await this.modalController.create({
       component: ModalComponent,
       swipeToClose: true,
@@ -125,10 +106,7 @@ export class ExtractComponent implements OnInit, DoCheck, OnDestroy {
       },
     });
     await modal.present();
-    const event = (await modal.onDidDismiss()).data;
-    if (event) {
-      this.store.dispatch(UPDATE_REGISTER({ payload: event.payload }));
-    }
+    await modal.onDidDismiss();
   }
 
   private groupByDay(list: any): any {

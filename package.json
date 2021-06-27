@@ -120,7 +120,8 @@
         "ANDROID_PATH_PREFIX": "/"
       },
       "cordova-plugin-console": {},
-      "cordova-plugin-app-exit": {}
+      "cordova-plugin-app-exit": {},
+      "cordova-plugin-cleartext": {}
     },
     "platforms": [
       "android"

@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { Register } from 'src/app/interfaces/general';
 import { SubjectService } from 'src/app/services/subject.service';
 import * as actionsApp from '../../../actions/app.actions';
 import * as actionsDashboard from '../../../actions/dashboard.actions';
@@ -15,12 +17,9 @@ export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
   public isLoaded = false;
   public error$: Observable<any>;
   public dashboard$: Observable<any>;
-  public registersData$: Observable<any>;
+  public registersData: Observable<Register[]>;
   public highchCharts$: Observable<any>;
   public isContentLoaded: boolean;
-  public teste = new BehaviorSubject(null);
-
-  private subscription: Subscription = new Subscription();
 
   constructor(
     protected store: Store,
@@ -31,36 +30,39 @@ export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initializingMain();
+    this.isLoaded = true;
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+  ngOnDestroy() {}
 
   protected async initializingMain(): Promise<any> {
     await this.initHideValues();
     await this.initGraphOutcomeIncome();
     await this.initLastDateOutcomeIncome();
     await this.initDatesGraph();
-    await this.initMain();
     await this.initDashboard();
-    this.fetchStore();
+    await this.initMain();
+    this.getDataToHighchart();
+    this.getDataToDashboard();
   }
 
-  protected fetchStore() {
-    this.subscription = this.store
-      .select(({ dashboard, profile }: any) => ({
-        all: dashboard.registers,
-        profile: profile.profile,
+  protected getDataToHighchart() {
+    this.highchCharts$ = this.store
+      .select(({ dashboard }: any) => ({
+        outcomeIncome: dashboard.outcome_income,
+        dt_start: dashboard.graph_dates.dt_start,
+        dt_end: dashboard.graph_dates.dt_end,
+        lastDate: dashboard.lastdate_outcome,
       }))
-      .subscribe((state) => this.teste.next(state));
+      .pipe(map((state) => state));
+  }
 
-    this.highchCharts$ = this.store.select(({ dashboard }: any) => ({
-      outcomeIncome: dashboard.outcome_income,
-      dt_start: dashboard.graph_dates.dt_start,
-      dt_end: dashboard.graph_dates.dt_end,
-      lastDate: dashboard.lastdate_outcome,
-    }));
+  protected getDataToDashboard() {
+    this.registersData = this.store
+      .select(({ dashboard }: any) => ({
+        all: dashboard.registers,
+      }))
+      .pipe(map((state) => state.all));
   }
 
   protected initHideValues(): Promise<any> {
@@ -89,9 +91,14 @@ export class MainComponent extends DashboardPage implements OnInit, OnDestroy {
     );
   }
 
+  // init dashboard é para buscar o consolidado
   protected initMain(): Promise<any> {
     return Promise.resolve(
       this.store.dispatch(actionsDashboard.INIT_DASHBOARD())
     );
+  }
+
+  protected onActionsTypes(type: string): Observable<any> {
+    return this.as ? this.as.pipe(filter((a) => a.type === type)) : of(null);
   }
 }

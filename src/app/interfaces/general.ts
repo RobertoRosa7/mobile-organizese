@@ -15,6 +15,7 @@ export interface Register {
   month?: number;
   cat_icon?: string;
   lista?: Register[];
+  date?: Date;
 }
 
 export interface User {
@@ -71,4 +72,10 @@ export interface Chip {
   label: string;
   value: string | number;
   selected: boolean;
+}
+export interface RegisterByDay {
+  day: number;
+  list: Register[];
+  total_credits: number;
+  total_debits: number;
 }
