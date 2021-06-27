@@ -9,6 +9,7 @@ import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import {
   actionsTypes,
   GET_TOTALS,
+  PUT_DATES,
   SET_DASHBOARD,
   SET_DATES,
   SET_GRAPH_OUTCOME_INCOME,
@@ -289,7 +290,7 @@ export class DashboardEffect {
     )
   );
 
-  public putDatesFilter = createEffect(() =>
+  public putDatesFilters = createEffect(() =>
     this.action.pipe(
       ofType(actionsTypes.PUT_DATES),
       mergeMap(({ payload }) => this.setPayloadOnStore('datesFilter', payload)),
@@ -385,5 +386,18 @@ export class DashboardEffect {
       this.storageService.setStore(storeId, payload),
       of(payload),
     ]);
+  }
+
+  private setDatesWhenPayloadIsEmpty(payload) {
+    if (payload.outcome_income[0].dates.length === 0) {
+      this.store.dispatch(
+        PUT_DATES({
+          payload: {
+            dt_start: moment().subtract(10, 'days').toLocaleString(),
+            dt_end: moment(new Date()).toLocaleString(),
+          },
+        })
+      );
+    }
   }
 }

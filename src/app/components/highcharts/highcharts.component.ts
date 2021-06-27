@@ -33,23 +33,20 @@ export class HighchartsComponent implements OnInit {
 
   public dtStart: Date;
   public dtEnd: Date;
-
   public minDate: Date = new Date('1920-01-01');
   public highchartData$: Observable<any>;
-  public enableButtonFilter = true;
   public isMobile: boolean;
   public setDtStart: any;
   public setDtEnd: any;
   public differ: any;
   public btnLoadingSpinner: boolean;
+  public enableButtonFilter: boolean;
 
   constructor(
     private chartService: ChartService,
-    private differs: KeyValueDiffers,
     private breakpoint: BreakpointObserver,
     private store: Store,
-    private as: ActionsSubject,
-    private subjectService: SubjectService
+    private as: ActionsSubject
   ) {
     this.breakpoint
       ?.observe([Breakpoints.XSmall])
@@ -94,9 +91,19 @@ export class HighchartsComponent implements OnInit {
   }
 
   private mapToChart(chart, states): any {
-    this.dtEnd = new Date(states.dt_end);
-    this.dtStart = new Date(states.dt_start);
-    this.minDate = new Date(states.lastDate.dt_start);
+    if (states.outcomeIncome[0].dates.length === 0) {
+      this.dtEnd = null;
+      this.dtStart = null;
+      this.minDate = null;
+      this.enableButtonFilter = true;
+    } else {
+      this.dtEnd = new Date(states.dt_end);
+      this.dtStart = new Date(states.dt_start);
+      this.minDate = new Date(states.lastDate.dt_start);
+      this.enableButtonFilter = false;
+      console.log('bingo');
+    }
+
     chart.tooltip.backgroundColor = 'var(--white-one)';
     chart.chart.type = 'spline';
     chart.series = states.outcomeIncome;

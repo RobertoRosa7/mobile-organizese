@@ -9,12 +9,13 @@
         <input
           [min]="minDate"
           [readonly]="enableButtonFilter"
-          autocomplete="off"
           [ngModelOptions]="{ standalone: true }"
           [(ngModel)]="dtStart"
-          matInput
           [matDatepickerFilter]="filterStart"
           [matDatepicker]="pickerStart"
+          matInput
+          autocomplete="off"
+          [disabled]="enableButtonFilter"
         />
         <mat-datepicker-toggle
           matSuffix
@@ -31,12 +32,13 @@
         <input
           [min]="minDate"
           [readonly]="enableButtonFilter"
-          autocomplete="off"
           [ngModelOptions]="{ standalone: true }"
           [(ngModel)]="dtEnd"
           [matDatepickerFilter]="filterEnd"
-          matInput
           [matDatepicker]="pickerEnd"
+          [disabled]="enableButtonFilter"
+          matInput
+          autocomplete="off"
         />
         <mat-datepicker-toggle
           matSuffix
@@ -48,7 +50,7 @@
 
     <div matTooltip="Filtrar" class="buttons">
       <button
-        [disabled]="btnLoadingSpinner"
+        [disabled]="btnLoadingSpinner || enableButtonFilter"
         class="btn-filter"
         disableRipple="true"
         type="submit"
