@@ -108,7 +108,17 @@ export class ExtractComponent implements OnInit, OnChanges {
     await modal.present();
     await modal.onDidDismiss();
   }
-
+  public returnClassByCategory(extract: Register): string {
+    if (extract.status === 'pendente a pagar') {
+      return 'color-icons-pending';
+    } else if (extract.type === 'incoming' && extract.status === 'concluído') {
+      return 'color-icons-incoming';
+    } else if (extract.type === 'outcoming' && extract.status === 'concluído') {
+      return 'color-icons-outcoming';
+    } else {
+      return '';
+    }
+  }
   private groupByDay(list: any): any {
     return list
       .map((i: any) => ({ ...i, day: new Date(i.created_at * 1000) }))
@@ -135,4 +145,6 @@ export class ExtractComponent implements OnInit, OnChanges {
           .reduce((v, i) => v + i),
       }));
   }
+
+  // color-icons-outcoming
 }

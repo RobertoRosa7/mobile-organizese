@@ -1,10 +1,12 @@
 @import "../../../theme/mixins.scss";
 
 .extract {
-  background-color: var(--white-two);
+  background-color: var(--white-one);
   padding-top: 30px;
   padding-bottom: 30px;
-  border-radius: 48px 48px 0 0;
+  max-width: 50rem;
+  margin-left: auto;
+  margin-right: auto;
   .title {
     @include timeline-dates;
     text-align: left;
@@ -23,6 +25,15 @@
       .extract-timeline-icon {
         max-width: 32px;
         max-height: 32px;
+        .color-icons-outcoming ::ng-deep svg {
+          fill: var(--danger);
+        }
+        .color-icons-incoming ::ng-deep svg {
+          fill: var(--green-microsoft);
+        }
+        .color-icons-pending ::ng-deep svg {
+          fill: var(--text-middle-orange);
+        }
       }
       .extract-timeline-body {
         width: 100%;
@@ -36,7 +47,7 @@
           font-size: 0.7em;
           padding: 4px 12px;
           border-radius: 32px;
-          background-color: var(--white-one);
+          background-color: var(--white-two);
           font-weight: 500;
           position: relative;
           margin-top: 8px;
@@ -46,7 +57,7 @@
           width: 0;
           height: 0;
           border-style: solid;
-          border-color: transparent transparent var(--white-one) transparent;
+          border-color: transparent transparent var(--white-two) transparent;
           border-width: 8px;
           position: absolute;
           top: -15px;
@@ -94,13 +105,13 @@
           position: absolute;
           top: 50%;
           left: -27px;
-          border: 3px solid var(--white-two);
+          border: 3px solid var(--white-one);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           transform: translateY(-50%);
-          background-color: var(--white-two);
+          background-color: var(--white-one);
         }
       }
     }

@@ -27,7 +27,10 @@
               disableRipple="true"
               class="extract-timeline-icon"
             >
-              <mat-icon [svgIcon]="extract.cat_icon"></mat-icon>
+              <mat-icon
+                [class]="returnClassByCategory(extract)"
+                [svgIcon]="extract.cat_icon"
+              ></mat-icon>
             </button>
             <div class="extract-timeline-card">
               <p>

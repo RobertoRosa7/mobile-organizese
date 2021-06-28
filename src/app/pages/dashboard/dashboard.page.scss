@@ -3,6 +3,8 @@
 }
 .ion-toolbar ion-buttons {
   justify-content: flex-end;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .ion-toolbar {
@@ -59,8 +61,6 @@
     width: 96px;
     height: 96px;
     border-radius: 50%;
-    background-color: var(--white-one);
-    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
     ion-icon {
       min-width: 48px;
       min-height: 48px;
@@ -69,6 +69,23 @@
   }
 }
 .icon-user-toolbar {
-  border-radius: 8px;
+  border-radius: 50%;
+  height: 42px;
+  width: 42px;
   border: 1px solid var(--white-one);
+}
+ion-tab-button {
+  --color: var(--ion-color-medium);
+  --color-selected: var(--green-microsoft);
+  &::before {
+    background-color: transparent;
+    display: block;
+    content: "";
+    margin: 0 auto;
+    width: 20px;
+    height: 2px;
+  }
+  &.tab-selected::before {
+    background-color: var(--green-microsoft);
+  }
 }
