@@ -7,7 +7,7 @@
 >
   <div class="menu-item-close">
     <ion-button (click)="closeMenu()" fill="clear" size="small" shape="round">
-      <ion-icon name="arrow-back-outline"></ion-icon>
+      <ion-icon size="small" name="arrow-back-outline"></ion-icon>
     </ion-button>
   </div>
   <ion-content class="menu-content">
@@ -23,30 +23,89 @@
     </div>
 
     <ion-list class="menu-list">
-      <ion-item class="menu-item">
-        <ion-icon name="home"></ion-icon>
-        <ion-button
-          expand="block"
-          routerDirection="back"
-          routerLink="/home"
-          fill="clear"
-          size="medium"
-        >
-          HOME
-        </ion-button>
-      </ion-item>
+      <div class="container-items">
+        <ion-item class="menu-item">
+          <ion-icon size="small" name="home-outline"></ion-icon>
+          <ion-button
+            expand="block"
+            routerLink="/home"
+            fill="clear"
+            size="small"
+          >
+            HOME
+          </ion-button>
+          <ion-icon
+            slot="end"
+            size="small"
+            name="chevron-forward-outline"
+          ></ion-icon>
+        </ion-item>
+
+        <ion-item class="menu-item">
+          <ion-icon size="small" name="grid-outline"></ion-icon>
+          <ion-button
+            expand="block"
+            fill="clear"
+            size="small"
+            routerLink="/dashboard/main"
+          >
+            DASHBOARD
+          </ion-button>
+          <ion-icon
+            slot="end"
+            size="small"
+            name="chevron-forward-outline"
+          ></ion-icon>
+        </ion-item>
+        <ion-item class="menu-item">
+          <ion-icon size="small" name="settings-outline"></ion-icon>
+          <ion-button
+            expand="block"
+            routerLink="/dashboard/settings"
+            fill="clear"
+            size="small"
+          >
+            CONFIGURAÇÕES
+          </ion-button>
+          <ion-icon
+            slot="end"
+            size="small"
+            name="chevron-forward-outline"
+          ></ion-icon>
+        </ion-item>
+        <ion-item class="menu-item">
+          <ion-icon size="small" name="information-circle-outline"></ion-icon>
+          <ion-button
+            expand="block"
+            fill="clear"
+            size="small"
+            routerLink="/dashboard/about"
+          >
+            SOBRE
+          </ion-button>
+          <ion-icon
+            slot="end"
+            size="small"
+            name="chevron-forward-outline"
+          ></ion-icon>
+        </ion-item>
+      </div>
 
       <ion-item class="menu-item">
-        <ion-icon name="grid-outline"></ion-icon>
+        <ion-icon size="small" name="log-in-outline"></ion-icon>
         <ion-button
           expand="block"
-          fill="clear"
-          size="medium"
           routerDirection="back"
-          routerLink="/dashboard/main"
+          fill="clear"
+          size="small"
         >
-          DASHBOARD
+          SAIR
         </ion-button>
+        <ion-icon
+          slot="end"
+          size="small"
+          name="chevron-forward-outline"
+        ></ion-icon>
       </ion-item>
     </ion-list>
   </ion-content>

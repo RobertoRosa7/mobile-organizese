@@ -17,6 +17,11 @@
   --padding: 0;
   padding: 0;
 }
+.menu-list,
+.menu-item,
+.container-items {
+  width: 100%;
+}
 .menu-item-close,
 .menu-item-close ion-button,
 .menu-item ion-button,
@@ -32,8 +37,16 @@
   --padding: 0;
   padding: 0;
 }
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 .menu-item ion-button {
   padding: 0;
+  width: 100%;
+  height: 100%;
 }
 .ion-toolbar {
   border: none;
