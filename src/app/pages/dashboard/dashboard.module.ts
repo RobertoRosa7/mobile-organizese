@@ -12,6 +12,7 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { DashboardPage } from './dashboard.page';
 import { ExtractsComponent } from './extracts/extracts.component';
 import { MainComponent } from './main/main.component';
+import { ProfileComponent } from './settings/profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { SettingsComponent } from './settings/settings.component';
     AboutComponent,
     ExtractsComponent,
     ExtractComponent,
+    ProfileComponent,
   ],
 })
 export class DashboardPageModule {}

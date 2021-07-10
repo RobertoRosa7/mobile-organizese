@@ -1,15 +1,10 @@
 <section class="page-settings">
   <ion-list class="menu-list">
-    <ion-item class="menu-item">
+    <ion-item class="menu-item" slot="start">
       <mat-icon svgIcon="person_outline"></mat-icon>
-      <ion-button
-        expand="block"
-        routerLink="/settings/profile"
-        fill="clear"
-        size="small"
-      >
+      <button mat-button routerLink="/dashboard/settings/profile">
         PERFIL
-      </ion-button>
+      </button>
       <ion-icon
         slot="end"
         size="small"

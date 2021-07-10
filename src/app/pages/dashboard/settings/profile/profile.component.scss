@@ -1,0 +1,25 @@
+.settings-profile {
+  padding: 16px 8px 16px 16px;
+  .container-profile {
+    .profile {
+      p {
+        margin: 16px 0;
+      }
+      .form-profile {
+        .container-forms {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          .form-inline {
+            flex: 1;
+            min-width: 255px;
+            padding-right: 8px;
+            .form {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
