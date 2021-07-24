@@ -3,13 +3,14 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActionsSubject, ActionType, Store } from '@ngrx/store';
+import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
 import { BuildsService } from 'src/app/services/builds.service';
-import * as actionsRegister from '../../actions/registers.actions';
 import * as actionsError from '../../actions/errors.actions';
+import * as actionsRegister from '../../actions/registers.actions';
+
 @Component({
   selector: 'app-add-registers',
   templateUrl: './add-registers.component.html',
@@ -77,7 +78,7 @@ export class AddRegistersComponent implements OnInit {
     }
   }
 
-  public onSubmit(event): void {
+  public onSubmit(_): void {
     this.isLoading = true;
 
     if (this.edit && this.extract) {
@@ -109,7 +110,7 @@ export class AddRegistersComponent implements OnInit {
     });
   }
 
-  public close(options?): void {
+  public close(_?): void {
     this.sendPayload.emit(undefined);
   }
 

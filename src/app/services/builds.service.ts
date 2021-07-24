@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { FormGroup } from '@angular/forms';
+import * as moment from 'moment';
 import { Register, User } from '../interfaces/general';
 
 export class BuildsService {
@@ -42,11 +43,19 @@ export class BuildsService {
 
   public static getDateCreated(form): number {
     return form.value.date
-      ? new Date(form.value.date).getTime() / 1000
+      ? new Date(BuildsService.formatDateAndHours(form)).getTime() / 1000
       : new Date().getTime() / 1000;
   }
 
   public static getIsoDate(form): Date {
-    return form.value.date ? new Date(form.value.date) : new Date();
+    return form.value.date
+      ? new Date(BuildsService.formatDateAndHours(form))
+      : new Date();
+  }
+
+  private static formatDateAndHours(form) {
+    return `${moment(form.value.date).format(
+      'YYYY-MM-DD'
+    )}:${new Date().getHours()}:${new Date().getMinutes()}`;
   }
 }

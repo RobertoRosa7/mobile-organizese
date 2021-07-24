@@ -119,6 +119,7 @@ export class ExtractComponent implements OnInit, OnChanges {
       return '';
     }
   }
+
   private groupByDay(list: any): any {
     return list
       .map((i: any) => ({ ...i, day: new Date(i.created_at * 1000) }))
@@ -145,6 +146,4 @@ export class ExtractComponent implements OnInit, OnChanges {
           .reduce((v, i) => v + i),
       }));
   }
-
-  // color-icons-outcoming
 }

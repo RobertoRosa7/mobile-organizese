@@ -47,7 +47,11 @@
       <ion-button (click)="close(false)" class="btn close" type="button"
         >Fechar</ion-button
       >
-      <ion-button [disabled]="!form.valid" class="btn income" type="submit">
+      <ion-button
+        [disabled]="!form.valid || isLoading"
+        class="btn income"
+        type="submit"
+      >
         <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
         <span *ngIf="!isLoading">
           {{ edit ? "atualizar" : "registrar" }}
