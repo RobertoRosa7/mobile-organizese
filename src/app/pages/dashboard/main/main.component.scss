@@ -1,6 +1,9 @@
 @import "../../../../theme/mixins.scss";
 .main {
   @include size-page;
+  .main-container {
+    @include container-padding;
+  }
 }
 .jumbotron {
   background-color: var(--green-microsoft);

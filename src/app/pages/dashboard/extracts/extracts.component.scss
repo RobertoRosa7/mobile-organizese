@@ -2,8 +2,10 @@
 
 .page-extract {
   @include size-page;
+  .container {
+    @include container-padding;
+  }
   .page-extract-badge {
-    margin: 16px;
     .container-chips {
       display: flex;
       justify-content: space-between;

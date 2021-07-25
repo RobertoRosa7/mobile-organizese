@@ -3,7 +3,7 @@
 .settings-profile {
   @include size-page;
   .container-profile {
-    padding: 16px 8px 16px 16px;
+    @include container-padding;
     .profile {
       p {
         margin: 16px 0;

@@ -1,7 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +9,6 @@ import { Platform } from '@ionic/angular';
 })
 export class AppComponent implements AfterViewInit {
   constructor(
-    private platform: Platform,
     private matIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer
   ) {}
@@ -36,7 +34,8 @@ export class AppComponent implements AfterViewInit {
       .addSvgIcon('swap_vert')
       .addSvgIcon('drag_indicator')
       .addSvgIcon('account_balance')
-      .addSvgIcon('work_outline');
+      .addSvgIcon('work_outline')
+      .addSvgIcon('arrow_back');
   }
   private addSvgIcon(name: string, alias?: string, namespace?: string): this {
     const path = this.sanitizer.bypassSecurityTrustResourceUrl(

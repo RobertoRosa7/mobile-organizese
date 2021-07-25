@@ -2,4 +2,7 @@
 
 .about {
   @include size-page;
+  .container {
+    @include container-padding;
+  }
 }

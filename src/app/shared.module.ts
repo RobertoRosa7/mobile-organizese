@@ -30,6 +30,7 @@ import { Constants } from './services/constants';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ButtonBackComponent } from './components/button-back/button-back.component';
 
 registerLocaleData(localePt, 'pt');
 
@@ -51,6 +52,7 @@ const MY_FORMATS = {
     LoginComponent,
     AddRegistersComponent,
     HighchartsComponent,
+    ButtonBackComponent,
   ],
   imports: [
     CommonModule,
@@ -98,6 +100,7 @@ const MY_FORMATS = {
     LoginComponent,
     AddRegistersComponent,
     HighchartsComponent,
+    ButtonBackComponent,
   ],
   providers: [
     {

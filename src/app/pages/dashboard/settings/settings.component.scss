@@ -2,6 +2,9 @@
 
 .page-settings {
   @include size-page;
+  .container {
+    @include container-padding;
+  }
   .menu-list {
     .menu-item {
       button {
