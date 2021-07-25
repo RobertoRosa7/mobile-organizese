@@ -1,6 +1,7 @@
 @import "../../../theme/mixins";
 
 .highcharts {
+  @include size-page;
   .dates,
   .dates .form-inline {
     flex-wrap: wrap;

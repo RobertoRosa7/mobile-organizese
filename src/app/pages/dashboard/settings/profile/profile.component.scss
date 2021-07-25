@@ -1,6 +1,9 @@
+@import "../../../../../theme/mixins.scss";
+
 .settings-profile {
-  padding: 16px 8px 16px 16px;
+  @include size-page;
   .container-profile {
+    padding: 16px 8px 16px 16px;
     .profile {
       p {
         margin: 16px 0;

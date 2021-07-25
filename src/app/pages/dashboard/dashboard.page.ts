@@ -22,6 +22,7 @@ import * as actionsProfile from '../../actions/profile.actions';
 import * as actionsRegister from '../../actions/registers.actions';
 import * as actionsDashboard from 'src/app/actions/dashboard.actions';
 import * as actionsErrors from '../../actions/errors.actions';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -157,6 +158,8 @@ export class DashboardPage implements OnInit {
         return 'Registro excluído com sucesso.';
       case actionsRegister.actionsTypes.SUCCESS_UPDATE_REGISTERS:
         return 'Registro atualizado com sucesso.';
+      case actionsProfile.ActionsTypes.SUCCESS_PUT_PROFILE:
+        return 'Perfil atualizado com sucesso.';
       default:
         return '';
     }

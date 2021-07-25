@@ -1,4 +1,7 @@
+@import "../../../../theme/mixins.scss";
+
 .page-extract {
+  @include size-page;
   .page-extract-badge {
     margin: 16px;
     .container-chips {

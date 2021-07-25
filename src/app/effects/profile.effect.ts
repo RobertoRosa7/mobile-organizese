@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-import { SET_ERRORS } from '../actions/errors.actions';
+import { SET_ERRORS, SET_SUCCESS } from '../actions/errors.actions';
 import { ActionsTypes, SET_PROFILE } from '../actions/profile.actions';
 import { ProfileService } from '../services/profile.service';
 import { StorageService } from '../services/storage.service';
@@ -65,6 +66,9 @@ export class ProfileEffect {
             payload: { ...payload, source: ActionsTypes.ERR_PUT_PROFILE },
           });
         } else {
+          this.dispatchActions({
+            payload: ActionsTypes.SUCCESS_PUT_PROFILE,
+          });
           return SET_PROFILE({ payload });
         }
       }),
@@ -75,6 +79,15 @@ export class ProfileEffect {
   constructor(
     private action: Actions,
     private storageService: StorageService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private store: Store
   ) {}
+
+  private async dispatchActions(payload): Promise<any> {
+    await this.putMessageOnSuccess(payload);
+  }
+
+  private putMessageOnSuccess(payload): Promise<any> {
+    return Promise.resolve(this.store.dispatch(SET_SUCCESS(payload)));
+  }
 }
