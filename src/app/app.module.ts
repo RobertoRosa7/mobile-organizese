@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
+import { NgxMaskModule } from 'ngx-mask';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppEffect } from './effects/app.effect';
@@ -40,6 +41,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     IonicModule.forRoot({ animated: false }),
     AppRoutingModule,
     SharedModule,
+    NgxMaskModule.forRoot(),
     IonicStorageModule.forRoot(),
     StoreModule.forRoot(organizeseStore),
     StoreDevtoolsModule.instrument({ maxAge: 45 }),

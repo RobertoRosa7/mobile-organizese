@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+import { UPDATE_PROFILE } from '../../../../actions/profile.actions';
 
 @Component({
   selector: 'app-profile',
@@ -37,5 +38,8 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  public onProfileSubmit(): void {}
+  public onProfileSubmit(): void {
+    this.isLoading = true;
+    this.store.dispatch(UPDATE_PROFILE({ payload: this.formProfile.value }));
+  }
 }

@@ -95,11 +95,12 @@
         </div>
         <div class="form-buttons">
           <button
-            [disabled]="!formProfile.valid"
+            [disabled]="!formProfile.valid || isLoading"
             type="submit"
             mat-raised-button
           >
-            Salvar
+            <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+            <span *ngIf="!isLoading">Salvar</span>
           </button>
         </div>
       </form>

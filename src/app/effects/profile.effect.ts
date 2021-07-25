@@ -34,13 +34,41 @@ export class ProfileEffect {
       }),
       map((payload) => {
         if (payload instanceof HttpErrorResponse) {
-          const source = { ...payload, source: ActionsTypes.ERROR_PROFILE };
-          console.log(source);
-          SET_ERRORS({ payload: source });
+          SET_ERRORS({
+            payload: { ...payload, source: ActionsTypes.ERROR_PROFILE },
+          });
         } else {
           return SET_PROFILE({ payload });
         }
       })
+    )
+  );
+
+  public updateProfile = createEffect(() =>
+    this.action.pipe(
+      ofType(ActionsTypes.PUT_PROFILE),
+      mergeMap(({ payload }) =>
+        this.profileService.profileUpdate(payload).pipe(
+          mergeMap((profile) =>
+            forkJoin([
+              this.storageService.setStore('profile', profile),
+              of(profile),
+            ])
+          ),
+          map(([_, pro]) => pro),
+          catchError((e) => of(e))
+        )
+      ),
+      map((payload) => {
+        if (payload instanceof HttpErrorResponse) {
+          return SET_ERRORS({
+            payload: { ...payload, source: ActionsTypes.ERR_PUT_PROFILE },
+          });
+        } else {
+          return SET_PROFILE({ payload });
+        }
+      }),
+      catchError((err) => of(err))
     )
   );
 

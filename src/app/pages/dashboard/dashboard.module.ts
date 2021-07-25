@@ -2,6 +2,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgxMaskModule } from 'ngx-mask';
 import { OwlModule } from 'ngx-owl-carousel';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
 import { ExtractComponent } from 'src/app/components/extract/extract.component';
@@ -22,6 +23,7 @@ import { SettingsComponent } from './settings/settings.component';
     DashboardPageRoutingModule,
     SharedModule,
     OwlModule,
+    NgxMaskModule.forChild(),
   ],
   declarations: [
     DashboardPage,
