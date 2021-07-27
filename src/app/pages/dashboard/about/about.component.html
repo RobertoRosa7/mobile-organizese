@@ -2,7 +2,28 @@
   <ion-content class="container-about">
     <div class="container">
       <app-button-back></app-button-back>
-      <p>page about</p>
+      <div class="info">
+        <p>
+          <span>Autor: </span>
+          <small>{{ settings.author.name }}</small>
+        </p>
+        <p>
+          <span>Email: </span>
+          <small>{{ settings.author.email }}</small>
+        </p>
+        <p>
+          <span>Telefone: </span>
+          <small>{{ settings.author.tel }}</small>
+        </p>
+        <p>
+          <span>Descrição: </span>
+          <small>{{ settings.description }}</small>
+        </p>
+        <p>
+          <span>Versão: </span>
+          <small>{{ settings.version }}</small>
+        </p>
+      </div>
     </div>
   </ion-content>
 </section>

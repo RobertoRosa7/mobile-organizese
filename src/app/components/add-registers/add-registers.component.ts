@@ -98,12 +98,14 @@ export class AddRegistersComponent implements OnInit {
         })
       );
     }
+
     this.onActionSubject(actionsError.actionsTypes.SET_SUCCESS).subscribe(
       () => {
         this.sendPayload.emit(true);
         this.isLoading = false;
       }
     );
+
     this.onActionSubject(actionsError.actionsTypes.SET_ERRORS).subscribe(() => {
       this.sendPayload.emit(true);
       this.isLoading = false;

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as settings from '../../../../../package.json';
 
 @Component({
   selector: 'app-about',
@@ -6,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./about.component.scss'],
 })
 export class AboutComponent implements OnInit {
+  public ver: any;
+  public settings: any;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    this.settings = settings;
+  }
 }

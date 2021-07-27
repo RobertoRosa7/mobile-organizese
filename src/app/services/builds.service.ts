@@ -29,7 +29,6 @@ export class BuildsService {
     register: Register,
     form: FormGroup
   ): Register {
-    const { user } = register;
     return {
       ...register,
       value: form.value.value,

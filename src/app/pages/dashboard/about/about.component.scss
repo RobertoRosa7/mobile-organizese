@@ -4,5 +4,9 @@
   @include size-page;
   .container {
     @include container-padding;
+    .info p {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
