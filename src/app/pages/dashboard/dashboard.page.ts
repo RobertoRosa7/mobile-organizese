@@ -2,15 +2,16 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { Component, OnInit } from '@angular/core';
 import {
+  IonRouterOutlet,
   MenuController,
   ModalController,
-  NavController,
-  PopoverController,
-  ToastController,
+  NavController, PopoverController,
+  ToastController
 } from '@ionic/angular';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { delay, filter, map, mergeMap } from 'rxjs/operators';
+import * as actionsDashboard from 'src/app/actions/dashboard.actions';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { Strings } from 'src/app/interfaces/strings';
@@ -18,10 +19,9 @@ import { DashboardService } from 'src/app/services/dashboard.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { SubjectService } from 'src/app/services/subject.service';
+import * as actionsErrors from '../../actions/errors.actions';
 import * as actionsProfile from '../../actions/profile.actions';
 import * as actionsRegister from '../../actions/registers.actions';
-import * as actionsDashboard from 'src/app/actions/dashboard.actions';
-import * as actionsErrors from '../../actions/errors.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,8 +32,10 @@ export class DashboardPage implements OnInit {
   public notifications$: Observable<any>;
   public profile$: Observable<any>;
   public states$: Observable<any>;
+  public showButtonBack: boolean;
 
   constructor(
+    public subjectService?: SubjectService,
     protected store?: Store,
     protected storageService?: StorageService,
     protected popoverController?: PopoverController,
@@ -44,21 +46,22 @@ export class DashboardPage implements OnInit {
     protected router?: NavController,
     protected menu?: MenuController,
     protected modalController?: ModalController,
-    protected subjectService?: SubjectService
+    protected routerOutlet?: IonRouterOutlet
   ) {}
 
   ngOnInit() {
-    this.initializeApp();
-    this.fetchErrors();
-    this.fetchSuccess();
-
     this.fetchLastRegister().subscribe(({ data: payload }) =>
       this.store?.dispatch(actionsDashboard.SET_NOTIFICATION_LIST({ payload }))
     );
 
-    this.states$ = this.store.select(({ profile, dashboard }: any) => ({
+    this.initializeApp();
+    this.fetchErrors();
+    this.fetchSuccess();
+
+    this.states$ = this.store.select(({ profile, dashboard, app }: any) => ({
       user: profile.profile,
       notification: dashboard.notification_list,
+      hideButtonBack: app.hideButtonBack
     }));
   }
 

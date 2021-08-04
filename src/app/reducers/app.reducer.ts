@@ -4,6 +4,7 @@ import * as actions from '../actions/app.actions';
 const INITIAL_STATES = {
   online: {},
   hidevalues: false,
+  hideButtonBack: false
 };
 
 const appReducer = createReducer(
@@ -15,6 +16,10 @@ const appReducer = createReducer(
   on(actions.PUT_HIDE_VALUES, (states, { payload }) => ({
     ...states,
     hidevalues: payload,
+  })),
+  on(actions.HIDE_BUTTON_BACK, (states, { payload }) => ({
+    ...states,
+    hideButtonBack: payload
   })),
   on(actions.resetall, (states) => ({ ...states, online: false }))
 );

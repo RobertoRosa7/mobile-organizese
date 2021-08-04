@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { IonRouterOutlet } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -23,14 +24,18 @@ export class MainComponent extends DashboardPage implements OnInit {
   public isContentLoaded: boolean;
 
   constructor(
+    public subjectService: SubjectService,
     protected store: Store,
-    protected subjectService: SubjectService
+    protected routerOutlet: IonRouterOutlet
   ) {
     super();
   }
 
   ngOnInit() {
-    this.initializingMain();
+    this.routerOutlet.stackEvents.subscribe((ev) =>
+      this.store.dispatch(actionsApp.HIDE_BUTTON_BACK({payload: ev.enteringView.stackId !== 'main'})));
+
+      this.initializingMain();
   }
 
   protected async initializingMain(): Promise<any> {

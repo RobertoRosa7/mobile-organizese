@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import * as actionsApp from '../../../actions/app.actions';
 
 @Component({
   selector: 'app-settings',
@@ -8,7 +8,11 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private store: Store
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store.dispatch(actionsApp.HIDE_BUTTON_BACK({payload: true}));
+  }
 }

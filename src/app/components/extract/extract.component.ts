@@ -4,13 +4,12 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ActionsSubject, Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, timer } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Register, RegisterByDay } from 'src/app/interfaces/general';
+import * as moment from 'moment';
+import { Register } from 'src/app/interfaces/general';
 import { DELETE_REGISTERS } from '../../actions/registers.actions';
 import { ModalComponent } from '../modal/modal.component';
 
@@ -20,11 +19,8 @@ import { ModalComponent } from '../modal/modal.component';
   styleUrls: ['./extract.component.scss'],
 })
 export class ExtractComponent implements OnInit, OnChanges {
-  @Input() public data: Register[];
-  public listGroupByDay$: Observable<RegisterByDay[]>;
-  public listGroupByDay2$: BehaviorSubject<RegisterByDay[]> =
-    new BehaviorSubject(null);
-  public list: RegisterByDay[] = [];
+  @Input() public data;
+  public list;
 
   constructor(
     private alertController: AlertController,
@@ -36,18 +32,7 @@ export class ExtractComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    timer(1000)
-      .pipe(
-        tap(() =>
-          this.listGroupByDay2$.next(this.groupByDay(changes.data.currentValue))
-        )
-      )
-      .subscribe();
-    timer(1500).subscribe(() => {
-      this.listGroupByDay2$.subscribe(
-        (list: RegisterByDay[]) => (this.list = list)
-      );
-    });
+    this.list = changes.data.currentValue;
   }
 
   public formatterValue(value: number): string {
@@ -121,29 +106,77 @@ export class ExtractComponent implements OnInit, OnChanges {
   }
 
   private groupByDay(list: any): any {
-    return list
-      .map((i: any) => ({ ...i, day: new Date(i.created_at * 1000) }))
-      .reduce((prev: any, current: any) => {
-        let index = prev.findIndex(
-          (i: any) =>
-            new Date(i.day).getDay() === new Date(current.day).getDay()
-        );
-        if (index < 0) {
-          index = prev.length;
-          prev.push({ day: current.day, list: [] });
-        }
-        prev[index].list.push(current);
-        return prev;
-      }, [])
-      .map((item: any) => ({
-        ...item,
-        day: new Date(item.day).getTime(),
-        total_credits: item.list
-          .map((v: any) => (v.type === 'incoming' ? v.value : 0))
-          .reduce((v, i) => v + i),
-        total_debits: item.list
-          .map((v: any) => (v.type === 'outcoming' ? v.value : 0))
-          .reduce((v, i) => v + i),
-      }));
+    const listsByDays = list.map((i: any) => this.getIsoDay(i))
+      .reduce((prev: any, current: any) => this.setGroupByDays(prev, current), [])
+      .map((item: any) => this.setSumDailyValues(item));
+    const listsByYears = list.map((i: any) => this.getIsoDay(i))
+    .reduce((prevYear, currentYear) => this.setGroup(prevYear, currentYear, 'year'), [])
+    .map(valueYear => ({
+      ...valueYear,
+      list: valueYear.list.reduce((prevMonth, currentMonth) => this.setGroup(prevMonth, currentMonth, 'month'), [])
+        .map(valueMonth => ({
+        ...valueMonth,
+        list: valueMonth.list.reduce((prevDay, currentDay) => this.setGroup(prevDay, currentDay, 'day'), [])
+        .map((valueDay) => this.setSumDailyValues(valueDay))
+      }))
+    }));
+    return listsByDays;
+  }
+
+  private setGroup(prev, current, mode ) {
+    let index = prev.findIndex((i) => moment(i[mode])[mode]() === moment(current.date)[mode]());
+    if (index < 0) {
+      index = prev.length;
+      prev.push({ [mode]: new Date(current.date).getTime(), list: [] });
+    }
+    prev[index].list.push(current);
+    return prev;
+  }
+
+  private setGroupByMonths(prev: any, current: any) {
+    let index = prev.findIndex((i: any) => moment(i.month).month() === moment(current.date).month());
+    if (index < 0) {
+      index = prev.length;
+      prev.push({ month: current.date, list: [] });
+    }
+    prev[index].list.push(current);
+    return prev;
+  }
+
+  private setGroupByDays(prev, current) {
+    let index = prev.findIndex((i: any) => moment(i.day).day() === moment(current.date).day());
+    if (index < 0) {
+      index = prev.length;
+      prev.push({ day: current.date, list: [] });
+    }
+    prev[index].list.push(current);
+    return prev;
+  }
+
+  private setGroupByYears(prev, current) {
+    let index = prev.findIndex((i: any) => moment(i.year).year() === moment(current.date).year());
+    if (index < 0) {
+      index = prev.length;
+      prev.push({ year: current.date, list: [] });
+    }
+    prev[index].list.push(current);
+    return prev;
+  }
+
+  private setSumDailyValues(values: any) {
+    return {
+      ...values,
+      day: new Date(values.day).getTime(),
+      total_credits: values.list
+        .map((v: any) => (v.type === 'incoming' ? v.value : 0))
+        .reduce((v, i) => v + i),
+      total_debits: values.list
+        .map((v: any) => (v.type === 'outcoming' ? v.value : 0))
+        .reduce((v, i) => v + i),
+    };
+  }
+
+  private getIsoDay(value) {
+    return { ...value, date: new Date(value.created_at * 1000) };
   }
 }

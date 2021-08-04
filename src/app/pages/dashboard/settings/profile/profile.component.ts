@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { UPDATE_PROFILE } from '../../../../actions/profile.actions';
+import * as actionsApp from '../../../../actions/app.actions';
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +25,7 @@ export class ProfileComponent implements OnInit {
   constructor(protected store: Store, protected fb: FormBuilder) {}
 
   ngOnInit() {
+    this.store.dispatch(actionsApp.HIDE_BUTTON_BACK({payload: true}));
     this.store
       .select(({ profile }: any) => ({ profile: profile.profile }))
       .pipe(map((state) => state.profile))

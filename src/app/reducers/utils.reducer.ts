@@ -1,7 +1,39 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import * as moment from 'moment';
 import { Register } from '../interfaces/general';
 
-export const updateAll = (all: any): any =>
+const groupByDay = (list: any) => list.map((i: any) => getIsoDay(i))
+.reduce((prevYear, currentYear) => setGroup(prevYear, currentYear, 'year'), [])
+.map(valueYear => ({
+  ...valueYear,
+  list: valueYear.list.reduce((prevMonth, currentMonth) => setGroup(prevMonth, currentMonth, 'month'), [])
+    .map(valueMonth => ({
+    ...valueMonth,
+    list: valueMonth.list.reduce((prevDay, currentDay) => setGroup(prevDay, currentDay, 'day'), [])
+    .map((valueDay) => setSumDailyValues(valueDay))
+  }))
+}));
+
+const setGroup = (prev, current, mode ) => {
+  let index = prev.findIndex((i) => moment(i[mode])[mode]() === moment(current.date)[mode]());
+  if (index < 0) {
+    index = prev.length;
+    prev.push({ [mode]: new Date(current.date).getTime(), list: [] });
+  }
+  prev[index].list.push(current);
+  return prev;
+};
+
+const setSumDailyValues = (values) => ({
+  ...values,
+  day: new Date(values.day).getTime(),
+  total_credits: values.list.map((v: any) => (v.type === 'incoming' ? v.value : 0)).reduce((v, i) => v + i),
+  total_debits: values.list.map((v: any) => (v.type === 'outcoming' ? v.value : 0)).reduce((v, i) => v + i),
+});
+
+const getIsoDay = (value) => ({ ...value, date: new Date(value.created_at * 1000) });
+
+export const updateAll = (all: any) =>
   all.map((register: Register) => ({
     ...register,
     status: statusTrans(register.status, register.type),
@@ -9,7 +41,7 @@ export const updateAll = (all: any): any =>
   }));
 
 export const returnRegisters = (registers) =>
-  registers.length > 0 ? updateAll(registers) : [];
+  registers.length > 0 ? groupByDay(updateAll(registers)) : [];
 
 export const total = (lista: any): any => {
   const totals: any = { despesa: 0, receita: 0 };

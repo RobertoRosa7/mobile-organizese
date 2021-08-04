@@ -1,10 +1,4 @@
-<ion-menu
-  side="start"
-  type="overlay"
-  menuId="main"
-  contentId="main"
-  class="menu"
->
+<ion-menu side="start" type="overlay" menuId="main" contentId="main" class="menu">
   <div class="menu-item-close">
     <ion-button (click)="closeMenu()" fill="clear" size="small" shape="round">
       <ion-icon size="small" name="arrow-back-outline"></ion-icon>
@@ -26,87 +20,31 @@
       <div class="container-items">
         <ion-item class="menu-item">
           <ion-icon size="small" name="home-outline"></ion-icon>
-          <ion-button
-            expand="block"
-            routerLink="/home"
-            fill="clear"
-            size="small"
-          >
-            HOME
-          </ion-button>
-          <ion-icon
-            slot="end"
-            size="small"
-            name="chevron-forward-outline"
-          ></ion-icon>
+          <ion-button expand="block" routerLink="/home" fill="clear" size="small">HOME</ion-button>
+          <ion-icon slot="end" size="small" name="chevron-forward-outline"></ion-icon>
         </ion-item>
 
         <ion-item class="menu-item">
           <ion-icon size="small" name="grid-outline"></ion-icon>
-          <ion-button
-            expand="block"
-            fill="clear"
-            size="small"
-            routerLink="/dashboard/main"
-          >
-            DASHBOARD
-          </ion-button>
-          <ion-icon
-            slot="end"
-            size="small"
-            name="chevron-forward-outline"
-          ></ion-icon>
+          <ion-button expand="block" fill="clear" size="small" routerLink="/dashboard/main">DASHBOARD</ion-button>
+          <ion-icon slot="end" size="small" name="chevron-forward-outline"></ion-icon>
         </ion-item>
         <ion-item class="menu-item">
           <ion-icon size="small" name="settings-outline"></ion-icon>
-          <ion-button
-            expand="block"
-            routerLink="/dashboard/settings"
-            fill="clear"
-            size="small"
-          >
-            CONFIGURAÇÕES
-          </ion-button>
-          <ion-icon
-            slot="end"
-            size="small"
-            name="chevron-forward-outline"
-          ></ion-icon>
+          <ion-button expand="block" routerLink="/dashboard/settings" fill="clear" size="small">CONFIGURAÇÕES</ion-button>
+          <ion-icon slot="end" size="small" name="chevron-forward-outline"></ion-icon>
         </ion-item>
         <ion-item class="menu-item">
           <ion-icon size="small" name="information-circle-outline"></ion-icon>
-          <ion-button
-            expand="block"
-            fill="clear"
-            size="small"
-            routerLink="/dashboard/about"
-          >
-            SOBRE
-          </ion-button>
-          <ion-icon
-            slot="end"
-            size="small"
-            name="chevron-forward-outline"
-          ></ion-icon>
+          <ion-button expand="block" fill="clear" size="small" routerLink="/dashboard/about">SOBRE</ion-button>
+          <ion-icon slot="end" size="small" name="chevron-forward-outline"></ion-icon>
         </ion-item>
       </div>
 
       <ion-item class="menu-item">
         <ion-icon size="small" name="log-in-outline"></ion-icon>
-        <ion-button
-          expand="block"
-          routerDirection="back"
-          fill="clear"
-          size="small"
-          (click)="logout()"
-        >
-          SAIR
-        </ion-button>
-        <ion-icon
-          slot="end"
-          size="small"
-          name="chevron-forward-outline"
-        ></ion-icon>
+        <ion-button expand="block" routerDirection="back" fill="clear" size="small" (click)="logout()">SAIR</ion-button>
+        <ion-icon slot="end" size="small" name="chevron-forward-outline"></ion-icon>
       </ion-item>
     </ion-list>
   </ion-content>
@@ -116,6 +54,9 @@
 <ion-header class="header">
   <ion-toolbar class="ion-toolbar">
     <ion-buttons>
+      <ng-container *ngIf="states$ | async as states">
+        <app-button-back *ngIf="states.hideButtonBack"></app-button-back>
+      </ng-container>
       <div class="container-buttons">
         <ion-button (click)="sync()" shape="round" slot="end">
           <mat-icon svgIcon="sync_white"></mat-icon>
@@ -138,12 +79,7 @@
         <ion-button [matMenuTriggerFor]="menu" shape="round" slot="end">
           <mat-icon svgIcon="add_white"></mat-icon>
         </ion-button>
-        <ion-button
-          class="icon-user-toolbar"
-          (click)="profile()"
-          shape="round"
-          slot="end"
-        >
+        <ion-button class="icon-user-toolbar" (click)="profile()" shape="round" slot="end">
           <mat-icon svgIcon="person_outline_white"></mat-icon>
         </ion-button>
 

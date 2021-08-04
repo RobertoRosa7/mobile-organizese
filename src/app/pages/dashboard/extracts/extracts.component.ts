@@ -3,8 +3,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Chip, Register } from 'src/app/interfaces/general';
-import { SubjectService } from 'src/app/services/subject.service';
+import * as actionsApp from '../../../actions/app.actions';
 import { INIT } from '../../../actions/registers.actions';
+
 @Component({
   selector: 'app-extracts',
   templateUrl: './extracts.component.html',
@@ -42,9 +43,10 @@ export class ExtractsComponent implements OnInit {
     },
   ];
 
-  constructor(private store: Store, private subjectService: SubjectService) {}
+  constructor(private store: Store) {}
 
   ngOnInit() {
+    this.store.dispatch(actionsApp.HIDE_BUTTON_BACK({payload: true}));
     this.chipActivate = this.chips.filter((chip: Chip) => chip.selected)[0];
     this.initExtract();
   }

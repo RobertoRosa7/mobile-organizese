@@ -12,6 +12,8 @@ export enum ActionsTypes {
   SET_HIDE_VALUES = '[SET_HIDE_VALUES]',
   PUT_HIDE_VALUES = '[PUT_HIDE_VALUES]',
 
+  HIDE_BUTTON_BACK = '[HIDE_BUTTON_BACK]',
+
   UPGRADE = '[UPGRADE',
 }
 
@@ -36,6 +38,11 @@ export const SET_HIDE_VALUES = createAction(
 
 export const PUT_HIDE_VALUES = createAction(
   ActionsTypes.PUT_HIDE_VALUES,
+  props<{ payload: any }>()
+);
+
+export const HIDE_BUTTON_BACK = createAction(
+  ActionsTypes.HIDE_BUTTON_BACK,
   props<{ payload: any }>()
 );
 
