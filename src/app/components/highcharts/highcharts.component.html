@@ -15,7 +15,6 @@
           [matDatepicker]="pickerStart"
           matInput
           autocomplete="off"
-          [disabled]="enableButtonFilter"
         />
         <mat-datepicker-toggle
           matSuffix
@@ -36,7 +35,6 @@
           [(ngModel)]="dtEnd"
           [matDatepickerFilter]="filterEnd"
           [matDatepicker]="pickerEnd"
-          [disabled]="enableButtonFilter"
           matInput
           autocomplete="off"
         />
@@ -50,7 +48,7 @@
 
     <div matTooltip="Filtrar" class="buttons">
       <button
-        [disabled]="btnLoadingSpinner || enableButtonFilter"
+        [disabled]="btnLoadingSpinner"
         class="btn-filter"
         disableRipple="true"
         type="submit"

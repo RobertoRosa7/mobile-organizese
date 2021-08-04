@@ -115,6 +115,10 @@ export class DashboardPage implements OnInit {
     console.log('back', this.router);
   }
 
+  public logout(): void {
+    (navigator as any).app.exitApp();
+  }
+
   protected fetchErrors(): void {
     const error$ = this.store
       .select(({ errors }: any) => ({
