@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
+import { EmptyService } from 'src/app/services/empty.service';
 import { SubjectService } from 'src/app/services/subject.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import * as actionsApp from '../../../actions/app.actions';
@@ -24,6 +25,7 @@ export class MainComponent extends DashboardPage implements OnInit {
   public isContentLoaded: boolean;
 
   constructor(
+    public emptyService: EmptyService,
     public subjectService: SubjectService,
     protected store: Store,
     protected routerOutlet: IonRouterOutlet
@@ -34,7 +36,6 @@ export class MainComponent extends DashboardPage implements OnInit {
   ngOnInit() {
     this.routerOutlet.stackEvents.subscribe((ev) =>
       this.store.dispatch(actionsApp.HIDE_BUTTON_BACK({payload: ev.enteringView.stackId !== 'main'})));
-
       this.initializingMain();
   }
 
@@ -62,11 +63,16 @@ export class MainComponent extends DashboardPage implements OnInit {
   }
 
   protected getDataToDashboard() {
-    this.registersData = this.store
-      .select(({ dashboard }: any) => ({
-        all: dashboard.registers,
-      }))
-      .pipe(map((state) => state.all));
+    this.store.select(({ dashboard }: any) => ({ all: dashboard.registers })).pipe(map((state) => state.all))
+      .subscribe((registers) => {
+        if (registers.length > 0) {
+          this.emptyService.setDataExtract(registers);
+          this.emptyService.setLoadingExtract(false);
+        } else {
+          this.emptyService.setDataExtract(null);
+          this.emptyService.setLoadingExtract(false);
+        }
+      });
   }
 
   protected initHideValues(): Promise<any> {

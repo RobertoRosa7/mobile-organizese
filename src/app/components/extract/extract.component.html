@@ -1,50 +1,48 @@
-<ng-container *ngIf="list.length > 0">
-  <div class="extract">
-    <h2 class="title">Extrato</h2>
-    <div class="extract-container">
-      <div *ngFor="let listYear of list">
-        <small>Ano de {{listYear.year | date: "y" }}</small>
-        <div *ngFor="let listMonth of listYear.list">
-          <small>Mês de </small>
-          <small style="text-transform: capitalize;">{{listMonth.month | date: 'MMMM'}}</small>
-          <div *ngFor="let listGrouped of listMonth.list" class="extract-timeline">
-            <div class="extract-timeline-dates">
-              <span>{{ listGrouped.day | date: "fullDate" }}</span>
-              <small class="badge-values">R$ {{formatterValue(listGrouped.total_credits - listGrouped.total_debits)}}</small>
-            </div>
-            <div class="extract-timeline-area">
-              <div *ngFor="let extract of listGrouped.list" class="container-card">
-                <div class="hours">
-                  <small>{{ extract.created_at * 1000 | date: "shortTime" }}hs</small>
-                </div>
-                <button mat-icon-button disableRipple="true" class="extract-timeline-icon">
-                  <mat-icon [class]="returnClassByCategory(extract)" [svgIcon]="extract.cat_icon"></mat-icon>
-                </button>
-                <div class="extract-timeline-card">
-                  <p>
-                    <span>{{ extract.category }}</span>
-                    <small>{{ extract.description }}</small>
-                  </p>
-                  <span>{{ extract.type === "outcoming" ? "-" : "" }} R$ {{ formatterValue(extract.value) }}</span>
-                </div>
-                <button class="btn-menu" disableRipple="true" (click)="$event.stopPropagation()" title="Menu" mat-icon-button [matMenuTriggerFor]="menu">
-                  <mat-icon svgIcon="more_vert"></mat-icon>
-                </button>
-                <mat-menu #menu="matMenu" overlapTrigger="true">
-                  <button (click)="edit(extract)" disableRipple="true" mat-menu-item>
-                    <mat-icon svgIcon="edit"></mat-icon>
-                    <span>EDITAR</span>
-                  </button>
-                  <button (click)="remove(extract)" disableRipple="true" mat-menu-item>
-                    <mat-icon svgIcon="delete_outline" class="icon-mat-menu"></mat-icon>
-                    <span>DELETAR</span>
-                  </button>
-                </mat-menu>
+<div class="extract">
+  <h2 class="title">Extrato</h2>
+  <div class="extract-container">
+    <div *ngFor="let listYear of list">
+      <small class="label-date">Ano de {{listYear.year | date: "y" }}</small>
+      <div *ngFor="let listMonth of listYear.list">
+        <small class="label-date">Mês de </small>
+        <small style="text-transform: capitalize;">{{listMonth.month | date: 'MMMM'}}</small>
+        <div *ngFor="let listGrouped of listMonth.list" class="extract-timeline">
+          <div class="extract-timeline-dates">
+            <span>{{ listGrouped.day | date: "fullDate" }}</span>
+            <small class="badge-values">R$ {{formatterValue(listGrouped.total_credits - listGrouped.total_debits)}}</small>
+          </div>
+          <div class="extract-timeline-area">
+            <div *ngFor="let extract of listGrouped.list" class="container-card">
+              <div class="hours">
+                <small>{{ extract.created_at * 1000 | date: "shortTime" }}hs</small>
               </div>
+              <button mat-icon-button disableRipple="true" class="extract-timeline-icon">
+                <mat-icon [class]="returnClassByCategory(extract)" [svgIcon]="extract.cat_icon"></mat-icon>
+              </button>
+              <div class="extract-timeline-card">
+                <p>
+                  <span>{{ extract.category }}</span>
+                  <small>{{ extract.description }}</small>
+                </p>
+                <span>{{ extract.type === "outcoming" ? "-" : "" }} R$ {{ formatterValue(extract.value) }}</span>
+              </div>
+              <button class="btn-menu" disableRipple="true" (click)="$event.stopPropagation()" title="Menu" mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon svgIcon="more_vert"></mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" overlapTrigger="true">
+                <button (click)="edit(extract)" disableRipple="true" mat-menu-item>
+                  <mat-icon svgIcon="edit"></mat-icon>
+                  <span>EDITAR</span>
+                </button>
+                <button (click)="remove(extract)" disableRipple="true" mat-menu-item>
+                  <mat-icon svgIcon="delete_outline" class="icon-mat-menu"></mat-icon>
+                  <span>DELETAR</span>
+                </button>
+              </mat-menu>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</ng-container>
+</div>

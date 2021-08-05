@@ -5,16 +5,17 @@
         <app-cards></app-cards>
       </div>
 
-      <ng-container
-        *ngIf="highchCharts$ | async as data"
-        class="section-highcharts"
-      >
+      <ng-container *ngIf="highchCharts$ | async as data" class="section-highcharts">
         <app-highcharts [data]="data"></app-highcharts>
       </ng-container>
 
-      <ng-container *ngIf="registersData | async as data">
-        <app-extract [data]="data"></app-extract>
+      <ng-container *ngIf="emptyService.dataExtract$.value; else showExtractEmpty">
+        <app-extract [data]="emptyService.dataExtract$.value"></app-extract>
       </ng-container>
+      
+      <ng-template #showExtractEmpty>
+        <app-extract-empty [isData]="emptyService.dataExtract$.value == null" [isLoading]="emptyService.loadingExtract$.value"></app-extract-empty>
+      </ng-template>
     </div>
   </ion-content>
 </section>

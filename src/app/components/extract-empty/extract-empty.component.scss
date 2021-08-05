@@ -23,7 +23,7 @@
         margin: 45px auto;
         width: 100%;
         max-width: 768px;
-        border-left: 1px solid var(--ion-color-medium);
+        border-left: 1px solid rgba(0, 0, 0, 0.08);
         padding-left: 11px;
       }
       .extract-timeline-icon {
@@ -134,8 +134,72 @@
 .spinner {
   @include spinner;
 }
-
 .title {
   @include display-1;
   text-align: center;
+}
+.loading-waves {
+  width: 100%;
+  height: 100%;
+  min-height: 15px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+.loading-waves::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.02);
+  backdrop-filter: blur(15px);
+  animation: waves 1s linear infinite;
+  position: absolute;
+  top: 0;
+}
+.title-waves,
+.label-waves {
+  height: 15px;
+}
+.title-waves {
+  width: 72px;
+}
+.label-waves {
+  width: 50px;
+}
+.hours-waves {
+  width: 50%;
+}
+.icon-waves {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.no-registers {
+  text-transform: uppercase;
+  color: var(--white-one);
+  margin-top: 16px;
+  margin-bottom: 16px;
+  .container {
+    width: 320px;
+    background-color: var(--text-middle-orange);
+    padding: 8px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .container div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .container p {
+    margin-left: 8px;
+  }
+}
+
+@keyframes waves {
+  to {
+    transform: translateX(100%);
+  }
 }

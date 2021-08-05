@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Chip, Register } from 'src/app/interfaces/general';
+import { EmptyService } from 'src/app/services/empty.service';
 import * as actionsApp from '../../../actions/app.actions';
 import { INIT } from '../../../actions/registers.actions';
 
@@ -43,7 +44,7 @@ export class ExtractsComponent implements OnInit {
     },
   ];
 
-  constructor(private store: Store) {}
+  constructor(public emptyService: EmptyService, private store: Store) {}
 
   ngOnInit() {
     this.store.dispatch(actionsApp.HIDE_BUTTON_BACK({payload: true}));
@@ -62,11 +63,16 @@ export class ExtractsComponent implements OnInit {
 
   private async initExtract(): Promise<any> {
     await this.fetchRegisters(this.checkChip(this.chipActivate));
-    this.registers$ = this.store
-      .select(({ registers }: any) => ({
-        all: registers.all,
-      }))
-      .pipe(map((state) => state.all));
+    this.store.select(({ registers }: any) => ({all: registers.all})).pipe(map((state) => state.all))
+      .subscribe(registers => {
+        if (registers.length > 0) {
+          this.emptyService.setDataExtract(registers);
+          this.emptyService.setLoadingExtract(false);
+        } else {
+          this.emptyService.setDataExtract(null);
+          this.emptyService.setLoadingExtract(false);
+        }
+      });
   }
 
   private async fetchRegisters(dates?: any): Promise<any> {

@@ -1,0 +1,42 @@
+<div class="no-registers" *ngIf="isData && !isLoading">
+  <div class="container">
+    <div>
+      <mat-icon svgIcon="feedback_white"></mat-icon>
+      <p>Não registros!</p>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading">
+  <div class="extract">
+    <h2 class="title-waves loading-waves"></h2>
+    <div class="extract-container">
+      <div *ngFor="let listYear of shadow">
+        <small class="label-waves loading-waves"></small>
+        <div *ngFor="let listMonth of listYear.list">
+          <small class="label-waves loading-waves"></small>
+          <small class="label-waves loading-waves" style="text-transform: capitalize;"></small>
+          <div *ngFor="let listGrouped of listMonth.list" class="extract-timeline">
+            <div class="extract-timeline-dates">
+              <span class="hours-waves loading-waves"></span>
+            </div>
+            <div class="extract-timeline-area">
+              <div *ngFor="let extract of listGrouped.list" class="container-card">
+                <div class="hours">
+                  <small class="label-waves loading-waves"></small>
+                </div>
+                <button mat-icon-button disableRipple="true" class="extract-timeline-icon">
+                  <span class="icon-waves loading-waves"></span>
+                </button>
+                <div class="extract-timeline-card">
+                  <p class="loading-waves"></p>
+                  <span class="loading-waves"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

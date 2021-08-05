@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import * as actionsApp from '../actions/app.actions';
-import { AppService } from '../services/app.services';
+import { AppService } from '../services/app.service';
 import { StorageService } from '../services/storage.service';
 
 @Injectable({

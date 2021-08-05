@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { OwlModule } from 'ngx-owl-carousel';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
+import { ExtractEmptyComponent } from 'src/app/components/extract-empty/extract-empty.component';
 import { ExtractComponent } from 'src/app/components/extract/extract.component';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { SharedModule } from 'src/app/shared.module';
@@ -35,6 +36,7 @@ import { SettingsComponent } from './settings/settings.component';
     ExtractsComponent,
     ExtractComponent,
     ProfileComponent,
+    ExtractEmptyComponent
   ],
 })
 export class DashboardPageModule {}

@@ -36,7 +36,9 @@ export class AppComponent implements AfterViewInit {
       .addSvgIcon('account_balance')
       .addSvgIcon('work_outline')
       .addSvgIcon('arrow_back')
-      .addSvgIcon('arrow_back_white');
+      .addSvgIcon('arrow_back_white')
+      .addSvgIcon('check_box_outline_blank_white')
+      .addSvgIcon('feedback_white');
   }
   private addSvgIcon(name: string, alias?: string, namespace?: string): this {
     const path = this.sanitizer.bypassSecurityTrustResourceUrl(
