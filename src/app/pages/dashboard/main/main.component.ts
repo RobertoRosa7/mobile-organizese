@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { delay, filter, map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
 import { EmptyService } from 'src/app/services/empty.service';
 import { SubjectService } from 'src/app/services/subject.service';
@@ -48,29 +48,38 @@ export class MainComponent extends DashboardPage implements OnInit {
     await this.initMain();
     this.getDataToHighchart();
     this.getDataToDashboard();
-    await this.waitTimeDefault();
+    await this.waitTimeDefault(2000);
   }
 
   protected getDataToHighchart() {
-    this.highchCharts$ = this.store
-      .select(({ dashboard }: any) => ({
+    this.emptyService.loadingHighchart$.next(true);
+
+    this.store.select(({ dashboard }: any) => ({
         outcomeIncome: dashboard.outcome_income,
         dt_start: dashboard.graph_dates.dt_start,
         dt_end: dashboard.graph_dates.dt_end,
         lastDate: dashboard.lastdate_outcome,
-      }))
-      .pipe(map((state) => state));
+      })).pipe(map((state) => state)).subscribe(st => {
+        if (st.outcomeIncome.length > 0) {
+          this.emptyService.dataHighchart$.next(st);
+          setTimeout(() => this.emptyService.loadingHighchart$.next(false), UtilsService.getTimeDefault());
+        } else {
+          this.emptyService.dataHighchart$.next(null);
+          setTimeout(() => this.emptyService.loadingHighchart$.next(false), UtilsService.getTimeDefault());
+        }
+      });
   }
 
   protected getDataToDashboard() {
+    this.emptyService.setLoadingExtract(true);
     this.store.select(({ dashboard }: any) => ({ all: dashboard.registers })).pipe(map((state) => state.all))
       .subscribe((registers) => {
         if (registers.length > 0) {
           this.emptyService.setDataExtract(registers);
-          this.emptyService.setLoadingExtract(false);
+          setTimeout(() => this.emptyService.setLoadingExtract(false), UtilsService.getTimeDefault());
         } else {
           this.emptyService.setDataExtract(null);
-          this.emptyService.setLoadingExtract(false);
+          setTimeout(() => this.emptyService.setLoadingExtract(false), UtilsService.getTimeDefault());
         }
       });
   }
@@ -112,12 +121,7 @@ export class MainComponent extends DashboardPage implements OnInit {
     return this.as ? this.as.pipe(filter((a) => a.type === type)) : of(null);
   }
 
-  protected waitTimeDefault() {
-    return Promise.resolve(
-      setTimeout(
-        () => (this.isLoaded = true),
-        UtilsService.getTimeDefault(2000)
-      )
-    );
+  protected waitTimeDefault(time) {
+    return Promise.resolve(setTimeout(() => (this.isLoaded = true), UtilsService.getTimeDefault(time)));
   }
 }

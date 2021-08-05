@@ -1,0 +1,15 @@
+<app-data-empty label="Sem data!" *ngIf="isData && !isLoading"></app-data-empty>
+<div *ngIf="isLoading">
+  <div class="highcharts">
+    <form class="dates">
+      <div class="form-inline">
+        <div class="input loading-waves"></div>
+        <div class="input loading-waves"></div>
+      </div>
+      <div matTooltip="Filtrar" class="buttons">
+        <button class="btn-filter loading-waves" disableRipple="true" mat-raised-button></button>
+      </div>
+    </form>
+    <div class="highcharts-data loading-waves"></div>
+  </div>
+</div>

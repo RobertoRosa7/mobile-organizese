@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Chip, Register } from 'src/app/interfaces/general';
 import { EmptyService } from 'src/app/services/empty.service';
+import { UtilsService } from 'src/app/services/utils.service';
 import * as actionsApp from '../../../actions/app.actions';
 import { INIT } from '../../../actions/registers.actions';
 
@@ -62,15 +63,16 @@ export class ExtractsComponent implements OnInit {
   }
 
   private async initExtract(): Promise<any> {
+    this.emptyService.setLoadingExtractPage(true);
     await this.fetchRegisters(this.checkChip(this.chipActivate));
-    this.store.select(({ registers }: any) => ({all: registers.all})).pipe(map((state) => state.all))
+    this.store.select(({ registers }: any) => ({ all: registers.all })).pipe(map((state) => state.all))
       .subscribe(registers => {
         if (registers.length > 0) {
-          this.emptyService.setDataExtract(registers);
-          this.emptyService.setLoadingExtract(false);
+          this.emptyService.setDataExtractPage(registers);
+          setTimeout(() => this.emptyService.setLoadingExtractPage(false), UtilsService.getTimeDefault());
         } else {
-          this.emptyService.setDataExtract(null);
-          this.emptyService.setLoadingExtract(false);
+          this.emptyService.setDataExtractPage(null);
+          setTimeout(() => this.emptyService.setLoadingExtractPage(false), UtilsService.getTimeDefault());
         }
       });
   }

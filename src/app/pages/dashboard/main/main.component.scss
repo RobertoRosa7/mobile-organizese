@@ -3,6 +3,16 @@
   @include size-page;
   .main-container {
     @include container-padding;
+    position: relative;
+    .banner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, var(--green-microsoft) 60%, var(--white-one) 100%);
+      height: 350px;
+      width: 100%;
+      z-index: -1;
+    }
   }
 }
 .jumbotron {

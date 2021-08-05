@@ -6,12 +6,12 @@
           <mat-chip [selected]="chip.selected" (click)="onChipChange(chip, index)" class="chip" *ngFor="let chip of chips; let index = index">{{ chip.label }}</mat-chip>
         </mat-chip-list>
       </div>
-      <ng-container *ngIf="emptyService.dataExtract$.value; else showExtractEmpty">
-        <app-extract [data]="emptyService.dataExtract$.value"></app-extract>
+      <ng-container *ngIf="emptyService.dataExtractPage$.value && !emptyService.loadingExtractPage$.value; else showExtractEmpty">
+        <app-extract [data]="emptyService.dataExtractPage$.value"></app-extract>
       </ng-container>
       
       <ng-template #showExtractEmpty>
-        <app-extract-empty [isData]="emptyService.dataExtract$.value == null" [isLoading]="emptyService.loadingExtract$.value"></app-extract-empty>
+        <app-extract-empty [isData]="emptyService.dataExtractPage$.value == null" [isLoading]="emptyService.loadingExtractPage$.value"></app-extract-empty>
       </ng-template>
     </div>
   </ion-content>

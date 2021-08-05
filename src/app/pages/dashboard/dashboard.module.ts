@@ -5,8 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { OwlModule } from 'ngx-owl-carousel';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
+import { DataEmptyComponent } from 'src/app/components/data-empty/data-empty.component';
 import { ExtractEmptyComponent } from 'src/app/components/extract-empty/extract-empty.component';
 import { ExtractComponent } from 'src/app/components/extract/extract.component';
+import { HighchartsEmptyComponent } from 'src/app/components/highcharts-empty/highcharts-empty.component';
 import { PopoverComponent } from 'src/app/components/popover/popover.component';
 import { SharedModule } from 'src/app/shared.module';
 import { AboutComponent } from './about/about.component';
@@ -36,7 +38,9 @@ import { SettingsComponent } from './settings/settings.component';
     ExtractsComponent,
     ExtractComponent,
     ProfileComponent,
-    ExtractEmptyComponent
+    ExtractEmptyComponent,
+    HighchartsEmptyComponent,
+    DataEmptyComponent
   ],
 })
 export class DashboardPageModule {}

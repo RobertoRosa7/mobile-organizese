@@ -1,10 +1,7 @@
 <div class="highcharts">
   <form class="dates" (ngSubmit)="onSubmit()">
     <div class="form-inline">
-      <mat-form-field
-        (click)="$event.preventDefault(); pickerStart.open()"
-        class="form"
-      >
+      <mat-form-field (click)="$event.preventDefault(); pickerStart.open()" class="form" >
         <mat-label>Data Início</mat-label>
         <input
           [min]="minDate"
@@ -16,17 +13,11 @@
           matInput
           autocomplete="off"
         />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="pickerStart"
-        ></mat-datepicker-toggle>
+        <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isMobile" #pickerStart> </mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field
-        (click)="$event.preventDefault(); pickerEnd.open()"
-        class="form"
-      >
+      <mat-form-field (click)="$event.preventDefault(); pickerEnd.open()" class="form">
         <mat-label>Data Fim</mat-label>
         <input
           [min]="minDate"
@@ -38,22 +29,13 @@
           matInput
           autocomplete="off"
         />
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="pickerEnd"
-        ></mat-datepicker-toggle>
+        <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
         <mat-datepicker [touchUi]="isMobile" #pickerEnd> </mat-datepicker>
       </mat-form-field>
     </div>
 
     <div matTooltip="Filtrar" class="buttons">
-      <button
-        [disabled]="btnLoadingSpinner"
-        class="btn-filter"
-        disableRipple="true"
-        type="submit"
-        mat-raised-button
-      >
+      <button [disabled]="btnLoadingSpinner" class="btn-filter" disableRipple="true" type="submit" mat-raised-button>
         <span *ngIf="btnLoadingSpinner; else showLabelFilter">
           <mat-spinner class="btn-spinner" diameter="20"></mat-spinner>
         </span>

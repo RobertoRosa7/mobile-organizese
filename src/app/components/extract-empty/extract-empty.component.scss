@@ -176,27 +176,7 @@
   display: inline-block;
 }
 
-.no-registers {
-  text-transform: uppercase;
-  color: var(--white-one);
-  margin-top: 16px;
-  margin-bottom: 16px;
-  .container {
-    width: 320px;
-    background-color: var(--text-middle-orange);
-    padding: 8px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .container div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .container p {
-    margin-left: 8px;
-  }
-}
+
 
 @keyframes waves {
   to {

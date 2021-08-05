@@ -8,11 +8,33 @@ export class EmptyService {
   public loadingExtract$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public dataExtract$: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  public loadingExtractPage$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  public dataExtractPage$: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  public loadingHighchart$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  public dataHighchart$: BehaviorSubject<any> = new BehaviorSubject(null);
+
   public setLoadingExtract(payload: boolean): void {
     this.loadingExtract$.next(payload);
   }
 
   public setDataExtract(payload: any): void {
     this.dataExtract$.next(payload);
+  }
+
+  public setLoadingExtractPage(payload: boolean): void {
+    this.loadingExtractPage$.next(payload);
+  }
+
+  public setDataExtractPage(payload: any): void {
+    this.dataExtractPage$.next(payload);
+  }
+
+  public setLoadingHighchart(payload: boolean): void {
+    this.loadingExtractPage$.next(payload);
+  }
+
+  public setDataHighchart(payload: any): void {
+    this.dataExtractPage$.next(payload);
   }
 }

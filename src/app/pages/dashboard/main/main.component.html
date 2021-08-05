@@ -1,15 +1,20 @@
 <section class="main">
   <ion-content *ngIf="isLoaded; else isLoading">
     <div class="main-container">
+      <div class="banner"></div>
       <div class="jumbotron">
         <app-cards></app-cards>
       </div>
 
-      <ng-container *ngIf="highchCharts$ | async as data" class="section-highcharts">
-        <app-highcharts [data]="data"></app-highcharts>
+      <ng-container *ngIf="emptyService.dataHighchart$.value && !emptyService.loadingHighchart$.value; else showHighchartEmpty">
+        <app-highcharts [data]="emptyService.dataHighchart$.value"></app-highcharts>
       </ng-container>
 
-      <ng-container *ngIf="emptyService.dataExtract$.value; else showExtractEmpty">
+      <ng-template #showHighchartEmpty>
+        <app-highcharts-empty [isData]="emptyService.dataHighchart$.value == null" [isLoading]="emptyService.loadingHighchart$.value"></app-highcharts-empty>
+      </ng-template>
+
+      <ng-container *ngIf="emptyService.dataExtract$.value && !emptyService.loadingExtract$.value; else showExtractEmpty">
         <app-extract [data]="emptyService.dataExtract$.value"></app-extract>
       </ng-container>
       

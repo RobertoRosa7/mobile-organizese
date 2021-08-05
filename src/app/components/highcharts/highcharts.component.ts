@@ -7,7 +7,7 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { ActionsSubject, Store } from '@ngrx/store';
 import * as Highcharts from 'highcharts';
@@ -15,9 +15,9 @@ import * as moment from 'moment';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ChartService } from 'src/app/services/chart.service';
-import * as actionsDashboard from '../../actions/dashboard.actions';
-import * as actionsApp from '../../actions/app.actions';
 import { UtilsService } from 'src/app/services/utils.service';
+import * as actionsApp from '../../actions/app.actions';
+import * as actionsDashboard from '../../actions/dashboard.actions';
 
 @Component({
   selector: 'app-highcharts',
@@ -49,8 +49,7 @@ export class HighchartsComponent implements OnInit, OnChanges {
     private store: Store,
     private as: ActionsSubject
   ) {
-    this.breakpoint
-      ?.observe([Breakpoints.XSmall])
+    this.breakpoint?.observe([Breakpoints.XSmall])
       .subscribe((result) => (this.isMobile = !!result.matches));
     this.high$.next(this.data);
     this.chartService.getCharts().subscribe((chart) => (this.chart = chart));
@@ -58,23 +57,9 @@ export class HighchartsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    setTimeout(
-      () =>
-        this.buildHighchart(this.chart, this.datachart).subscribe((chart) =>
-          this.buildChart(chart)
-        ),
-      UtilsService.getTimeDefault()
-    );
-
+    this.buildHighchart(this.chart, this.datachart).subscribe((chart) => this.buildChart(chart));
     this.onActionsTypes(actionsApp.ActionsTypes.UPGRADE).subscribe(() =>
-      setTimeout(
-        () =>
-          this.buildHighchart(this.chart, this.datachart).subscribe((chart) =>
-            this.buildChart(chart)
-          ),
-        UtilsService.getTimeDefault()
-      )
-    );
+      this.buildHighchart(this.chart, this.datachart).subscribe((chart) => this.buildChart(chart)));
   }
 
   ngOnChanges(changes: SimpleChanges): void {

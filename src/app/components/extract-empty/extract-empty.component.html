@@ -1,12 +1,4 @@
-<div class="no-registers" *ngIf="isData && !isLoading">
-  <div class="container">
-    <div>
-      <mat-icon svgIcon="feedback_white"></mat-icon>
-      <p>Não registros!</p>
-    </div>
-  </div>
-</div>
-
+<app-data-empty label="Não registros!" *ngIf="isData && !isLoading"></app-data-empty>
 <div *ngIf="isLoading">
   <div class="extract">
     <h2 class="title-waves loading-waves"></h2>

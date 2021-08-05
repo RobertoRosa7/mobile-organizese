@@ -48,6 +48,7 @@ const optionsFilterCategories: any[] = [
 
 const INITIAL_STATE = {
   all: [],
+  baseRegisters: [],
   tab: '',
   visible: {},
   consolidado: {},
@@ -62,24 +63,17 @@ const INITIAL_STATE = {
   all_days_period: 1,
   result_search: [],
   tabList,
-  categoriesToOptions: categories
-    .map((value: string) => ({
-      label: value,
-      type: utils.cleanText(value),
-    }))
-    .concat(optionsFilterCategories),
+  categoriesToOptions: categories.map((value: string) => ({ label: value, type: utils.cleanText(value)})).concat(optionsFilterCategories),
 };
 const registersReducers = createReducer(
   INITIAL_STATE,
-  on(actions.SET_REGISTERS, (states, { payload }) => ({
-    ...states,
-    all: states.all.concat(payload),
-  })),
+  on(actions.SET_REGISTERS, (states, { payload }) => ({ ...states, baseRegisters: states.baseRegisters.concat(payload), })),
   on(actions.GET_REGISTERS, (states, { payload }) => {
     const totals: any = utils.total(payload.data.results);
     return {
       ...states,
-      all:utils.returnRegisters(payload.data.results),
+      all: utils.returnRegisters(payload.data.results),
+      baseRegisters: utils.updateAll(payload.data.results),
       consolidado: payload.data.consolidado,
       msg: payload.msg,
       total: payload.data.total,
@@ -92,25 +86,17 @@ const registersReducers = createReducer(
     };
   }),
   on(actions.GET_TAB, (states, { payload }) => ({ ...states, tab: payload })),
-  on(actions.SET_SHOWTAB, (states, { payload }) => ({
-    ...states,
-    visible: payload,
-  })),
+  on(actions.SET_SHOWTAB, (states, { payload }) => ({ ...states, visible: payload })),
   on(actions.SET_UPDATE, (states, { payload }) => {
-    const stateUpdated: any = [...states.all];
-    stateUpdated[
-      stateUpdated.findIndex((r: any) => r._id.$oid === payload._id.$oid)
-    ] = payload;
-    return { ...states, all: utils.updateAll(stateUpdated) };
+    const stateUpdated: any = [...states.baseRegisters];
+    stateUpdated[stateUpdated.findIndex((r) => r._id.$oid === payload._id.$oid)] = payload;
+    return { ...states, all: utils.returnRegisters(stateUpdated) };
   }),
-  on(actions.SET_SEARCH, (states, { payload }) => ({
-    ...states,
-    result_search: utils.updateAll(payload),
-  })),
-
+  on(actions.SET_SEARCH, (states, { payload }) => ({ ...states, result_search: utils.returnRegisters(payload) })),
   on(actionsApp.resetall, (states) => ({
     ...states,
-    all: utils.updateAll([]),
+    all: utils.returnRegisters([]),
+    baseRegisters: [],
     tab: '',
     visible: {},
     consolidado: {},
