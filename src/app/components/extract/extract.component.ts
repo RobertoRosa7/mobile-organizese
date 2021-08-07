@@ -66,6 +66,7 @@ export class ExtractComponent implements OnInit, OnChanges {
         {
           text: 'Cancel',
           role: 'cancel',
+          cssClass: 'btn-cancel'
         },
       ],
     });

@@ -3,18 +3,15 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   Component,
   ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
+  Input, OnInit, ViewChild
 } from '@angular/core';
 import { ActionsSubject, Store } from '@ngrx/store';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, Observable, of, timer } from 'rxjs';
+import { filter, map, mergeMap, tap, delay } from 'rxjs/operators';
 import { ChartService } from 'src/app/services/chart.service';
+import { EmptyService } from 'src/app/services/empty.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import * as actionsApp from '../../actions/app.actions';
 import * as actionsDashboard from '../../actions/dashboard.actions';
@@ -24,7 +21,7 @@ import * as actionsDashboard from '../../actions/dashboard.actions';
   templateUrl: './highcharts.component.html',
   styleUrls: ['./highcharts.component.scss'],
 })
-export class HighchartsComponent implements OnInit, OnChanges {
+export class HighchartsComponent implements OnInit {
   @ViewChild('highchart', { static: true }) public highchart: ElementRef;
   @Input() public type: string;
   @Input() public data: Observable<any>;
@@ -40,34 +37,23 @@ export class HighchartsComponent implements OnInit, OnChanges {
   public differ: any;
   public btnLoadingSpinner: boolean;
   public enableButtonFilter: boolean;
-  private chart: any;
-  private datachart: any;
 
   constructor(
+    public emptyService: EmptyService,
     private chartService: ChartService,
     private breakpoint: BreakpointObserver,
     private store: Store,
-    private as: ActionsSubject
+    private as: ActionsSubject,
   ) {
-    this.breakpoint?.observe([Breakpoints.XSmall])
-      .subscribe((result) => (this.isMobile = !!result.matches));
-    this.high$.next(this.data);
-    this.chartService.getCharts().subscribe((chart) => (this.chart = chart));
-    this.high$.subscribe((data) => (this.datachart = data));
+    this.breakpoint?.observe([Breakpoints.XSmall]).subscribe((result) => (this.isMobile = !!result.matches));
   }
 
   ngOnInit() {
-    this.buildHighchart(this.chart, this.datachart).subscribe((chart) => this.buildChart(chart));
-    this.onActionsTypes(actionsApp.ActionsTypes.UPGRADE).subscribe(() =>
-      this.buildHighchart(this.chart, this.datachart).subscribe((chart) => this.buildChart(chart)));
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.high$.next(changes.data.currentValue);
-  }
-
-  public buildHighchart(chart, data): Observable<any> {
-    return of(this.mapToChart(chart, data));
+    this.prepareToChart().subscribe((chart => this.buildChart(chart)));
+    this.onActionsTypes(actionsApp.ActionsTypes.UPGRADE).pipe(
+      delay(1000),
+      mergeMap(() => this.prepareToChart()))
+      .subscribe((chart) => this.buildChart(chart));
   }
 
   public buildChart(chart) {
@@ -86,17 +72,10 @@ export class HighchartsComponent implements OnInit, OnChanges {
       })
     );
 
-    timer(UtilsService.getTimeDefault()).subscribe(() => {
-      this.store.dispatch(actionsDashboard.PUT_GRAPH_OUTCOME_INCOME());
-      this.high$.subscribe((data) => (this.datachart = data));
-      setTimeout(
-        () =>
-          this.buildHighchart(this.chart, this.datachart).subscribe((chart) =>
-            this.buildChart(chart)
-          ),
-        UtilsService.getTimeDefault()
-      );
-    });
+    timer(UtilsService.getTimeDefault()).pipe(
+      tap(() => this.store.dispatch(actionsDashboard.PUT_GRAPH_OUTCOME_INCOME())),
+      delay(1000),
+      mergeMap(() => this.prepareToChart())).subscribe((chart) => this.buildChart(chart));
   }
 
   public filterEnd = (d: any): boolean =>
@@ -127,5 +106,11 @@ export class HighchartsComponent implements OnInit, OnChanges {
 
   private onActionsTypes(type: string): Observable<any> {
     return this.as ? this.as.pipe(filter((a) => a.type === type)) : of(null);
+  }
+
+  private prepareToChart(): Observable<any> {
+    return this.chartService.getCharts().pipe(
+      mergeMap((chart) => forkJoin([ of(chart), of(this.emptyService.dataHighchart$.value) ])),
+      map(([chartStructure, dataToChart]) => this.mapToChart(chartStructure, dataToChart)));
   }
 }

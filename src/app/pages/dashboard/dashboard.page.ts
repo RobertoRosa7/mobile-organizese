@@ -206,9 +206,7 @@ export class DashboardPage implements OnInit {
   }
 
   protected fetchLastRegister(): Observable<any> {
-    return this.onActionsTypes(
-      actionsDashboard.actionsTypes.SET_DASHBOARD
-    ).pipe(
+    return this.onActionsTypes(actionsDashboard.actionsTypes.SET_DASHBOARD).pipe(
       map(({ payload }) => (payload ? [...payload.data.results] : [])),
       mergeMap((list) => {
         if (this.dashboardService) {

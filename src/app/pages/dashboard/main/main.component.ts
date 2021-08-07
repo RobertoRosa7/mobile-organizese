@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { IonRouterOutlet } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { delay, filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { Register } from 'src/app/interfaces/general';
 import { EmptyService } from 'src/app/services/empty.service';
 import { SubjectService } from 'src/app/services/subject.service';

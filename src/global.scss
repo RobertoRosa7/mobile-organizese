@@ -39,16 +39,23 @@
         width: 100%;
         max-width: 278.5px;
         text-align: center;
+        margin: 16px 0;
+        border-radius: 8px;
       }
     }
     .alert-button-inner {
       justify-content: center;
     }
   }
-  .btn-delete {
-    border-radius: 32px;
+  .btn-cancel {
     background-color: var(--text-accent);
     color: var(--white-one);
+  }
+  .btn-delete:hover {
+    background-color: var(--white-two);
+  }
+  .btn-delete {
+   color: var(--text-accent);
   }
 }
 
