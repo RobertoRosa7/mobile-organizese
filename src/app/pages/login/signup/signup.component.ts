@@ -1,20 +1,22 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { ActionsSubject, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { RESET_ERRORS } from 'src/app/actions/errors.actions';
 import { actionsTypes, CREATE_USER } from 'src/app/actions/login.actions';
 import { Signup } from 'src/app/interfaces/general';
+import { LoginService } from 'src/app/services/login.service';
+import { LoginPage } from '../login.page';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent extends LoginPage implements OnInit {
   public changeTexts = true;
   public isLoading = false;
   public isPasswordSame = false;
@@ -38,12 +40,14 @@ export class SignupComponent implements OnInit {
   );
 
   constructor(
+    protected toastController: ToastController,
+    protected logingService: LoginService,
     private formBuild: FormBuilder,
     private store: Store,
     private as: ActionsSubject,
-    private toastController: ToastController,
-    private router: NavController
-  ) {}
+  ) {
+    super(toastController, logingService);
+  }
 
   ngOnInit() {}
 
@@ -53,7 +57,7 @@ export class SignupComponent implements OnInit {
 
   public async onSubmit(event: Event): Promise<any> {
     event.preventDefault();
-    this.isLoading = true;
+    this.setIsLoading(true);
 
     const payload: Signup = {
       password: this.signup.value.password,
@@ -64,31 +68,23 @@ export class SignupComponent implements OnInit {
 
     this.store.dispatch(CREATE_USER({ payload }));
 
-    this.errors$ = this.store
-      .select(({ errors }: any) => ({
-        error:
-          errors.error.source === 'signup' ? errors.error.error : undefined,
-      }))
-      .pipe(
-        map((states) => {
+    this.errors$ = this.store.select(({ errors }: any) =>
+      ({ error: errors.error.source === 'signup' ? errors.error.error : undefined }))
+      .pipe(map((states) => {
           if (states.error?.message) {
-            this.isLoading = false;
+            this.setIsLoading(false);
           }
           return states;
         })
       );
 
-    this.signup.valueChanges.subscribe(() =>
-      this.store.dispatch(RESET_ERRORS())
-    );
+    this.signup.valueChanges.subscribe(() => this.store.dispatch(RESET_ERRORS()));
 
     const user = await this.onUser();
 
     if (user) {
-      const toast = await this.createToast(
-        'Usuário criado com sucesso - verifique se e-mail.'
-      );
-      await toast.present();
+      this.setIsLoading(false);
+      this.notification('Usuário criado com sucesso - verifique se e-mail.');
     }
   }
 
@@ -121,14 +117,6 @@ export class SignupComponent implements OnInit {
         ({ payload }: any) => resolve(payload)
       )
     );
-  }
-
-  private async createToast(message: string): Promise<HTMLIonToastElement> {
-    return await this.toastController.create({
-      message,
-      duration: 5000,
-      position: 'bottom',
-    });
   }
 
   private onActionsTypes(type: string): Observable<any> {

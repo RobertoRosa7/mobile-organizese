@@ -3,16 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, ToastController } from '@ionic/angular';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { LoginService } from 'src/app/services/login.service';
+import { LoginPage } from '../login.page';
 
 @Component({
   selector: 'app-new-password',
   templateUrl: './new-password.component.html',
   styleUrls: ['./new-password.component.scss'],
 })
-export class NewPasswordComponent implements OnInit {
+export class NewPasswordComponent extends LoginPage implements OnInit {
   public isPasswordSame = false;
   public textIcon = 'password';
   public changeIcon = 'visibility_off';
@@ -45,54 +46,25 @@ export class NewPasswordComponent implements OnInit {
   );
 
   constructor(
+    protected toastController: ToastController,
+    protected loginService: LoginService,
     private fb: FormBuilder,
-    private loginService: LoginService,
     private activatedRoute: ActivatedRoute,
-    private toastController: ToastController,
     private router: NavController,
-  ) { }
+  ) {
+    super(toastController, loginService);
+  }
 
   ngOnInit() {
-    this.activatedRoute.queryParams
-      .pipe(
-        switchMap((params: any) => {
-          if (params.token) {
-            this.token = params.token;
-            return this.loginService.loginVerified({ token: params.token });
-          } else {
-            return of(null);
-          }
-        })
-      )
-      .subscribe(
-        (res) => {
-        this.notification('Token verificado!');
-      },
-        (err) => {
-          console.log(err);
-          // this.router.navigateForward('/');
-          // this.notification(err.message);
-        }
-      );
+    this.activatedRoute.queryParams.pipe(switchMap((params: any) => this.mapCheckIfToken(params)))
+      .subscribe({ next: (res) => this.onCheckIfVerifiedSuccess(res), error: (err) => this.onCheckIfVerifiedError(err)});
   }
 
   public onSubmit(event: any): void {
     event.preventDefault();
-    this.isLoading = true;
-    this.loginService.resetPassword({
-        password: this.formNewPassword.value.password,
-        token: this.token,
-      })
-      .subscribe(
-        (res) => {
-          this.isLoading = false;
-          this.notification(res.message);
-        },
-        (err) => {
-          this.isLoading = false;
-          this.notification(err.message);
-        }
-      );
+    this.setIsLoading(true);
+    this.loginService.resetPassword({ password: this.formNewPassword.value.password, token: this.token })
+      .subscribe({ next: (res) => this.onSubmitSuccess(res), error: (err) => this.onsSubmitError(err) });
   }
 
   public checkPassword(controlName: string, matchingControlName: string): any {
@@ -119,12 +91,12 @@ export class NewPasswordComponent implements OnInit {
     this.changeIcon = str === 'password' ? 'visibility' : 'visibility_off';
   }
 
-  private async notification(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 3000,
-      position: 'bottom',
-    });
-    await toast.present();
+  private onCheckIfVerifiedSuccess(res): void {
+    this.notification('Token verificado!');
+  }
+
+  private onCheckIfVerifiedError(err): void {
+    this.router.navigateForward('/');
+    this.notification(err.error.message);
   }
 }

@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { LoginService } from 'src/app/services/login.service';
+import { LoginPage } from '../login.page';
 
 @Component({
   selector: 'app-reset',
   templateUrl: './reset.component.html',
   styleUrls: ['./reset.component.scss'],
 })
-export class ResetComponent implements OnInit {
-  public isLoading: boolean;
+export class ResetComponent extends LoginPage implements OnInit {
   public errorText: string;
   public isError: boolean;
 
@@ -18,35 +18,19 @@ export class ResetComponent implements OnInit {
   });
 
   constructor(
+    protected loginService: LoginService,
+    protected toastController: ToastController,
     private formBuild: FormBuilder,
-    private loginService: LoginService,
-    private toastController: ToastController
-  ) {}
+  ) {
+    super(toastController, loginService);
+  }
 
   ngOnInit() {}
 
   public onSubmit(event): void {
     event.preventDefault();
-    this.isLoading = true;
+    this.setIsLoading(true);
     this.loginService.mailToReset({ email: this.emailForm.value.email })
-      .subscribe(
-        (res) => {
-          this.notification(res.message);
-          this.isLoading = false;
-        },
-        (err) => {
-          this.notification(err.message);
-          this.isLoading = false;
-        }
-      );
-  }
-
-  private async notification(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 3000,
-      position: 'bottom',
-    });
-    await toast.present();
+      .subscribe({next: (res) => this.onSubmitSuccess(res), error: (err) => this.onsSubmitError(err)});
   }
 }

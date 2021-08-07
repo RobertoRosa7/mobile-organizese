@@ -60,12 +60,15 @@ export class MainComponent extends DashboardPage implements OnInit {
         dt_end: dashboard.graph_dates.dt_end,
         lastDate: dashboard.lastdate_outcome,
       })).pipe(map((state) => state)).subscribe(st => {
-        if (st.outcomeIncome.length > 0) {
-          this.emptyService.dataHighchart$.next(st);
-          setTimeout(() => this.emptyService.loadingHighchart$.next(false), UtilsService.getTimeDefault());
+        const { outcomeIncome } = st;
+        if (outcomeIncome[0]) {
+            if (outcomeIncome[0].values.length > 0) {
+              this.emptyService.setDataHighchart(st);
+              setTimeout(() => this.emptyService.setLoadingHighchart(false), UtilsService.getTimeDefault());
+            }
         } else {
-          this.emptyService.dataHighchart$.next(null);
-          setTimeout(() => this.emptyService.loadingHighchart$.next(false), UtilsService.getTimeDefault());
+          this.emptyService.setDataHighchart(null);
+          setTimeout(() => this.emptyService.setLoadingHighchart(false), UtilsService.getTimeDefault());
         }
       });
   }
@@ -78,8 +81,12 @@ export class MainComponent extends DashboardPage implements OnInit {
           this.emptyService.setDataExtract(registers);
           setTimeout(() => this.emptyService.setLoadingExtract(false), UtilsService.getTimeDefault());
         } else {
+          this.emptyService.setDataHighchart(null);
           this.emptyService.setDataExtract(null);
-          setTimeout(() => this.emptyService.setLoadingExtract(false), UtilsService.getTimeDefault());
+          setTimeout(() => {
+            this.emptyService.setLoadingExtract(false);
+            this.emptyService.setLoadingHighchart(false);
+          }, UtilsService.getTimeDefault());
         }
       });
   }

@@ -31,10 +31,10 @@ export class EmptyService {
   }
 
   public setLoadingHighchart(payload: boolean): void {
-    this.loadingExtractPage$.next(payload);
+    this.loadingHighchart$.next(payload);
   }
 
   public setDataHighchart(payload: any): void {
-    this.dataExtractPage$.next(payload);
+    this.dataHighchart$.next(payload);
   }
 }

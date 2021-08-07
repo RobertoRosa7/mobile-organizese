@@ -25,7 +25,7 @@ const BASE = {
   auto_complete: [],
   graph_category: [],
   notification_list: [],
-  outcome_income: {},
+  outcome_income: [],
   lastdate_outcome: {},
   graph_dates: {
     dt_start: moment().subtract(10, 'days').toLocaleString(),
