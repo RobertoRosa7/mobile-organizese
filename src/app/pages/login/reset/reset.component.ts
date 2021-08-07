@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
-import { ActionsSubject, Store } from '@ngrx/store';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -29,9 +28,7 @@ export class ResetComponent implements OnInit {
   public onSubmit(event): void {
     event.preventDefault();
     this.isLoading = true;
-
-    this.loginService
-      .mailToReset({ email: this.emailForm.value.email })
+    this.loginService.mailToReset({ email: this.emailForm.value.email })
       .subscribe(
         (res) => {
           this.notification(res.message);
