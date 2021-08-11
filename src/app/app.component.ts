@@ -38,7 +38,9 @@ export class AppComponent implements AfterViewInit {
       .addSvgIcon('arrow_back')
       .addSvgIcon('arrow_back_white')
       .addSvgIcon('check_box_outline_blank_white')
-      .addSvgIcon('feedback_white');
+      .addSvgIcon('feedback_white')
+      .addSvgIcon('logout_black')
+      .addSvgIcon('chevron_right_black');
   }
   private addSvgIcon(name: string, alias?: string, namespace?: string): this {
     const path = this.sanitizer.bypassSecurityTrustResourceUrl(

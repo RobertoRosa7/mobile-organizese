@@ -32,6 +32,8 @@ import { ModalComponent } from './components/modal/modal.component';
 import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
 import { WindowsHackerComponent } from './components/windows-hacker/windows-hacker.component';
 import { Constants } from './services/constants';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 registerLocaleData(localePt, 'pt');
 
@@ -74,6 +76,7 @@ const MY_FORMATS = {
     MatSelectModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    MatExpansionModule,
   ],
   exports: [
     CommonModule,
@@ -95,6 +98,7 @@ const MY_FORMATS = {
     MatChipsModule,
     MatProgressSpinnerModule,
     MatCardModule,
+    MatExpansionModule,
 
     SidepanelComponent,
     WindowsHackerComponent,

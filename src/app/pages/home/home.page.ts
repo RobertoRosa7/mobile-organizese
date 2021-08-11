@@ -20,15 +20,15 @@ export class HomePage implements OnInit {
     private loginService: LoginService,
     private router: NavController
   ) {
+    this.loginService.isAuthenticated().subscribe(isAuth => {
+      if (isAuth) {
+        this.router.navigateForward('/dashboard');
+      }
+    });
     this.backButtonEvent();
   }
 
   ngOnInit() {
-    this.loginService.isAuthenticated().subscribe(ev => {
-      if (ev) {
-        this.router.navigateForward('/dashboard');
-      }
-    });
   }
 
   public async openDialog(type: string): Promise<any> {

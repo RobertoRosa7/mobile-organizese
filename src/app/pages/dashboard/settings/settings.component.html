@@ -1,19 +1,67 @@
 <section class="page-settings">
   <ion-content>
     <div class="container">
-      <ion-list class="menu-list">
-        <ion-item class="menu-item" slot="start">
-          <mat-icon svgIcon="person_outline"></mat-icon>
-          <button mat-button routerLink="/dashboard/settings/profile">
-            PERFIL
-          </button>
-          <ion-icon
-            slot="end"
-            size="small"
-            name="chevron-forward-outline"
-          ></ion-icon>
-        </ion-item>
-      </ion-list>
+      <mat-accordion [multi]="true">
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Informações pessoais</mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul class="submenu">
+            <li class="submenu-item" routerLink="/dashboard/settings/profile">
+              <mat-icon class="color-icons" svgIcon="person_outline"></mat-icon>
+              <p class="submenu-desc">
+                <span>Perfil</span>
+                <small>Configurar nome, email, telefone etc...</small>
+              </p>
+              <mat-icon class="color-icons" style="margin-left: auto;" svgIcon="chevron_right_black"></mat-icon>
+            </li>
+          </ul>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Aplicação</mat-panel-title>
+          </mat-expansion-panel-header>
+            <ul class="submenu">
+              <li (click)="logout()" class="submenu-item">
+                <mat-icon class="color-icons" svgIcon="logout_black"></mat-icon>
+                <p class="submenu-desc">
+                  <span>Encerrar sessão</span>
+                  <small>Encerrar será desconectado de todos os dispositivos.</small>
+                </p>
+              </li>
+              <li (click)="deleteAccount()" class="submenu-item delete">
+                <mat-icon class="color-icons delete" svgIcon="delete_outline"></mat-icon>
+                <p class="submenu-desc">
+                  <span>Deletar conta</span>
+                  <small>Excluir conta - irá excluir todos os registros.</small>
+                </p>
+              </li>
+            </ul>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Sobre</mat-panel-title>
+          </mat-expansion-panel-header>
+            <ul class="submenu">
+              <li class="submenu-item" routerLink="/dashboard/about">
+                <p class="submenu-desc">
+                  <span>Descrição: </span>
+                  <small>{{ settings.description }}</small>
+                </p>
+              </li>
+
+              <li class="submenu-item" routerLink="/dashboard/about">
+                <p class="submenu-desc">
+                  <span>Versão: </span>
+                  <small>{{ settings.version }}</small>
+                </p>
+              </li>
+            </ul>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
   </ion-content>
 </section>

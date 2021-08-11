@@ -76,6 +76,8 @@ export class LoginService {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
 
+    this.storageService.clear().subscribe();
+
     this.user$.next(null);
     this.loggedIn$.next(false);
 

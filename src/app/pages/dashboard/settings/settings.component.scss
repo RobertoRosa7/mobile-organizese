@@ -2,15 +2,40 @@
 
 .page-settings {
   @include size-page;
+  
   .container {
     @include container-padding;
-  }
-  .menu-list {
-    .menu-item {
-      button {
-        width: 100%;
-        color: var(--green-microsoft);
-        text-align: left;
+    .submenu{
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      .submenu-item,
+      .submenu-desc {
+        display: flex;
+      }
+      .submenu-item {
+        flex-grow: 1;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.5;
+        }
+        .color-icons ::ng-deep svg {
+          fill: #888888;
+        }
+        .color-icons.delete ::ng-deep svg {
+          fill: var(--danger);
+        }
+        .submenu-desc{
+          flex-direction: column;
+          margin-left: 16px;
+          small {
+            font-size: 12px;
+          } 
+        }
+      }
+      .submenu-item.delete {
+        color: var(--danger);
       }
     }
   }
