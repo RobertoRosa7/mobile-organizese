@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { OwlModule } from 'ngx-owl-carousel';
+import { CardsEmptyComponent } from 'src/app/components/cards-empty/cards-empty.component';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
 import { DataEmptyComponent } from 'src/app/components/data-empty/data-empty.component';
 import { ExtractEmptyComponent } from 'src/app/components/extract-empty/extract-empty.component';
@@ -40,7 +41,8 @@ import { SettingsComponent } from './settings/settings.component';
     ProfileComponent,
     ExtractEmptyComponent,
     HighchartsEmptyComponent,
-    DataEmptyComponent
+    DataEmptyComponent,
+    CardsEmptyComponent
   ],
 })
 export class DashboardPageModule {}

@@ -1,0 +1,83 @@
+.card {
+  background: transparent;
+  min-height: 120px;
+  padding:0;
+  box-shadow: none;
+  border: none;
+  .value {
+    font-weight: bold;
+    color: var(--white-one);
+  }
+  .percent {
+    margin-left: 5px;
+    font-size: 0.6em;
+    font-weight: 400;
+    color: var(--white-one);
+  }
+  .card-content,
+  .card-title {
+    padding: 0px 8px;
+  }
+  .card-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .percent.hide {
+    width: 48px;
+  }
+  .value.hide {
+    width: 100%;
+  }
+  .percent.hide,
+  .value.hide {
+    height: 16px;
+    background: rgba(255, 255, 255, 0.25);
+    display: inline-block;
+    filter: blur(2px);
+  }
+  .incoming {
+    color: green;
+  }
+  .outcoming {
+    color: red;
+  }
+}
+.loading-waves {
+  width: inherit;
+  height: inherit;
+  min-height: 25px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+.loading-waves::before {
+  content: '';
+  width: inherit;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.02);
+  backdrop-filter: blur(15px);
+  animation: waves 1s linear infinite;
+  position: absolute;
+  top: 0;
+}
+.loading-waves.label-waves,
+.loading-waves.value-waves {
+  height: 8px;
+  display: inline-block;
+  margin-top: 8px;
+}
+.loading-waves.label-waves {
+  width: 140px;
+}
+.loading-waves.value-waves {
+  width: 280px;
+}
+@keyframes waves {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+// consorcioitau@itau-unibanco.com.br
+// assunto, grupo + cota + cpf

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
-import { IonRouterOutlet, ModalController, Platform } from '@ionic/angular';
+import { IonRouterOutlet, ModalController, NavController, Platform } from '@ionic/angular';
 import { ModalComponent } from 'src/app/components/modal/modal.component';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-home',
@@ -16,11 +17,18 @@ export class HomePage implements OnInit {
     private modalController: ModalController,
     private platform: Platform,
     private routerOutlet: IonRouterOutlet,
+    private loginService: LoginService,
+    private router: NavController
   ) {
     this.backButtonEvent();
   }
 
   ngOnInit() {
+    this.loginService.isAuthenticated().subscribe(ev => {
+      if (ev) {
+        this.router.navigateForward('/dashboard');
+      }
+    });
   }
 
   public async openDialog(type: string): Promise<any> {

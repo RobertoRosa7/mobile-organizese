@@ -14,6 +14,9 @@ export class EmptyService {
   public loadingHighchart$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public dataHighchart$: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  public loadingCardsMain$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  public dataCardsMain$: BehaviorSubject<any> = new BehaviorSubject(null);
+
   public setLoadingExtract(payload: boolean): void {
     this.loadingExtract$.next(payload);
   }
@@ -36,5 +39,13 @@ export class EmptyService {
 
   public setDataHighchart(payload: any): void {
     this.dataHighchart$.next(payload);
+  }
+
+  public setLoadingCardsMain(payload: boolean): void {
+    this.loadingCardsMain$.next(payload);
+  }
+
+  public setDataCardsMain(payload: any): void {
+    this.dataCardsMain$.next(payload);
   }
 }

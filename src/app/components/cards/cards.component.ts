@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { EmptyService } from 'src/app/services/empty.service';
+import { UtilsService } from 'src/app/services/utils.service';
 import * as actionsApp from '../../actions/app.actions';
 
 @Component({
@@ -39,10 +41,10 @@ export class CardsComponent implements OnInit {
     },
   ];
 
-  constructor(private store: Store) {}
+  constructor(public emptyService: EmptyService, private store: Store) {}
 
   ngOnInit() {
-    this.consolidadoData$ = this.store
+    this.store
       .select(({ dashboard, app }: any) => ({
         consolidado: this.cards.map((value: any) => {
           value.show = app.hidevalues;
@@ -64,7 +66,13 @@ export class CardsComponent implements OnInit {
           return value;
         }),
       }))
-      .pipe(map((state) => state.consolidado));
+      .pipe(map((state) => state.consolidado))
+      .subscribe(consolidado => {
+        setTimeout(() => {
+          this.emptyService.setDataCardsMain(consolidado);
+        this.emptyService.setLoadingCardsMain(false);
+        }, UtilsService.getTimeDefault());
+      });
   }
 
   public formatterValue(value: number): string {

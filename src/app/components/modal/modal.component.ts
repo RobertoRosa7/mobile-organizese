@@ -1,8 +1,6 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { RESET_ERRORS } from '../../actions/errors.actions';
 
 @Component({
