@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { NavController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import * as actionsLogin from '../actions/login.actions';
 import { User } from '../interfaces/general';
 import { Constants } from './constants';
 import { StorageService } from './storage.service';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +19,9 @@ export class LoginService {
   constructor(
     private http: HttpClient,
     private constants: Constants,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private store: Store,
+    private router: NavController
   ) {}
 
   public signup(payload: User): Observable<User> {
@@ -105,6 +109,11 @@ export class LoginService {
     return this.http.get(this.constants.get('emailToVerified'), {
       headers: this.encriptPayload(payload),
     });
+  }
+
+  public sessionIsOver(): void {
+    this.store.dispatch(actionsLogin.LOGOUT());
+    this.router.navigateForward('/home');
   }
 
   private encriptPayload(payload: any) {

@@ -29,7 +29,7 @@ export class LoginGuards implements CanActivate {
         if (!auth) {
           const toast = await this.createToast('Você não fez login ainda!');
           await toast.present();
-          this.router.navigateForward('/');
+          this.router.navigateForward('/home');
         }
       })
     );

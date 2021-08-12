@@ -46,10 +46,13 @@
   .display-1 {
     @include display-1;
     font-weight: 600;
-    font-size: 3.5em;
+    font-size: 2.5em;
+    color: var(--green-microsoft);
   }
   .display-2 {
     @include display-2;
+    font-weight: 600;
+
   }
   .description {
     @include description;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { delay, map } from 'rxjs/operators';
+import { LoginService } from 'src/app/services/login.service';
 import { ProfileService } from 'src/app/services/profile.service';
 import * as settings from '../../../../../package.json';
 import * as actionsApp from '../../../actions/app.actions';
@@ -21,7 +22,8 @@ export class SettingsComponent implements OnInit {
     private alertController: AlertController,
     private profileService: ProfileService,
     private toastController: ToastController,
-    private router: NavController
+    private router: NavController,
+    private loginService: LoginService
   ) {}
 
   ngOnInit() {
@@ -33,8 +35,7 @@ export class SettingsComponent implements OnInit {
   }
 
   public async logout(): Promise<any> {
-    this.store.dispatch(actionsLogin.LOGOUT());
-    this.router.navigateForward('/');
+    this.loginService.sessionIsOver();
     const snackbar = await this.createToast('Sessão encerrada');
     await snackbar.present();
   }
@@ -52,8 +53,7 @@ export class SettingsComponent implements OnInit {
             await snackbar.present();
 
             this.profileService.profileDeleteUser(this.user).pipe(delay(3000)).subscribe(async (res) => {
-              this.store.dispatch(actionsLogin.LOGOUT());
-              this.router.navigateForward('/');
+              this.loginService.sessionIsOver();
               snackbar = await this.createToast(res.message);
               await snackbar.present();
             },

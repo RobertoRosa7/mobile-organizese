@@ -22,11 +22,13 @@
   font-size: 2.5em;
   font-weight: 400;
   color: var(--color-dark);
+  font-family: 'Patua One', cursive;
 }
 @mixin display-2 {
   font-size: 1.8em;
   font-weight: 400;
   color: var(--color-dark);
+  font-family: 'Patua One', cursive;
 }
 @mixin description {
   font-size: 1em;

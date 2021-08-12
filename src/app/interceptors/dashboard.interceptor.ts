@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {
+  HttpErrorResponse,
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest,
+  HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { LoginService } from 'src/app/services/login.service';
 
 @Injectable()
@@ -17,7 +19,17 @@ export class DashboardInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return from(this.handleAccess(request, next));
+    return from(this.handleAccess(request, next)).pipe(
+      catchError(err => {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 401) {
+            this.loginService.sessionIsOver();
+          }
+          return of(err);
+        }
+        return of(err);
+      })
+    );
   }
 
   private async handleAccess(
