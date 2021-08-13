@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -21,7 +21,8 @@ export class LoginService {
     private constants: Constants,
     private storageService: StorageService,
     private store: Store,
-    private router: NavController
+    private router: NavController,
+    private toast: ToastController
   ) {}
 
   public signup(payload: User): Observable<User> {
@@ -111,9 +112,11 @@ export class LoginService {
     });
   }
 
-  public sessionIsOver(): void {
+  public async sessionIsOver(message: string): Promise<any> {
     this.store.dispatch(actionsLogin.LOGOUT());
     this.router.navigateForward('/home');
+    const toast = await this.toast.create({message, duration: 3000,position: 'bottom'});
+    await toast.present();
   }
 
   private encriptPayload(payload: any) {

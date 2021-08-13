@@ -35,9 +35,7 @@ export class SettingsComponent implements OnInit {
   }
 
   public async logout(): Promise<any> {
-    this.loginService.sessionIsOver();
-    const snackbar = await this.createToast('Sessão encerrada');
-    await snackbar.present();
+    this.loginService.sessionIsOver('Sessão encerrada.');
   }
 
   public async deleteAccount(): Promise<any> {
@@ -53,9 +51,7 @@ export class SettingsComponent implements OnInit {
             await snackbar.present();
 
             this.profileService.profileDeleteUser(this.user).pipe(delay(3000)).subscribe(async (res) => {
-              this.loginService.sessionIsOver();
-              snackbar = await this.createToast(res.message);
-              await snackbar.present();
+              this.loginService.sessionIsOver('Sessão encerrada.');
             },
             async (err) => {
               snackbar = await this.createToast(err.error.message);
