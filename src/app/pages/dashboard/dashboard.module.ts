@@ -7,6 +7,7 @@ import { OwlModule } from 'ngx-owl-carousel';
 import { CardsEmptyComponent } from 'src/app/components/cards-empty/cards-empty.component';
 import { CardsComponent } from 'src/app/components/cards/cards.component';
 import { DataEmptyComponent } from 'src/app/components/data-empty/data-empty.component';
+import { DialogListDevicesComponent } from 'src/app/components/dialog-list-devices/dialog-list-devices.component';
 import { ExtractEmptyComponent } from 'src/app/components/extract-empty/extract-empty.component';
 import { ExtractComponent } from 'src/app/components/extract/extract.component';
 import { HighchartsEmptyComponent } from 'src/app/components/highcharts-empty/highcharts-empty.component';
@@ -42,7 +43,8 @@ import { SettingsComponent } from './settings/settings.component';
     ExtractEmptyComponent,
     HighchartsEmptyComponent,
     DataEmptyComponent,
-    CardsEmptyComponent
+    CardsEmptyComponent,
+    DialogListDevicesComponent
   ],
 })
 export class DashboardPageModule {}
