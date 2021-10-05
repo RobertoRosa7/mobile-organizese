@@ -3,73 +3,37 @@
   <div class="container">
     <div class="form-field">
       <div class="form-group">
-        <ion-input
-          required
-          ngDefaultControl
-          formControlName="email"
-          inputmode="email"
-          placeholder="E-mail"
-          type="email"
-        ></ion-input>
+        <ion-input required ngDefaultControl formControlName="email" inputmode="email" placeholder="E-mail"
+          type="email"></ion-input>
         <ion-icon slot="end" name="mail"></ion-icon>
       </div>
-      <ion-text
-        *ngIf="
+      <ion-text *ngIf="
           login.get('email')?.hasError('required') && login.get('email').dirty
-        "
-        class="hint-error"
-        color="danger"
-      >
+        " class="hint-error" color="danger">
         Campo e-mail é obrigatório.
       </ion-text>
-      <ion-text
-        *ngIf="login.get('email')?.hasError('email')"
-        class="hint-error"
-        color="danger"
-      >
+      <ion-text *ngIf="login.get('email')?.hasError('email')" class="hint-error" color="danger">
         Não é um e-mail válido.
       </ion-text>
     </div>
 
     <div class="form-field">
       <div class="form-group">
-        <ion-input
-          required
-          ngDefaultControl
-          formControlName="password"
-          placeholder="Senha"
-          inputmode="text"
-          [type]="changeTexts ? 'password' : 'text'"
-        ></ion-input>
-        <ion-icon
-          [name]="changeTexts ? 'eye-off' : 'eye'"
-          slot="end"
-          (click)="changeTexts = !changeTexts"
-        ></ion-icon>
+        <ion-input required ngDefaultControl formControlName="password" placeholder="Senha" inputmode="text"
+          [type]="changeTexts ? 'password' : 'text'"></ion-input>
+        <ion-icon [name]="changeTexts ? 'eye-off' : 'eye'" slot="end" (click)="changeTexts = !changeTexts"></ion-icon>
       </div>
-      <ion-text
-        *ngIf="
+      <ion-text *ngIf="
           login.get('password')?.hasError('required') &&
           login.get('password').dirty
-        "
-        class="hint-error"
-        color="danger"
-      >
+        " class="hint-error" color="danger">
         Campo senha é obrigatório
       </ion-text>
 
-      <ion-text
-        class="hint-error"
-        color="danger"
-        *ngIf="login.get('password')?.hasError('minlength')"
-      >
+      <ion-text class="hint-error" color="danger" *ngIf="login.get('password')?.hasError('minlength')">
         Mínimo de 6 caracteres
       </ion-text>
-      <ion-text
-        class="hint-error"
-        color="danger"
-        *ngIf="login.get('password')?.hasError('maxlength')"
-      >
+      <ion-text class="hint-error" color="danger" *ngIf="login.get('password')?.hasError('maxlength')">
         Máximo de 24 caracteres
       </ion-text>
     </div>
@@ -79,59 +43,33 @@
     </span>
 
     <ion-buttons *ngIf="isVerifiedEmail" class="container-forget">
-      <ion-button
-        size="small"
-        (click)="close()"
-        routerLink="/login/reset"
-        class="no-account"
-      >
+      <ion-button size="small" (click)="close()" routerLink="/login/reset" class="no-account">
         <small>Esqueci a senha</small>
       </ion-button>
 
-      <ion-button
-        size="small"
-        (click)="close()"
-        routerLink="/login/signup"
-        class="no-account"
-      >
+      <ion-button size="small" (click)="close()" routerLink="/login/signup" class="no-account">
         <small>Não tenho conta</small>
       </ion-button>
     </ion-buttons>
 
     <p *ngIf="!isVerifiedEmail" style="cursor: pointer">
-      <ion-button
-        (click)="verifiedEmail()"
-        color="medium"
-        fill="clear"
-        size="small"
-        expand="full"
-      >
+      <ion-button (click)="verifiedEmail()" color="medium" fill="clear" size="small" expand="full">
         <ion-spinner *ngIf="isLoadingVerify" name="crescent"></ion-spinner>
         <span *ngIf="!isLoadingVerify">solicitar nova verificação?</span>
       </ion-button>
     </p>
 
     <ion-item class="container-checkbox">
-      <ion-checkbox
-        (ionChange)="checkboxChange($event)"
-        ngDefaultControl
-        formControlName="keepConnect"
-        color="success"
-      ></ion-checkbox>
+      <ion-checkbox (ionChange)="checkboxChange($event)" ngDefaultControl formControlName="keepConnect" color="success">
+      </ion-checkbox>
       &nbsp;&nbsp;
       <ion-label>Manter conectado.</ion-label>
     </ion-item>
 
     <ion-buttons class="container-buttons">
-      <ion-button class="btn close" (click)="close()" type="button"
-        >Fechar</ion-button
-      >
-      <ion-button
-        [disabled]="!login.valid || isLoading"
-        class="btn income"
-        type="submit"
-        (keyup.enter)="onSubmit($event)"
-      >
+      <ion-button class="btn close" (click)="close()" type="button">Fechar</ion-button>
+      <ion-button [disabled]="!login.valid || isLoading" class="btn income" type="submit"
+        (keyup.enter)="onSubmit($event)">
         <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
         <span *ngIf="!isLoading">Entrar</span>
       </ion-button>
